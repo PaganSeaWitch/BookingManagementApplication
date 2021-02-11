@@ -1,0 +1,9 @@
+{
+  "name": "booking-management-application",
+  "version": "0.0.0",
+  "description": "BookingManagementApplication",
+  "main": "server.js",
+  "author": {
+    "name": ""
+  }
+}
