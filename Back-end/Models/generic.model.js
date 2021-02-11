@@ -22,4 +22,8 @@ const genericSchema = new Schema
 },
 {
     timestamps: true,
-});
+    });
+
+const Generic = mongoose.model("Generic", genericSchema);
+
+module.exports = Generic;
