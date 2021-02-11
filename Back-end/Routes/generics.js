@@ -3,7 +3,7 @@ let Generic = require("../Models/generic.model");
 
 router.route("/").get((req, res) => {
     Generic.find()
-        .then(Generics => res.json(generics))
+        .then(generics => res.json(generics))
         .catch(err => res.status(400).json("Error: " + err))
 });
 
