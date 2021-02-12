@@ -1,3 +1,6 @@
+import { FaTimes } from 'react-icons/fa'
+
+
 const Generic = ({ generic, onDelete }) => {
     return (
         <div
@@ -5,6 +8,10 @@ const Generic = ({ generic, onDelete }) => {
         >
             <h3>
                 {generic.username}{' '}
+                <FaTimes
+                    style={{ color: 'red', cursor: 'pointer' }}
+                    onClick={() => onDelete(generic._id)}
+                />
             </h3>
             <p>{generic.password}</p>
         </div>

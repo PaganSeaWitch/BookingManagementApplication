@@ -14,7 +14,7 @@ router.route("/add").post((req, res) => {
     const newGeneric = new Generic({ username, password });
 
     newGeneric.save()
-        .then(() => res.json("Generic added!"))
+        .then(() => res.json(newGeneric))
         .catch(err => res.status(400).json("Error: " + err));
 });
 

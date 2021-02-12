@@ -37,15 +37,15 @@ const App = () => {
         //send generic to backend
         //the current strategy is not good, no catch for server errors
         axios.post("http://localhost:5000/generic/add", generic)
-            .then(setGenerics([...generics, generic]));
+            .then(response => setGenerics([...generics, response.data]));
 
     }
 
     // Delete Generic
     const deleteGeneric = async (id) => {
-        await axios.delete("http://localhost:5000/generic/"+id)
-
-        //setGenerics(generics.filter((generic) => generic.id !== id))
+        axios.delete("http://localhost:5000/generic/"+id)
+            .then(setGenerics(generics.filter((generic) => generic._id !== id)))
+        
     }
 
 
@@ -55,7 +55,7 @@ const App = () => {
             <div className="container">     
                 <NavBar />
                 <br />
-                <Route path="/" render={(props) => (
+                <Route path="/" exact render={(props) => (
                     <>
                         {<GenericList generics={generics} onDelete={deleteGeneric} />}
                     </>
