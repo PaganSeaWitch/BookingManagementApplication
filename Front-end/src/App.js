@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from 'react'
 import NavBar from "./Components/navbar.component";
 import GenericList from "./Components/generic-list.component";
-import EditGeneric from "./Components/generic-edit.component";
 import CreateGeneric from "./Components/generic-create.component";
 import axios from "axios";
 
@@ -32,6 +31,16 @@ const App = () => {
             
     }
 
+    const fetchGeneric = async (id) =>
+    {
+        return axios.get("http://localhost;5000/generic/"+id)
+    }
+
+    const editGeneric = async (generic) =>
+    {
+        axios.post('http://localhost:5000/exercises/update/' + generic._id, generic)
+    }
+
     //creates a generic
     const createGeneric = async (generic) => {
         //send generic to backend
@@ -40,14 +49,13 @@ const App = () => {
             .then(response => setGenerics([...generics, response.data]));
 
     }
-
+    
     // Delete Generic
     const deleteGeneric = async (id) => {
         axios.delete("http://localhost:5000/generic/"+id)
             .then(setGenerics(generics.filter((generic) => generic._id !== id)))
         
     }
-
 
 
     return (
@@ -57,11 +65,11 @@ const App = () => {
                 <br />
                 <Route path="/" exact render={(props) => (
                     <>
-                        {<GenericList generics={generics} onDelete={deleteGeneric} />}
+                        {<GenericList generics={generics} onDelete={deleteGeneric}/>}
                     </>
                 )}
                 />
-                <Route path="/edit:id" component={EditGeneric} />
+                
                 <Route path="/create" render={(props) => (
                     <>
                         {<CreateGeneric onCreate={createGeneric} />}

@@ -1,7 +1,6 @@
 import { FaTimes } from 'react-icons/fa'
 
-
-const Generic = ({ generic, onDelete }) => {
+const Generic = ({ generic, onDelete, moveToEdit}) => {
     return (
         <div
             className={`generic`}
@@ -11,6 +10,10 @@ const Generic = ({ generic, onDelete }) => {
                 <FaTimes
                     style={{ color: 'red', cursor: 'pointer' }}
                     onClick={() => onDelete(generic._id)}
+                />
+                <FaTimes
+                    style={{ color: 'Green', cursor: 'pointer' }}
+                    onClick={() => moveToEdit(generic._id)}
                 />
             </h3>
             <p>{generic.password}</p>

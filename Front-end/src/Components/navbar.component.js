@@ -14,6 +14,7 @@ const NavBar = () => {
                     <li className="navbar-item">
                         <Link to="/create" className="nav-link">Create Generic</Link>
                     </li>
+                    
             </ul>
         </div>
     </nav>);

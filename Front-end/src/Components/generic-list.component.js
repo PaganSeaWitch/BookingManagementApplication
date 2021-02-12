@@ -1,4 +1,3 @@
-import React from "react";
 import Generic from "./generic.component"
 
 const GenericList = ({ generics, onDelete }) => {
