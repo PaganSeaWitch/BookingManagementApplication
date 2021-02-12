@@ -4,9 +4,14 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 
+//you might notice the process.env
+//this is a reference to a file in the folder which contains key values
+//for instance, the url to the mongoDB is the ATLAS_URI
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+
 
 app.use(cors());
 app.use(express.json());

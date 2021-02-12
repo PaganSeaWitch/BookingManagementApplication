@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+//creates a new generic, and sends it to the back end
 const GenericCreate = ({ onCreate }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')

@@ -1,5 +1,6 @@
 import { FaTimes } from 'react-icons/fa'
 
+//Creates a generic component, used for listing it
 const Generic = ({ generic, onDelete, moveToEdit}) => {
     return (
         <div
@@ -7,14 +8,12 @@ const Generic = ({ generic, onDelete, moveToEdit}) => {
         >
             <h3>
                 {generic.username}{' '}
+                {/* creates a x icon */}
                 <FaTimes
                     style={{ color: 'red', cursor: 'pointer' }}
                     onClick={() => onDelete(generic._id)}
                 />
-                <FaTimes
-                    style={{ color: 'Green', cursor: 'pointer' }}
-                    onClick={() => moveToEdit(generic._id)}
-                />
+                
             </h3>
             <p>{generic.password}</p>
         </div>

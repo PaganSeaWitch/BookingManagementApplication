@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+//this is a generic model
+//its purpose is to govern
+//the allowed inputs into a certain
+//object, in this case a generic
 const genericSchema = new Schema
 ({
     username:
