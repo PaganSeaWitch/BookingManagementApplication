@@ -6,12 +6,17 @@ const GenericCreate = ({ onCreate }) => {
     const [password, setPassword] = useState('')
 
 
-
+    //submits form back to app
     const onSubmit = (e) => {
         e.preventDefault()
 
+        //makes sure forms are filled correctly
         if (!username) {
-            alert('Please add a task')
+            alert('Please add a username')
+            return
+        }
+        if (!password) {
+            alert("Please add a password")
             return
         }
 
@@ -25,7 +30,7 @@ const GenericCreate = ({ onCreate }) => {
     return(
         <form className='create-generic-form' onSubmit={onSubmit}>
             <div className='form-control'>
-                <label>Username</label>
+                <label>Enter a generic username</label>
                 <input
                     type='text'
                     placeholder='Username'
@@ -34,7 +39,7 @@ const GenericCreate = ({ onCreate }) => {
                 />
             </div>
             <div className='form-control'>
-                <label>Password</label>
+                <label>Enter a generic password</label>
                 <input
                     type='text'
                     placeholder='Password'
@@ -42,7 +47,6 @@ const GenericCreate = ({ onCreate }) => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
-            
             <input type='submit' value='Create Generic' className='btn btn-block' />
         </form>
     );

@@ -11,3 +11,66 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.container {
+  max-width: 500px;
+  margin: 30px auto;
+  overflow: auto;
+  min-height: 300px;
+  border: 1px solid steelblue;
+  padding: 30px;
+  border-radius: 5px;
+}
+
+.create-generic-form {
+  margin-bottom: 40px;
+}
+
+.form-control {
+  margin: 10px 10px;
+  margin-bottom: 40px;
+}
+
+.form-control label {
+  display: block;  
+
+  margin: px 10px;
+}
+
+.form-control input {
+  display: block;
+  width: 100%;
+  height: 30px;
+  margin: 10px 0px;
+  padding: 3px 7px;
+  font-size: 17px;
+}
+
+
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn {
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+}

@@ -1,12 +1,16 @@
 import React from "react";
+import Generic from "./generic.component"
 
-const GenericList = () => {
+const GenericList = ({ generics, onDelete }) => {
 
-    return(
+    return (
         <div>
-            <p> You are on the Generic List component!</p>
+            <h3>Logged Generics</h3>
+            {generics.map((generic, index) => (
+                <Generic key={index} generic={generic} onDelete={onDelete}/>
+            ))}
         </div>
-    );
+    )
 };
 
 export default GenericList;
