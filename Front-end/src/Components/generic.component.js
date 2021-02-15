@@ -15,7 +15,7 @@ const Generic = ({ generic, onDelete, moveToEdit}) => {
                 />
                 
             </h3>
-            <p>{generic.password}</p>
+            <p>{"generic.password"}</p>
         </div>
     )
 }

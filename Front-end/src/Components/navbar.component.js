@@ -7,7 +7,7 @@ const NavBar = () => {
 
     <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
             {/* This navbar based off the bootstrap navbar */}
-        <Link to="/" className="navbar-brand">GenericReactApp</Link>
+        <Link to="/" className="navbar-brand">Hotels R US</Link>
         <div className="collapse navbar-collapse">
                 <ul className="navbar-nav mr-auto">
                     {/* creates the two items in the navbar for navigation */}
