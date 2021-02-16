@@ -24,7 +24,7 @@ code {
 
 .user-information{
 	margin: auto;
-	max-width: 600px;
+	max-width: 700px;
 	position:relative;
 	border:1px #ccc solid;
 }
@@ -39,8 +39,14 @@ code {
 	margin-right: 5px;
 }
 
-.bottom-right-corner {
+.buffer-form {
+
+	position:relative;
+	
+}
+.bottom-right-corner{
 	position:absolute;
 	bottom:0;
-	right:0;
+	right: 0px;
+	margin: auto;
 }

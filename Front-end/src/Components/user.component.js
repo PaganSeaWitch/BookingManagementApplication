@@ -1,19 +1,24 @@
 import { useState, useEffect, useRef} from "react";
+import DeleteDialogue from "./deleteDialogue.component"
+import Button from '@material-ui/core/Button';
 
 //the user component, also functions as the user information page
 //props for later { user, onDelete, editUser }
-const User = ({ user, onDelete, logOut, props}) => {
+const User = ({ user, onDelete, logOut, props, onUpdate }) => {
     const [hidden, setHidden] = useState(true);
     const [warning, setWarning] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState( "");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [safty, setSafty] = useState(true);
-
+    const [safty, setSafty] = useState(false);
+    const [canSave, setCanSave] = useState(false);
+    const [userSave, setUserSave] = useState(false);
     //this happpens at the start of the apps life cycle
     useEffect(() => {
+
+
 
         //this is a reference to the button
         //basically, we add an event listener after its loaded up
@@ -30,6 +35,42 @@ const User = ({ user, onDelete, logOut, props}) => {
             logOutUser();
         });
 
+        const saveChanges = () => {
+            onUpdate(user, username, password, email, firstName, lastName, setWarning);
+        }
+        if (userSave == true) {
+            setUserSave(false);
+            console.log(username);
+            saveChanges();
+        }
+        const checkStates = () => {
+            if (warning.length == 0) {
+                setCanSave(false)
+                return;
+            }
+            if (username.length <= 3) {
+                setCanSave(false)
+                return;
+            }
+            if (password.length <= 5) {
+                setCanSave(false)
+                return;
+            }
+            if (!email) {
+                setCanSave(false)
+                return;
+            }
+            if (!firstName) {
+                setCanSave(false)
+                return;
+            }
+            if (!lastName) {
+                setCanSave(false)
+                return;
+            }
+            setCanSave(true);
+        }
+        checkStates();
     });
 
     //fills out the form based on current user
@@ -42,7 +83,6 @@ const User = ({ user, onDelete, logOut, props}) => {
     }
 
     const refToLogout = useRef(null);
-
     //toggles whether to show password
     const toggleHidden = (e) =>
     {
@@ -51,41 +91,53 @@ const User = ({ user, onDelete, logOut, props}) => {
         setHidden(!hidden);
     };
 
+    const sendAlertOrUser = (e) =>
+    {
+        e.preventDefault();
+        if (canSave == false) {
+            alert("cannot save due to invalid fields")
+            console.log(email);
+        }
+        else {
+            setUserSave(true)
+        }
+    }
+
+    
     
     //TODO: check if they changed username
     //check if new username isn't already in use
     //if not, update data
     //else, tell user
-    const saveChanges = (e) =>
-    {
-        e.preventDefault();
-
-    }
+    
 
     //only fillforms if the user exists
     if (user != null) {
         fillForms();
     }
 
-    const deleteAccount = (e) =>
+    const deleteAccount = () =>
     {
+        onDelete(10000)
+        props.history.push('/');
 
     }
 
  
     return (
-        
+
         <div>
+            
             <form className={"user-information"}>
                 {/* we wrap this function call in a lambda to prevent render infi loop*/}
-                <header>User Information <button id={"logOutButton"} ref={refToLogout } > log out</button></header>
+                <header>User Information <Button  id={"logOutButton"} ref={refToLogout } > log out</Button></header>
                     
                 <div>
                     <label>Username:</label>
                     <input
                         type='text'
                         value={username}
-                        onChange={(e) => { setWarning("changes made "); setUsername(e.target.value); }
+                        onChange={(e) => { setWarning("changes made "); setUsername(e.target.value);  }
                         }/>
                 </div>
                 <div> 
@@ -95,7 +147,7 @@ const User = ({ user, onDelete, logOut, props}) => {
                         value={password}
                         onChange={(e) => { setWarning("changes made "); setPassword(e.target.value); }
                         }/>
-                    <button onClick={toggleHidden}> Show Password</button>
+                    <Button  onClick={toggleHidden}> Show Password</Button>
                 </div>
                 <div>
                     <label>Full Name:</label>
@@ -121,14 +173,30 @@ const User = ({ user, onDelete, logOut, props}) => {
                 </div>
                 <div className={"bottom-right-corner"}>
                     <i>{warning}</i>
-                    <button onClick={saveChanges} > Save Changes</button>
-                    <button> Cancel</button>
-                    
+                    <Button  onClick={sendAlertOrUser}> Save Changes</Button>
+                    <Button onClick={() => window.location.reload()}> Cancel</Button>
+
                 </div>
-                
+                <br></br>
+                <DeleteDialogue
+                    title="Delete Account?"
+                    open={safty}
+                    setOpen={setSafty}
+                    onConfirm={deleteAccount}
+                > Are you sure you want to delete your account? this is Permanent </DeleteDialogue>
+                <Button
+                    variant="contained"
+                    color="secondary"
+
+                    onClick={() => setSafty(true)}
+                > Permanently delete your account </Button>
             </form>
-            <button className={"bottom-right-corner"} >Permanently delete your account </button> 
+            
+            
+            
+            
         </div>
+         
     )
 
     

@@ -47,6 +47,35 @@ const App = () => {
             
     }
 
+
+
+    const updateUser = async (user, username, password, email, firstName, lastName, setWarning) =>
+    {
+        const updatedUser = { username, password, email, firstName, lastName };
+        //Todo, call email checking function 
+
+        if (user.username == username) {
+            
+            axios.post("http://localhost:5000/user/update" + user._id, updatedUser)
+                .then(response => setUser(response.data));
+        }
+        else {
+            axios.get("http://localhost:5000/user/username" + username)
+                .then(response => {
+                    if (response.data.length == 0) {
+                        axios.post("http://localhost:5000/user" + user._id, updatedUser)
+                            .then(response => setUser(response.data));
+                    }
+                    else {
+                        alert("The username you have chosen has already been taken");
+                        return;
+                    }
+                });
+        };
+        console.log(updatedUser.username);
+        setWarning("");
+    };
+
     //creates a generic
     const createGeneric = async (generic) => {
         //send generic to backend
@@ -57,12 +86,11 @@ const App = () => {
     }
     
     // Delete Generic
-    const deleteGeneric = async (id) => {
+    const deleteUser = (id) => {
         //delete generic from backend
         //no implementation for server errors
-        axios.delete("http://localhost:5000/generic/"+id)
-            .then(setGenerics(generics.filter((generic) => generic._id !== id)))
-        
+        //axios.delete("http://localhost:5000/user/"+id)
+        console.log("Deleted user!");
     }
 
     //where render happens
@@ -76,8 +104,7 @@ const App = () => {
                 * <Route path="/" exact component={<component>} /> works*/}
             <Route path="/" exact render={(props) => (
                 <>
-                    {/* we pass a function and the array of generics */}
-                    {<GenericList generics={generics} onDelete={deleteGeneric}/>}
+                    
                 </>
             )}
             />
@@ -92,7 +119,7 @@ const App = () => {
             <Route path="/user" render={(props) => (
                 <>
                     {/* we pass a function*/}
-                    {<User user={user} onDelete={deleteGeneric} logOut={logOut} props={props}/>}
+                    {<User user={user} onDelete={deleteUser} logOut={logOut} props={props} onUpdate={updateUser} />}
                 </>
             )}
             />
