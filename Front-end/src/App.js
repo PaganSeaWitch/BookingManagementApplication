@@ -52,7 +52,7 @@ const App = () => {
     const updateUser = async (user, username, password, email, firstName, lastName, setWarning) =>
     {
         const updatedUser = { username, password, email, firstName, lastName };
-        //Todo, call email checking function 
+        //Todo, call email checking function first
 
         if (user.username == username) {
             
