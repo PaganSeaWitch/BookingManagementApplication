@@ -10,6 +10,7 @@ const User = ({ user, onDelete, logOut, props}) => {
     const [email, setEmail] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+    const [safty, setSafty] = useState(true);
 
     //this happpens at the start of the apps life cycle
     useEffect(() => {
@@ -66,8 +67,12 @@ const User = ({ user, onDelete, logOut, props}) => {
         fillForms();
     }
 
+    const deleteAccount = (e) =>
+    {
 
+    }
 
+ 
     return (
         
         <div>
@@ -118,8 +123,11 @@ const User = ({ user, onDelete, logOut, props}) => {
                     <i>{warning}</i>
                     <button onClick={saveChanges} > Save Changes</button>
                     <button> Cancel</button>
+                    
                 </div>
+                
             </form>
+            <button className={"bottom-right-corner"} >Permanently delete your account </button> 
         </div>
     )
 
