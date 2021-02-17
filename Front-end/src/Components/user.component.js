@@ -135,7 +135,7 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
             
             <form className={"user-information"}>
                 {/* we wrap this function call in a lambda to prevent render infi loop*/}
-                <header>User Information <Button  id={"logOutButton"} ref={refToLogout } > log out</Button></header>
+                <header className={"main-header"}>User Information <Button  id={"logOutButton"} ref={refToLogout } > log out</Button></header>
                     
                 <div>
                     <label>Username:</label>

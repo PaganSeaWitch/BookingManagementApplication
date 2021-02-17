@@ -12,6 +12,11 @@ code {
     monospace;
 }
 
+.main-header{
+	text-decoration: underline;
+	text-align: center;
+}
+
 .user-information header{
 	text-decoration: underline;
 	text-align: center;
