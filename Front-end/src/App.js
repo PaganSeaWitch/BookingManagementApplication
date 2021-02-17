@@ -3,24 +3,26 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from 'react'
 import NavBar from "./Components/navbar.component";
-import GenericList from "./Components/generic-list.component";
 import CreateGeneric from "./Components/generic-create.component";
 import axios from "axios";
 import User from "./Components/user.component";
-import { Redirect } from 'react-router-dom';
+require('dotenv').config({
+    path: __dirname +  "C:\Users\palmerjw\source\repos\BookingManagementApplication\Front-end\.env" })
+
 
 const App = () => {
 
     const [generics, setGenerics] = useState([])
     const [user, setUser] = useState()
     const [manager, setManager] = useState()
+    const uri = process.env.REACT_APP_BACK_END_SERVER_URI
 
-    const logOut = () => {
-        
+    const logOut = () =>
+    {
         //setUser({});
         localStorage.clear();
         console.log("logged out");
-        return < Redirect  to = "/" />;
+        
     }
     //this happpens at the start of the apps life cycle
     useEffect(() => {
@@ -36,13 +38,15 @@ const App = () => {
         }
 
         getGenerics()
+        console.log(__dirname);
+        console.log(uri);
     }, [])
 
     // Fetch Generics
     const fetchGenerics = async () => {
         //gets all generics
         //no implementation for server errors
-        return axios.get("http://localhost:5000/generic/")
+        return axios.get( uri +"/generic/")
             
             
     }
@@ -56,7 +60,7 @@ const App = () => {
 
         if (user.username == username) {
             
-            axios.post("http://localhost:5000/user/update" + user._id, updatedUser)
+            axios.post(uri + "/user/update" + user._id, updatedUser)
                 .then(response => setUser(response.data));
         }
         else {
@@ -98,6 +102,7 @@ const App = () => {
     <Router>  
             <NavBar />
             <br />
+            <p> {process.env.BACK_END_SERVER_URI} </p>
             {/* Here instead of using the component, we use the render and then the component
                 * we do this because the component cannot take in anything without using render
                 * if you just want to route to a componet without passing anyting to it
