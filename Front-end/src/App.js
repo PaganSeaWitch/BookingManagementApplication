@@ -6,8 +6,8 @@ import NavBar from "./Components/navbar.component";
 import CreateGeneric from "./Components/generic-create.component";
 import axios from "axios";
 import User from "./Components/user.component";
-require('dotenv').config({
-    path: __dirname +  "C:\Users\palmerjw\source\repos\BookingManagementApplication\Front-end\.env" })
+import Login from "./Components/login.component";
+require('dotenv').config()
 
 
 const App = () => {
@@ -64,7 +64,7 @@ const App = () => {
                 .then(response => setUser(response.data));
         }
         else {
-            axios.get("http://localhost:5000/user/username" + username)
+            axios.get(uri + "/user/username" + username)
                 .then(response => {
                     if (response.data.length == 0) {
                         axios.post("http://localhost:5000/user" + user._id, updatedUser)
@@ -84,16 +84,22 @@ const App = () => {
     const createGeneric = async (generic) => {
         //send generic to backend
         //no implementation for server errors
-        axios.post("http://localhost:5000/generic/add", generic)
+        axios.post(uri + "/generic/add", generic)
             .then(response => setGenerics([...generics, response.data]));
 
     }
-    
+
+    const getUser = (username) =>
+    {
+        axios.get(uri + "/user/username:" + username)
+            .then(response => setUser(response.data))
+    }
+
     // Delete Generic
     const deleteUser = (id) => {
         //delete generic from backend
         //no implementation for server errors
-        //axios.delete("http://localhost:5000/user/"+id)
+        //axios.delete( uri + "5000/user/"+id)
         console.log("Deleted user!");
     }
 
@@ -125,6 +131,12 @@ const App = () => {
                 <>
                     {/* we pass a function*/}
                     {<User user={user} onDelete={deleteUser} logOut={logOut} props={props} onUpdate={updateUser} />}
+                </>
+            )}
+            />
+            <Route path="/login" render={(props) => (
+                <>
+                    {<Login getUser={getUser} />}
                 </>
             )}
             />

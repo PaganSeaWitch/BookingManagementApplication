@@ -35,14 +35,19 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
             logOutUser();
         });
 
+        //sends data back up to app then to backend
         const saveChanges = () => {
             onUpdate(user, username, password, email, firstName, lastName, setWarning);
         }
+
+        //if the user clicked save
         if (userSave == true) {
             setUserSave(false);
             console.log(username);
             saveChanges();
         }
+
+        //constantly check whether they can save
         const checkStates = () => {
             if (warning.length == 0) {
                 setCanSave(false)
