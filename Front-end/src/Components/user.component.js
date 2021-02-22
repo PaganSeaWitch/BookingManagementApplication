@@ -15,6 +15,8 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
     const [safty, setSafty] = useState(false);
     const [canSave, setCanSave] = useState(false);
     const [userSave, setUserSave] = useState(false);
+
+
     //this happpens at the start of the apps life cycle
     useEffect(() => {
 
@@ -123,7 +125,7 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
 
     const deleteAccount = () =>
     {
-        onDelete(10000)
+        onDelete(10000);
         props.history.push('/');
 
     }

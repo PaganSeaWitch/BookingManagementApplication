@@ -20,31 +20,52 @@ code {
 .login-header{
 	position:relative;
 	margin: auto;
-	max-width: 700px;
+	max-width: 320px;
 	margin-bottom: 10px;
 }
 
+.switch-button{
+	margin-right : 10px;
+}
 
 
 .login-form{
 	margin: auto;
-	max-width: 700px;
+	max-width: 320px;
 	border:1px #ccc solid;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 5px;
 }
+.help-links{
+	font-size: 0.875rem;
+	text-decoration: none;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	margin-left : 38px;
+
+}	
 
 .login-form label{
-	text-decoratoration: bold;
-	display: inline-block;
-	width: 20%;
-	margin:auto;
+	margin-top : 15px;
+	margin-bottom : 5px;
+	font-weight: bold;
 }
 .login-form input{
 	display: inline-block;
 	padding: 5px;
-	width: 30%;
+	width: 80%;
+	margin-bottom : 5px;
 	
-
 }
+
+.login-form Button{	
+	width: 80%;
+	
+}
+
 .rounded-login {
 	display: inline-block;
 	padding: 5px;
@@ -63,11 +84,12 @@ code {
 
 .login-form span{
 	display: inline-block;
-	width:30%;
+	width:10%;
 	
 }
 
 .user-information header{
+	margin-bottom : 20px;
 	text-decoration: underline;
 	text-align: center;
 }
@@ -79,11 +101,16 @@ code {
 
 .user-information{
 	margin: auto;
-	max-width: 700px;
+	max-width: 650px;
 	position:relative;
 	border:1px #ccc solid;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 5px;
 }
 .user-information label{
+	margin-left : 3px;
 	display:inline-block;
 	width:100px;
 }

@@ -16,7 +16,7 @@ const App = () => {
     const [user, setUser] = useState()
     const [manager, setManager] = useState()
     const uri = process.env.REACT_APP_BACK_END_SERVER_URI
-
+    const [foundPassword, setFoundPassword] = useState("");
     const logOut = () =>
     {
         //setUser({});
@@ -89,10 +89,51 @@ const App = () => {
 
     }
 
+    const checkUser = (username, password, props) => {
+        //let hashedPassword = "";
+        // axios.get(uri + "/hash/" + password)
+        //    .then(response => hashedPassword = response.data)
+
+        //axios.get(uri + "/user/username;" + username)
+        //    .then(response => {
+        //        setFoundPassword(response.data.password);
+        //        if (hashedPassword == password) {
+        //            setFoundPassword("");
+        //            setUser(response.data);
+        //            props.history.push('/user');
+
+        //        }
+        //    })
+        //setFoundPassword("");
+        alert("login error!");
+
+    };
+
+    const checkManager = (username, password, props) => {
+        //let hashedPassword = "";
+        //axios.get(uri + "/hash/" + password)
+        //    .then(response => hashedPassword = response.data)
+
+        //axios.get(uri + "/manager/username;" + username)
+        //    .then(response => {
+        //        setFoundPassword(response.data.password);
+        //        if (hashedPassword == password) {
+        //            setFoundPassword("");
+        //            setManager(response.data);
+        //            props.history.push('/manager');
+                    
+        //        }
+        //    })
+        //setFoundPassword("");
+        alert("login error!");
+    };
+
+
     const getUser = (username) =>
     {
         axios.get(uri + "/user/username:" + username)
-            .then(response => setUser(response.data))
+            .then(response => { setUser(response.data); return user; })
+                
     }
 
     // Delete Generic
@@ -101,6 +142,12 @@ const App = () => {
         //no implementation for server errors
         //axios.delete( uri + "5000/user/"+id)
         console.log("Deleted user!");
+    }
+
+    const getManager = (manager) => {
+        axios.get(uri + "/user/manager:" + manager)
+            .then(response => { setManager(response.data); return manager; })
+
     }
 
     //where render happens
@@ -136,7 +183,7 @@ const App = () => {
             />
             <Route path="/login" render={(props) => (
                 <>
-                    {<Login getUser={getUser} />}
+                    {<Login onUserLogin={checkUser} onManagerLogin={checkManager} props={props} />}
                 </>
             )}
             />

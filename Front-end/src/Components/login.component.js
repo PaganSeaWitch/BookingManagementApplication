@@ -1,23 +1,47 @@
 import Button from '@material-ui/core/Button';
 import { useState, useEffect } from "react";
-const Login = (getUser) => {
+const Login = ({ onUserLogin, onManagerLogin, props }) =>
+{
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [userButtonType, setUserButtonType] = useState("contained");
+    const [managerButtonType, setManagerButtonType] = useState("outlined");
+    const [loginAsUser, setLoginAsUser] = useState(true);
+    const [login, setLogin] = useState(false);
+
+
+    useEffect(() => {
+        if (login == true) {
+            setLogin(false);
+            if (username.length == 0 || password.length == 0) {
+                return;
+            }
+            if (loginAsUser == true) {
+                onUserLogin(username, password, props)
+            }
+            else {
+                onManagerLogin(username, password, props);
+            }
+        }
+        
+    })
 
     return (
         <div>
             <div className={"login-header"}>
-                <header> Hotels R US Login
+                <header> Rendezview Login
                     <div className={"bottom-right-corner"}>
-                        <Button> User </Button>
-                        <Button> Manager </Button>
+                        <Button variant={userButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setLoginAsUser(true); setUserButtonType("contained"); setManagerButtonType("outlined");}}> User </Button>
+                        <Button variant={managerButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setLoginAsUser(false); setUserButtonType("outlined"); setManagerButtonType("contained");}}> Manager </Button>
                     </div>
                 </header>
             </div>
             <form className={"login-form"}>
+                
+                
                 <div>
                     <span></span>
-                        <label>Username</label>
+                    <label>Username</label>
                     <span></span>
                 </div>
                 
@@ -32,7 +56,7 @@ const Login = (getUser) => {
                     <span></span>
 
                 </div>
-                <br></br>
+                
                 <div>
                     <span></span>
                     <label>Password</label>
@@ -47,6 +71,21 @@ const Login = (getUser) => {
                         onChange={(e) => {  setPassword(e.target.value); }
                         } />
                     <span></span>
+                </div>
+                <br></br>
+                <div>
+                    
+                    <span></span>
+                    <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setLogin(true); }}> LogIn </button>
+                    <span></span>
+
+                </div>
+                <br></br>
+                <div>
+                    
+                    <a href="/create" className="help-links">Create Account</a>
+                    <a href="/create" className="help-links">Forgot password?</a>
+                   
                 </div>
             </form>
         </div>
