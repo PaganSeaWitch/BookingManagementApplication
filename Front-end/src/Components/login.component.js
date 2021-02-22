@@ -1,14 +1,13 @@
 import Button from '@material-ui/core/Button';
 import { useState, useEffect } from "react";
-const Login = ({ onUserLogin, onManagerLogin, props }) =>
-{
+const Login = ({ onUserLogin, onManagerLogin, props }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [userButtonType, setUserButtonType] = useState("contained");
     const [managerButtonType, setManagerButtonType] = useState("outlined");
     const [loginAsUser, setLoginAsUser] = useState(true);
     const [login, setLogin] = useState(false);
-
+    const [loginType, setLoginType] = useState("User");
 
     useEffect(() => {
         if (login == true) {
@@ -29,10 +28,10 @@ const Login = ({ onUserLogin, onManagerLogin, props }) =>
     return (
         <div>
             <div className={"login-header"}>
-                <header> Rendezview Login
+                <header> {loginType} Login
                     <div className={"bottom-right-corner"}>
-                        <Button variant={userButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setLoginAsUser(true); setUserButtonType("contained"); setManagerButtonType("outlined");}}> User </Button>
-                        <Button variant={managerButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setLoginAsUser(false); setUserButtonType("outlined"); setManagerButtonType("contained");}}> Manager </Button>
+                        <Button variant={userButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setLoginAsUser(true); setLoginType("User"); setUserButtonType("contained"); setManagerButtonType("outlined");}}> User </Button>
+                        <Button variant={managerButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setLoginAsUser(false); setLoginType("Manager");setUserButtonType("outlined"); setManagerButtonType("contained");}}> Manager </Button>
                     </div>
                 </header>
             </div>
@@ -83,8 +82,8 @@ const Login = ({ onUserLogin, onManagerLogin, props }) =>
                 <br></br>
                 <div>
                     
-                    <a href="/create" className="help-links">Create Account</a>
-                    <a href="/create" className="help-links">Forgot password?</a>
+                    <a href="/create" className="help-links" target="_blank">Create Account</a>
+                    <a href="/create" className="help-links" target="_blank">Forgot password?</a>
                    
                 </div>
             </form>

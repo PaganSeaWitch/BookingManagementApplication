@@ -7,6 +7,7 @@ import CreateGeneric from "./Components/generic-create.component";
 import axios from "axios";
 import User from "./Components/user.component";
 import Login from "./Components/login.component";
+import CreateUser from "./Components/create-user.component";
 require('dotenv').config()
 
 
@@ -94,7 +95,7 @@ const App = () => {
         // axios.get(uri + "/hash/" + password)
         //    .then(response => hashedPassword = response.data)
 
-        //axios.get(uri + "/user/username;" + username)
+        //axios.get(uri + "/user/username:" + username)
         //    .then(response => {
         //        setFoundPassword(response.data.password);
         //        if (hashedPassword == password) {
@@ -108,6 +109,38 @@ const App = () => {
         alert("login error!");
 
     };
+
+    const createUser = (username, password, email, firstName, lastName, props) =>
+    {
+        //axios.get(uri + "/user/username:" + username)
+        //    .then(response => {
+        //        if (response.data != null) {
+        //            alert("This username already exists! Please choose another one");
+        //            return;
+        //        }
+                
+        //    })
+        //const newUser = { username, password, email, firstName, lastName };
+        //axios.post(uri + "/user/add", newUser)
+        //    .then(response => { setUser(response.data); props.history.push("/")})
+        alert("user created!");
+    }
+
+    const createManager = (username, password, email, hotelName, hotelLocation, props) =>
+    {
+        //axios.get(uri + "/user/username:" + username)
+        //    .then(response => {
+        //        if (response.data != null) {
+        //            alert("This username already exists! Please choose another one");
+        //            return;
+        //        }
+
+        //    })
+        //const newManager = { username, password, email, hotelName, hotelLocation };
+        //axios.post(uri + "/user/add", newManager)
+        //    .then(response => { setManager(response.data); props.history.push("/") })
+        alert("manager created!");
+    }
 
     const checkManager = (username, password, props) => {
         //let hashedPassword = "";
@@ -167,13 +200,8 @@ const App = () => {
             )}
             />
                 
-            <Route path="/create" render={(props) => (
-                <>
-                    {/* we pass a function*/}
-                    {<CreateGeneric onCreate={createGeneric} />}
-                </>
-            )}
-            />
+            
+           
             <Route path="/user" render={(props) => (
                 <>
                     {/* we pass a function*/}
@@ -184,6 +212,12 @@ const App = () => {
             <Route path="/login" render={(props) => (
                 <>
                     {<Login onUserLogin={checkUser} onManagerLogin={checkManager} props={props} />}
+                </>
+            )}
+            />
+            <Route path="/create" render={(props) => (
+                <>
+                    {<CreateUser onCreateUser={createUser} onCreateManager={createManager} props={props} />}
                 </>
             )}
             />

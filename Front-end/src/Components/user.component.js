@@ -16,7 +16,7 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
     const [canSave, setCanSave] = useState(false);
     const [userSave, setUserSave] = useState(false);
 
-
+  
     //this happpens at the start of the apps life cycle
     useEffect(() => {
 
@@ -117,7 +117,9 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
     //if not, update data
     //else, tell user
     
-
+    if (user == null) {
+        props.history.push('/');
+    }
     //only fillforms if the user exists
     if (user != null) {
         fillForms();

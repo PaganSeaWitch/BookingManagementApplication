@@ -15,9 +15,11 @@ const NavBar = () => {
                         <Link to="/" className="nav-link">Gerneric List</Link>
                     </li>
                     <li className="navbar-item">
-                        <Link to="/create" className="nav-link">Create Generic</Link>
+                        <Link to="/create" className="nav-link">New User</Link>
                     </li>
-                    
+                    <li className="navbar-item">
+                        <Link to="/Login" className="nav-link">Returning User</Link>
+                    </li>
             </ul>
         </div>
     </nav>);
