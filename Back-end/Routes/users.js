@@ -29,12 +29,26 @@ router.route("/add").post((req, res) => {
 }); */
 
 //Looks up user by username
-router.route("/:username").get((req, res) => {
-    User.findOne({ username: req.params.username })
-		.then(user => res.json(user))
+router.route("/getByUsername/").get((req, res) => {
+    console.log(req.params);
+    User.findOne({ username: req.query.username })
+        .then(user =>
+        {
+            user.comparePassword(req.query.password)
+                .then((isMatch) => {
+                    if (isMatch == true) {
+                        res.json(user);
+
+                    }
+                    else res.status(400).json("Error: password did not match")
+                })
+                .catch(err => res.status(400).json("Error: " + err));
+        })
         .catch(err => res.status(400).json("Error: " + err));
 
 });
+
+
 
 //Deletes user by username
 router.route("/deleteByUsername/:username").delete((req, res) => {
@@ -43,11 +57,14 @@ router.route("/deleteByUsername/:username").delete((req, res) => {
         .catch(err => res.status(400).json("Error: " + err));
 });
 
+//detele user by ID
 router.route("/deleteById/:id").delete((req, res) => {
     User.findOneAndDelete({ _id: req.params.id })
         .then(() => res.json("User deleted."))
         .catch(err => res.status(400).json("Error: " + err));
 });
+
+
 
 //Updates user by username
 router.route("/update/:username").post((req, res) => {
@@ -62,6 +79,20 @@ router.route("/update/:username").post((req, res) => {
             user.save()
                 .then(() => res.json("User updated."))
                 .catch(err => res.status(400).json("Error: " + err));
+        })
+        .catch(err => res.status(400).json("Error: " + err))
+})  
+
+router.route("/checkIfUsernameExists/:username").get((req, res) => {
+    User.findOne({ username: req.params.username })
+        .then((user) => {
+            if (user != null) {
+                res.json("yes")
+
+            }
+            else {
+                res.json("no")
+            }
         })
         .catch(err => res.status(400).json("Error: " + err))
 })  

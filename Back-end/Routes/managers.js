@@ -22,8 +22,13 @@ router.route("/add").post((req, res) => {
 
 //get by username
 router.route("getByUsername/:username").get((req, res) => {
+
     Manager.findOne({ username: req.params.username })
-        .then(manager => res.json(manager))
+        .then(manager =>
+        {
+            manager.comparePassword();
+            res.json(manager);
+        })
         .catch(err => res.status(400).json("Error: " + err));
 });
 

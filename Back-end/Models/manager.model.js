@@ -12,7 +12,7 @@ const managerSchema = new Schema
         trim: true,
         minlength: 3
     },
-    password:
+    hashedPassword:
     {
         type: String,
         required: true,
@@ -36,7 +36,39 @@ const managerSchema = new Schema
 {
     timestamps: true,
     });
+managerSchema
+    .virtual('password')
+    // set methods
+    .set(function (password) {
+        this.hashedPassword = password;
+    });
 
+//Before the user is saved, hash the password using bcrypt
+managerSchema.pre("save", function (next) {
+    // store reference
+    const manager = this;
+    if (manager.hashedPassword === undefined) {
+        return next();
+    }
+    //bcrypt method to generate a hash function
+    bcrypt.genSalt(10, function (err, salt) {
+        if (err) console.log(err);
+        // hash the password using our new hash function (called salt)
+        bcrypt.hash(manager.hashedPassword, salt, function (err, hash) {
+            if (err) console.log(err);
+            user.password = hash;
+            next();
+        });
+    });
+});
+
+//compare passwords
+managerSchema.methods = {
+    comparePassword: function (candidatePassword) {
+        return bcrypt.compare(candidatePassword, this.hashedPassword);
+
+    }
+}
 const Manager = mongoose.model("Manager", managerSchema);
 
 module.exports = Manager;

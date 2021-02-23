@@ -87,13 +87,14 @@ const App = () => {
 
         if (user.username == username) {
             
-            axios.post(uri + "/user/update" + user._id, updatedUser)
+            axios.post(uri + "/user/update/" + user.username, updatedUser)
                 .then(response => setUser(response.data));
         }
         else {
-            axios.get(uri + "/user/username" + username)
+            axios.get(uri + "/user/checkIfUsernameExists/" + username)
                 .then(response => {
-                    if (response.data.length == 0) {
+                    console.log(response);
+                    if (response.data.length == 2) {
                         axios.post("http://localhost:5000/user" + user._id, updatedUser)
                             .then(response => setUser(response.data));
                     }
@@ -109,29 +110,28 @@ const App = () => {
 
 
 
-    const checkUser = (username, password, props) => {
-        //let hashedPassword = "";
-        // axios.get(uri + "/hash/" + password)
-        //    .then(response => hashedPassword = response.data)
-
-        //axios.get(uri + "/user/username:" + username)
-        //    .then(response => {
-        //        setFoundPassword(response.data.password);
-        //        if (hashedPassword == password) {
-        //            setFoundPassword("");
-        //            setUser(response.data);
-        //            props.history.push('/user');
-
-        //        }
-        //    })
-        //setFoundPassword("");
-        alert("login error!");
+    const checkUser = (givenUsername, givenPassword, props) => {
+        console.log(givenPassword)
+        axios.get(uri + "/user/getByUsername/", {
+            params: {
+                username: givenUsername,
+                password: givenPassword
+            }
+        })
+            .then(response =>
+            {
+                console.log(response.data);
+                //setUser(response.data);
+                props.history.push('/user');
+            })
+            .catch(err => { alert("login error!") });
+       
 
     };
 
     const createUser = (username, password, email, firstName, lastName, props) =>
     {
-        axios.get(uri + "/user/:username" + username)
+        axios.get(uri + "/user/getByUsername/" + username)
             .then(response => {
                 if (response.data != null) {
                     alert("This username already exists! Please choose another one");
@@ -183,7 +183,7 @@ const App = () => {
 
     const getUser = (username) =>
     {
-        axios.get(uri + "/user/" + username)
+        axios.get(uri + "/user/getByUsername/" + username)
             .then(response => { setUser(response.data); return user; })
                 
     }
@@ -205,7 +205,7 @@ const App = () => {
     }
 
     const getManager = (manager) => {
-        axios.get(uri + "/user/manager:" + manager)
+        axios.get(uri + "/manager/getByUsername/" + manager)
             .then(response => { setManager(response.data); return manager; })
 
     }

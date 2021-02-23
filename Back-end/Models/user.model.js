@@ -64,7 +64,8 @@ const userSchema = new Schema
         },
         bookings:
         {
-            type: [bookingSchema]
+            type: [bookingSchema],
+            unique: false
         },
     },
         {
@@ -99,11 +100,9 @@ userSchema.pre("save", function (next) {
      
 //compare passwords
 userSchema.methods = {
-    comparePassword: function(candidatePassword, cb) {
-        bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-            if (err) return cb(err);
-            cb(null, isMatch);
-        });
+    comparePassword: function (candidatePassword) {
+        return bcrypt.compare(candidatePassword, this.hashedPassword);
+        
     }
 }
 
