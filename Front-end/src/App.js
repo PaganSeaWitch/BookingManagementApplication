@@ -3,11 +3,12 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from 'react'
 import NavBar from "./Components/navbar.component";
-import CreateGeneric from "./Components/generic-create.component";
 import axios from "axios";
 import User from "./Components/user.component";
 import Login from "./Components/login.component";
 import CreateUser from "./Components/create-user.component";
+import Manager from "./Components/manager.component";
+
 require('dotenv').config()
 
 
@@ -18,9 +19,10 @@ const App = () => {
     const [manager, setManager] = useState()
     const uri = process.env.REACT_APP_BACK_END_SERVER_URI
     const [foundPassword, setFoundPassword] = useState("");
-    const logOut = () =>
-    {
-        //setUser({});
+
+    const logOut = () => {
+        setManager({});
+        setUser({});
         localStorage.clear();
         console.log("logged out");
         
@@ -65,7 +67,7 @@ const App = () => {
             axios.get(uri + "/manager/username:" + username)
                 .then(response => {
                     if (response.data.length == 0) {
-                        axios.post(uri + "manager/" + manager._id, updatedUser)
+                        axios.post(uri + "manager/" + manager._id, updatedManager)
                             .then(response => setManager(response.data));
                     }
                     else {

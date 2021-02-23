@@ -40,7 +40,7 @@ const Manager = ({ manager, onDelete, logOut, props, onUpdate }) => {
 
         //sends data back up to app then to backend
         const saveChanges = () => {
-            onUpdate(manager, username, password, email, firstName, lastName, setWarning);
+            onUpdate(manager, username, password, email, hotelName, hotelLocation, setWarning);
         }
 
         //if the user clicked save
@@ -137,7 +137,7 @@ const Manager = ({ manager, onDelete, logOut, props, onUpdate }) => {
 
             <form className={"user-information"}>
                 {/* we wrap this function call in a lambda to prevent render infi loop*/}
-                <header className={"main-header"}>User Information <Button id={"logOutButton"} ref={refToLogout} > log out</Button></header>
+                <header className={"main-header"}>Manager Information <Button id={"logOutButton"} ref={refToLogout} > log out</Button></header>
 
                 <div>
                     <label>Username:</label>
