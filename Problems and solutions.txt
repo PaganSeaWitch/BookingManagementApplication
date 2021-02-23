@@ -28,3 +28,6 @@ problem: Incorrect usage of Delete
 
 problem: Incorrect usage of Find and Update
 	SOlution: Use FindOneAndUpdate
+
+problem: Multiple params inside of axios but server doesn't see any
+	Solution: use res.query instead of res.params
