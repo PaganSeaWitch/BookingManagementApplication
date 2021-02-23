@@ -107,14 +107,7 @@ const App = () => {
         setWarning("");
     };
 
-    //creates a generic
-    const createGeneric = async (generic) => {
-        //send generic to backend
-        //no implementation for server errors
-        axios.post(uri + "/generic/add", generic)
-            .then(response => setGenerics([...generics, response.data]));
 
-    }
 
     const checkUser = (username, password, props) => {
         //let hashedPassword = "";
@@ -154,52 +147,52 @@ const App = () => {
 
     const createManager = (username, password, email, hotelName, hotelLocation, props) =>
     {
-        //axios.get(uri + "/user/username:" + username)
-        //    .then(response => {
-        //        if (response.data != null) {
-        //            alert("This username already exists! Please choose another one");
-        //            return;
-        //        }
+        axios.get(uri + "/user/username:" + username)
+            .then(response => {
+                if (response.data != null) {
+                    alert("This username already exists! Please choose another one");
+                    return;
+                }
 
-        //    })
-        //const newManager = { username, password, email, hotelName, hotelLocation };
-        //axios.post(uri + "/user/add", newManager)
-        //    .then(response => { setManager(response.data); props.history.push("/") })
+            })
+        const newManager = { username, password, email, hotelName, hotelLocation };
+        axios.post(uri + "/user/add", newManager)
+            .then(response => { setManager(response.data); props.history.push("/") })
         alert("manager created!");
     }
 
     const checkManager = (username, password, props) => {
-        //let hashedPassword = "";
-        //axios.get(uri + "/hash/" + password)
-        //    .then(response => hashedPassword = response.data)
+        let hashedPassword = "";
+        axios.get(uri + "/hash/" + password)
+            .then(response => hashedPassword = response.data)
 
-        //axios.get(uri + "/manager/username;" + username)
-        //    .then(response => {
-        //        setFoundPassword(response.data.password);
-        //        if (hashedPassword == password) {
-        //            setFoundPassword("");
-        //            setManager(response.data);
-        //            props.history.push('/manager');
+        axios.get(uri + "/manager/" + username)
+            .then(response => {
+                setFoundPassword(response.data.password);
+                if (hashedPassword == password) {
+                    setFoundPassword("");
+                    setManager(response.data);
+                    props.history.push('/manager');
                     
-        //        }
-        //    })
-        //setFoundPassword("");
+               }
+            })
+        setFoundPassword("");
         alert("login error!");
     };
 
 
     const getUser = (username) =>
     {
-        axios.get(uri + "/user/username:" + username)
+        axios.get(uri + "/user/" + username)
             .then(response => { setUser(response.data); return user; })
                 
     }
 
-    // Delete Generic
+ 
     const deleteManager = (id) => {
         //delete generic from backend
         //no implementation for server errors
-        //axios.delete( uri + "5000/manager/"+id)
+        axios.delete( uri + "/manager/deleteById/"+id)
         console.log("Deleted user!");
     }
 
@@ -207,7 +200,7 @@ const App = () => {
     const deleteUser = (id) => {
         //delete generic from backend
         //no implementation for server errors
-        //axios.delete( uri + "5000/user/"+id)
+        axios.delete(uri + "/user/deleteById/"+id)
         console.log("Deleted user!");
     }
 

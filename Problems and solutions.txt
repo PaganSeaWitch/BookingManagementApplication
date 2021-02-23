@@ -19,3 +19,12 @@ Problem: Schema is a model, when you want schema for subdocument
 
 problem: module for schema and model are both required
 	Solution: Export schema and model as an object
+
+problem: Incorrect usage of Find
+	Solution: use FindOne
+
+problem: Incorrect usage of Delete
+	SOlution: use FindOneAndDelete
+
+problem: Incorrect usage of Find and Update
+	SOlution: Use FindOneAndUpdate

@@ -1,7 +1,7 @@
 const router = require('express').Router();
 let User = require("../Models/user.model");
 
-router.route("/").get((req, res) => {
+router.route("/all").get((req, res) => {
     User.find()
         .then(users => res.json(users))
         .catch(err => res.status(400).json("Error: " + err))
@@ -30,21 +30,28 @@ router.route("/add").post((req, res) => {
 
 //Looks up user by username
 router.route("/:username").get((req, res) => {
-	User.find(req.params.username)
+    User.findOne({ username: req.params.username })
 		.then(user => res.json(user))
-		.catch(err => res.status(400).json("Error: " + err));
+        .catch(err => res.status(400).json("Error: " + err));
+
 });
 
 //Deletes user by username
-router.route("/:username").delete((req, res) => {
-    User.find(req.params.username).delete()
+router.route("/deleteByUsername/:username").delete((req, res) => {
+    User.findOneAndDelete({ username: req.params.username })
+        .then(() => res.json("User deleted."))
+        .catch(err => res.status(400).json("Error: " + err));
+});
+
+router.route("/deleteById/:id").delete((req, res) => {
+    User.findOneAndDelete({ _id: req.params.id })
         .then(() => res.json("User deleted."))
         .catch(err => res.status(400).json("Error: " + err));
 });
 
 //Updates user by username
 router.route("/update/:username").post((req, res) => {
-    User.find(req.params.username).update()
+    User.findOneAndUpdate({ username: req.params.username })
         .then((user) => {
             user.username = req.body.username;
             user.password = req.body.password;

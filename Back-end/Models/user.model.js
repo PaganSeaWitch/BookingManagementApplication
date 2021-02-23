@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 const roomSchema = require("../Models/user.model") 
-const hotel  = require ("../Models/hotel.model")
+const hotel  = require("../Models/hotel.model")
 
 const bookingSchema =
     new Schema({
