@@ -1,0 +1,21 @@
+Problem: Routers were missing
+	Solution: In server.js, add a const Router = require(<where router is>) and then app.use(<URL wanted to access router>, Router)
+
+Problem: Front end URIs were different to backend
+	Solution: Standardize URI so we don't have to comb through each reference
+
+Problem: bycrpt pacakge was not installed
+	Solution: Make sure that for any package you are using, it is installed in the repo using npm install <package>
+
+Problem: Room schema not refrenced
+	Solution: Make sure that all schema are referenced in the classes that use them
+
+
+Problem: Schema used type not avalible
+	Solution: Read mongoose documentation on types
+
+Problem: Schema is a model, when you want schema for subdocument
+	Solution: Export schema directly rather than model
+
+problem: module for schema and model are both required
+	Solution: Export schema and model as an object

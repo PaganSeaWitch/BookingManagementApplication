@@ -32,7 +32,7 @@ router.route("/add").post((req, res) => {
 router.route("/:username").get((req, res) => {
 	User.find(req.params.username)
 		.then(user => res.json(user))
-		.catch(err => res.status(400).json("Error:: " + err));
+		.catch(err => res.status(400).json("Error: " + err));
 });
 
 //Deletes user by username

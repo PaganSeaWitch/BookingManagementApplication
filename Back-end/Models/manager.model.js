@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const hotel = require("../Models/hotel.model")
 
 const managerSchema = new Schema
 ({
@@ -28,8 +29,8 @@ const managerSchema = new Schema
 		minlength: 5
 	},
 	hotels:
-	{
-		type: [hotelSchema]
+    {
+        type: [hotel.schema]
 	},
 },
 {

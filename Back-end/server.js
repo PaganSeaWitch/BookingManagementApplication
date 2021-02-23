@@ -27,8 +27,11 @@ connection.once("open", () => {
     console.log("mongoDB database conneciton established successfullly")
 });
 
-const genericRouter = require("./routes/generics")
-app.use("/generic", genericRouter);
+const userRouter = require("./routes/users")
+app.use("/user", userRouter)
+
+const managerRouter = require("./routes/managers")
+app.use("/manager", managerRouter)
 
 //start the server
 app.listen(port, () => {

@@ -138,17 +138,17 @@ const App = () => {
 
     const createUser = (username, password, email, firstName, lastName, props) =>
     {
-        //axios.get(uri + "/user/username:" + username)
-        //    .then(response => {
-        //        if (response.data != null) {
-        //            alert("This username already exists! Please choose another one");
-        //            return;
-        //        }
+        axios.get(uri + "/user/:username" + username)
+            .then(response => {
+                if (response.data != null) {
+                    alert("This username already exists! Please choose another one");
+                    return;
+                }
                 
-        //    })
-        //const newUser = { username, password, email, firstName, lastName };
-        //axios.post(uri + "/user/add", newUser)
-        //    .then(response => { setUser(response.data); props.history.push("/")})
+            })
+        const newUser = { username, password, email, firstName, lastName };
+        axios.post(uri + "/user/add", newUser)
+            .then(response => { setUser(response.data); props.history.push("/")})
         alert("user created!");
     }
 
