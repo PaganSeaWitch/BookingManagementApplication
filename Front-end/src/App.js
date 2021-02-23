@@ -15,7 +15,15 @@ require('dotenv').config()
 const App = () => {
 
     const [generics, setGenerics] = useState([])
-    const [user, setUser] = useState()
+    const [user, setUser] = useState({
+        _id: "",
+        username: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        bookings: []
+    })
     const [manager, setManager] = useState()
     const uri = process.env.REACT_APP_BACK_END_SERVER_URI
     const [foundPassword, setFoundPassword] = useState("");
@@ -111,7 +119,6 @@ const App = () => {
 
 
     const checkUser = (givenUsername, givenPassword, props) => {
-        console.log(givenPassword)
         axios.get(uri + "/user/getByUsername/", {
             params: {
                 username: givenUsername,
@@ -121,10 +128,19 @@ const App = () => {
             .then(response =>
             {
                 console.log(response.data);
-                //setUser(response.data);
+                setUser(user => ({...user, 
+                    _id: response.data._id,
+                    username: response.data.username,
+                    password: givenPassword,
+                    firstName: response.data.firstName,
+                    lastName: response.data.lastName,
+                    email: response.data.email,
+                    bookings: response.data.bookings
+                }))
+                console.log(user)
                 props.history.push('/user');
             })
-            .catch(err => { alert("login error!") });
+            .catch(err => console.log(err));
        
 
     };

@@ -78,8 +78,12 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
             setCanSave(true);
         }
         checkStates();
+        //only fillforms if the user exists
+        if (user != null) {
+            fillForms();
+        }
     });
-
+    console.log(user)
     //fills out the form based on current user
     const fillForms = () => {
         setUsername(user.username);
@@ -120,10 +124,7 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
     if (user == null) {
         props.history.push('/');
     }
-    //only fillforms if the user exists
-    if (user != null) {
-        fillForms();
-    }
+    
 
     const deleteAccount = () =>
     {
