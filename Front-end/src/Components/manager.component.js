@@ -1,22 +1,23 @@
-import { useState, useEffect, useRef} from "react";
+
+import { useState, useEffect, useRef } from "react";
 import DeleteDialogue from "./deleteDialogue.component"
 import Button from '@material-ui/core/Button';
 
 //the user component, also functions as the user information page
 //props for later { user, onDelete, editUser }
-const User = ({ user, onDelete, logOut, props, onUpdate }) => {
+const Manager = ({ manager, onDelete, logOut, props, onUpdate }) => {
     const [hidden, setHidden] = useState(true);
     const [warning, setWarning] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [email, setEmail] = useState( "");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [hotelName, setHotelName] = useState("");
+    const [hotelLocation, setHotelLocation] = useState("");
     const [safty, setSafty] = useState(false);
     const [canSave, setCanSave] = useState(false);
-    const [userSave, setUserSave] = useState(false);
+    const [managerSave, setManagerSave] = useState(false);
 
-  
+
     //this happpens at the start of the apps life cycle
     useEffect(() => {
 
@@ -39,12 +40,12 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
 
         //sends data back up to app then to backend
         const saveChanges = () => {
-            onUpdate(user, username, password, email, firstName, lastName, setWarning);
+            onUpdate(manager, username, password, email, firstName, lastName, setWarning);
         }
 
         //if the user clicked save
-        if (userSave == true) {
-            setUserSave(false);
+        if (managerSave == true) {
+            setManagerSave(false);
             console.log(username);
             saveChanges();
         }
@@ -67,11 +68,11 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
                 setCanSave(false)
                 return;
             }
-            if (!firstName) {
+            if (!hotelName) {
                 setCanSave(false)
                 return;
             }
-            if (!lastName) {
+            if (!hotelLocation) {
                 setCanSave(false)
                 return;
             }
@@ -82,94 +83,95 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
 
     //fills out the form based on current user
     const fillForms = () => {
-        setUsername(user.username);
-        setPassword(user.password);
-        setEmail(user.email);
-        setFirstName(user.firstName);
-        setLastName(user.lastName);
+        setUsername(manager.username);
+        setPassword(manager.password);
+        setEmail(manager.email);
+        setHotelName(manager.hotelName);
+        setHotelLocation(manager.hotelLocation);
     }
 
     const refToLogout = useRef(null);
     //toggles whether to show password
-    const toggleHidden = (e) =>
-    {
+    const toggleHidden = (e) => {
         e.preventDefault();
 
         setHidden(!hidden);
     };
 
-    const sendAlertOrUser = (e) =>
-    {
+    const sendAlertOrUser = (e) => {
         e.preventDefault();
         if (canSave == false) {
             alert("cannot save due to invalid fields")
             console.log(email);
         }
         else {
-            setUserSave(true)
+            setManagerSave(true)
         }
     }
 
-    
-    
+
+
     //TODO: check if they changed username
     //check if new username isn't already in use
     //if not, update data
     //else, tell user
-    
-    if (user == null) {
-        props.history.push('/');
+
+    if (manager == null) {
+        //props.history.push('/');
     }
     //only fillforms if the user exists
-    if (user != null) {
+    if (manager != null) {
         fillForms();
     }
 
-    const deleteAccount = () =>
-    {
-        onDelete(user._id);
+    const deleteAccount = () => {
+        onDelete(manager._id);
         props.history.push('/');
 
     }
 
- 
+
     return (
 
         <div>
-            
+
             <form className={"user-information"}>
                 {/* we wrap this function call in a lambda to prevent render infi loop*/}
-                <header className={"main-header"}>User Information <Button  id={"logOutButton"} ref={refToLogout } > log out</Button></header>
-                    
+                <header className={"main-header"}>User Information <Button id={"logOutButton"} ref={refToLogout} > log out</Button></header>
+
                 <div>
                     <label>Username:</label>
                     <input
                         type='text'
                         value={username}
-                        onChange={(e) => { setWarning("changes made "); setUsername(e.target.value);  }
-                        }/>
+                        onChange={(e) => { setWarning("changes made "); setUsername(e.target.value); }
+                        } />
                 </div>
-                <div> 
+                <div>
                     <label>Password:</label>
-                    <input 
+                    <input
                         type={hidden ? 'password' : 'text'}
                         value={password}
                         onChange={(e) => { setWarning("changes made "); setPassword(e.target.value); }
-                        }/>
-                    <Button  onClick={toggleHidden}> Show Password</Button>
+                        } />
+                    <Button onClick={toggleHidden}> Show Password</Button>
                 </div>
                 <div>
-                    <label>Full Name:</label>
+                    <label>Hotel Name:</label>
                     <input
                         type='text'
-                        value={firstName}
-                        onChange={(e) => { setWarning("changes made "); setFirstName(e.target.value); }
-                        }/>
+                        value={hotelName}
+                        onChange={(e) => { setWarning("changes made "); setHotelName(e.target.value); }
+                        } />
+                    
+                </div>
+                <div>
+                    <label>Hotel Location:</label>
                     <input
                         type='text'
-                        value={lastName}
-                        onChange={(e) => { setWarning("changes made "); setLastName(e.target.value); }
-                        }/>
+                        value={hotelLocation}
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation(e.target.value); }
+                        } />
                 </div>
                 <div>
                     <label>Email:</label>
@@ -177,12 +179,12 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
                         type='email'
                         value={email}
                         onChange={(e) => { setWarning("changes made "); setEmail(e.target.value); }
-                        }/>
-                    
+                        } />
+
                 </div>
                 <div className={"bottom-right-corner"}>
                     <i>{warning}</i>
-                    <Button  onClick={sendAlertOrUser}> Save Changes</Button>
+                    <Button onClick={sendAlertOrUser}> Save Changes</Button>
                     <Button onClick={() => window.location.reload()}> Cancel</Button>
 
                 </div>
@@ -200,15 +202,15 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
                     onClick={() => setSafty(true)}
                 > Permanently delete your account </Button>
             </form>
-            
-            
-            
-            
+
+
+
+
         </div>
-         
+
     )
 
-    
+
 }
 
-export default User
+export default Manager

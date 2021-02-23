@@ -52,7 +52,31 @@ const App = () => {
             
     }
 
+    const updateManager = async (manager, username, password, email, hotelName, hotelLocation, setWarning) => {
+        const updatedManager = { username, password, email, hotelName, hotelLocation };
+        //Todo, call email checking function first
 
+        if (manager.username == username) {
+
+            axios.post(uri + "/manager/update" + manager._id, updatedManager)
+                .then(response => setManager(response.data));
+        }
+        else {
+            axios.get(uri + "/manager/username:" + username)
+                .then(response => {
+                    if (response.data.length == 0) {
+                        axios.post(uri + "manager/" + manager._id, updatedUser)
+                            .then(response => setManager(response.data));
+                    }
+                    else {
+                        alert("The username you have chosen has already been taken");
+                        return;
+                    }
+                });
+        };
+        console.log(updatedManager.username);
+        setWarning("");
+    };
 
     const updateUser = async (user, username, password, email, firstName, lastName, setWarning) =>
     {
@@ -170,6 +194,14 @@ const App = () => {
     }
 
     // Delete Generic
+    const deleteManager = (id) => {
+        //delete generic from backend
+        //no implementation for server errors
+        //axios.delete( uri + "5000/manager/"+id)
+        console.log("Deleted user!");
+    }
+
+    // Delete Generic
     const deleteUser = (id) => {
         //delete generic from backend
         //no implementation for server errors
@@ -199,7 +231,13 @@ const App = () => {
                 </>
             )}
             />
-                
+            <Route path="/manager" render={(props) => (
+                <>
+                    {/* we pass a function*/}
+                    {<Manager manager={manager} onDelete={deleteManager} logOut={logOut} props={props} onUpdate={updateManager} />}
+                </>
+            )}
+            />    
             
            
             <Route path="/user" render={(props) => (
