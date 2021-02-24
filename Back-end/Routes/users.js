@@ -67,8 +67,8 @@ router.route("/deleteById/:id").delete((req, res) => {
 
 
 //Updates user by username
-router.route("/update/:username").post((req, res) => {
-    User.findOneAndUpdate({ username: req.params.username })
+router.route("/update/").post((req, res) => {
+    User.findOneAndUpdate({ username: req.body.oldUsername })
         .then((user) => {
             user.username = req.body.username;
             user.password = req.body.password;

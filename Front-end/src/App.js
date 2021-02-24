@@ -23,22 +23,24 @@ const App = () => {
         email: "",
         bookings: []
     })
-    const [manager, setManager] = useState()
+    const [manager, setManager] = useState({
+        _id: "",
+        username: "",
+        password: "",
+        email: "",
+        hotel: {
+            name: "",
+            location: "",
+            rooms: []
+        }
 
+    })
+    
     const uri = process.env.REACT_APP_BACK_END_SERVER_URI
 
     const logOut = () => {
-        setManager({});
-        setUser({
-            ...user,
-            _id: "",
-            username: "",
-            password: "",
-            firstName: "",
-            lastName: "",
-            email: "",
-            bookings: []
-        });
+        resetManager();
+        resetUser();
         
         
     }
@@ -51,10 +53,54 @@ const App = () => {
             setUserStateWithoutPassword(userJSON);
             console.log(userJSON);
         }
-
+        const loggedInManager = localStorage.getItem('LoggedInManager');
+        if (loggedInManager && manager.username == "") {
+            const managerJSON = JSON.parse(loggedInManager);
+            setManagerStateWithoutPassword(managerJSON);
+            console.log(managerJSON);
+        }
         
         
     }, [])
+    const resetManager = () => {
+        setManager({
+            ...manager,
+            _id: "",
+            username: "",
+            password: "",
+            email: "",
+            hotel: {
+                name: "",
+                location: "",
+                rooms: []
+            }
+        })
+    }
+    const resetUser = () => {
+        setUser({
+            ...user,
+            _id: "",
+            username: "",
+            password: "",
+            firstName: "",
+            lastName: "",
+            email: "",
+            bookings: []
+        });
+        localStorage.clear();
+    }
+    const setManagerStateWithoutPassword = (response) => {
+        setManager({
+            ...manager,
+            _id: response._id,
+            username: response.username,
+            password: response.password,
+            email: response.email,
+            hotel : response.hotel
+        });
+
+        console.log(response);
+    }
 
     const setUserStateWithoutPassword = (response) => {
         setUser({
@@ -72,57 +118,64 @@ const App = () => {
     }
 
     const updateManager = async (manager, username, password, email, hotelName, hotelLocation, setWarning) => {
-        const updatedManager = { username, password, email, hotelName, hotelLocation };
+        const hotel = { name: hotelName, location: hotelLocation, rooms: [] }
+
+        const updatedManager = {oldUsername :manager.username, username, password, email, hotel };
         //Todo, call email checking function first
 
         if (manager.username == username) {
 
-            axios.post(uri + "/manager/update" + manager._id, updatedManager)
-                .then(response => setManager(response.data));
+            axios.post(uri + "/manager/update/", updatedManager)
+                .then(response => { setManagerState(response, password); setWarning(""); })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
         }
-        else {
-            axios.get(uri + "/manager/username:" + username)
+        else{
+            axios.get(uri + "/manager/checkIfUsernameExists/" + username)
                 .then(response => {
-                    if (response.data.length == 0) {
-                        axios.post(uri + "manager/" + manager._id, updatedManager)
-                            .then(response => setManager(response.data));
+                    if (response.data.length == 2){
+                        axios.post(uri + "/manager/update/", updatedManager)
+                            .then(response => { setManagerState(response, password); setWarning(""); })
+                            .catch(err => { console.log(err); alert("changes were not saved!") });
                     }
-                    else {
-                        alert("The username you have chosen has already been taken");
+                    else
+                    {
+                        alert("The username you have chosen has already been taken, changes were not saved!");
                         return;
                     }
-                });
+                })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
+
         };
-        console.log(updatedManager.username);
-        setWarning("");
     };
 
     const updateUser = async (user, username, password, email, firstName, lastName, setWarning) =>
     {
-        const updatedUser = { username, password, email, firstName, lastName };
+        const updatedUser = { oldUsername : user.username, username, password, email, firstName, lastName };
         //Todo, call email checking function first
 
         if (user.username == username) {
             
-            axios.post(uri + "/user/update/" + user.username, updatedUser)
-                .then(response => setUser(response.data));
+            axios.post(uri + "/user/update/", updatedUser)
+                .then(response => {setUserState(response, password); setWarning(""); })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
+
         }
         else {
             axios.get(uri + "/user/checkIfUsernameExists/" + username)
                 .then(response => {
                     console.log(response);
                     if (response.data.length == 2) {
-                        axios.post("http://localhost:5000/user" + user._id, updatedUser)
-                            .then(response => setUser(response.data));
+                        axios.post(uri + "/user/update/", updatedUser)
+                            .then(response => {setUserState(response, password);setWarning("");})
+                            .catch(err => { console.log(err); alert("changes were not saved!") });
                     }
                     else {
-                        alert("The username you have chosen has already been taken");
-                        return;
+                        alert("The username you have chosen has already been taken, changes were not saved!");
                     }
-                });
+                })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
         };
         console.log(updatedUser.username);
-        setWarning("");
     };
 
 
@@ -136,11 +189,10 @@ const App = () => {
         })
             .then(response =>
             {
-                setUserState(response, givenPassword)
+                setUserState(response, givenPassword);
                 props.history.push('/user');
             })
-            .catch(err => console.log(err));
-
+            .catch(err => alert("Login error!"));
     };
 
     const createUser = async (username, password, email, firstName, lastName, props) =>
@@ -162,8 +214,8 @@ const App = () => {
                 }
             })
             .catch(err => { console.log("failed check: " + err); });
-        
     }
+
     const setUserState = (response, givenPassword) =>
     {
         console.log("SETTING STATE");
@@ -192,43 +244,70 @@ const App = () => {
         
     }
 
+    const setManagerState = (response, givenPassword) => {
+        console.log("SETTING STATE");
+
+        setManager({
+            ...manager,
+            _id: response.data._id,
+            username: response.data.username,
+            password: givenPassword,
+            email: response.data.email,
+            hotel: response.data.hotel,
+        });
+        const jsonManagerOjb = {
+            _id: response.data._id,
+            username: response.data.username,
+            password: givenPassword,
+            email : response.data.email,
+            hotel: response.data.hotel,
+        }
+        const jsonManager = JSON.stringify(jsonManagerOjb);
+        console.log("JSON OF STRINGS: " + jsonManager);
+        localStorage.setItem('LoggedInManager', jsonManager);
+    }
+
     const createManager = (username, password, email, hotelName, hotelLocation, props) =>
     {
-        axios.get(uri + "/user/username:" + username)
+        axios.get(uri + "/manager/checkIfUsernameExists/" + username)
             .then(response => {
-                if (response.data != null) {
+                console.log(response.data)
+                if (response.data == "yes") {
                     alert("This username already exists! Please choose another one");
                     return;
                 }
+                else {
+                    const hotel = { name: hotelName, location: hotelLocation, rooms: [] }
+                    const newManager = {username, password, email, hotel};
+                    axios.post(uri + "/manager/add", newManager)
+                        .then(response => { setManagerState(response, password); alert("manager created!"); props.history.push("/manager"); })
+                        .catch(err => console.log("failed Add: " + err));
 
+                }
             })
-        const newManager = { username, password, email, hotelName, hotelLocation };
-        axios.post(uri + "/user/add", newManager)
-            .then(response => { setManager(response.data); props.history.push("/") })
-        alert("manager created!");
+            .catch(err => { console.log("failed check: " + err); });
     }
 
-    const checkManager = (username, password, props) => {
-        let hashedPassword = "";
-        axios.get(uri + "/hash/" + password)
-            .then(response => hashedPassword = response.data)
-
-        axios.get(uri + "/manager/" + username)
+    const checkManager = (givenUsername, givenPassword, props) => {
+        axios.get(uri + "/manager/getByUsername/", {
+            params: {
+                username: givenUsername,
+                password: givenPassword
+            }
+        })
             .then(response => {
-                if (hashedPassword == password) {
-                    setManager(response.data);
-                    props.history.push('/manager');
-                    
-               }
+                setManagerState(response, givenPassword);
+                props.history.push('/manager');
             })
-        alert("login error!");
+            .catch(err => alert("Login error!"));
     };
 
 
     const deleteManager = (id) => {
         //delete generic from backend
         //no implementation for server errors
-        axios.delete( uri + "/manager/deleteById/"+id)
+        axios.delete(uri + "/manager/deleteById/" + id)
+        resetManager();
         console.log("Deleted user!");
     }
 
@@ -236,7 +315,9 @@ const App = () => {
     const deleteUser = (id) => {
         //delete generic from backend
         //no implementation for server errors
-        axios.delete(uri + "/user/deleteById/"+id)
+        axios.delete(uri + "/user/deleteById/" + id)
+        resetUser();
+
         console.log("Deleted user!");
     }
 

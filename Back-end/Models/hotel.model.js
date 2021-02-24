@@ -15,10 +15,10 @@ const hotelSchema = new Schema
         },
         location:
         {
-            type: locationSchema,
+            type: String,
             required: true,
             trim: true,
-            minlength: 5
+            unique: false,
         },
         rooms: [roomSchema],
     },

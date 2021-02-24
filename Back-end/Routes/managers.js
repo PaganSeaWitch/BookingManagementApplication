@@ -10,10 +10,10 @@ router.route("/all").get((req, res) => {
 router.route("/add").post((req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-	const email = req.body.email;
-	const hotels = req.body.hotels;
-
-    const newManager = new Manager({ username, password, email, hotels});
+    const email = req.body.email;
+    const hotel = req.body.hotel;
+    const newManager = new Manager({ username, password, email, hotel });
+    console.log(newManager);
 
     newManager.save()
         .then(() => res.json(newManager))
@@ -21,15 +21,22 @@ router.route("/add").post((req, res) => {
 });
 
 //get by username
-router.route("getByUsername/:username").get((req, res) => {
+router.route("/getByUsername/").get((req, res) => {
+    console.log(req.params);
+    Manager.findOne({ username: req.query.username })
+        .then(manager => {
+            manager.comparePassword(req.query.password)
+                .then((isMatch) => {
+                    if (isMatch == true) {
+                        res.json(manager);
 
-    Manager.findOne({ username: req.params.username })
-        .then(manager =>
-        {
-            manager.comparePassword();
-            res.json(manager);
+                    }
+                    else res.status(400).json("Error: password did not match")
+                })
+                .catch(err => res.status(400).json("Error: " + err));
         })
         .catch(err => res.status(400).json("Error: " + err));
+
 });
 
 //delete by username
@@ -44,17 +51,27 @@ router.route("deleteById/:id").delete((req, res) => {
         .then(() => res.json("Manager deleted."))
         .catch(err => res.status(400).json("Error: " + err));
 });
-
-router.route("/update/:username").post((req, res) => {
-    Manager.findOneAndUpdate({ username: req.params.username })
+router.route("/checkIfUsernameExists/:username").get((req, res) => {
+    Manager.findOne({ username: req.params.username })
+        .then((manager) => {
+            if (manager != null) {
+                res.json("yes")
+            }
+            else {
+                res.json("no")
+            }
+        })
+        .catch(err => res.status(400).json("Error: " + err))
+})  
+router.route("/update/").post((req, res) => {
+    Manager.findOneAndUpdate({ username: req.params.oldUsername  })
         .then((manager) => {
             manager.username = req.body.username;
             manager.password = req.body.password;
-			manager.email = req.body.email;
-			manager.hotels = req.body.hotels;
-			
+            manager.email = req.body.email;
+            manager.hotel = req.body.hotel;
             manager.save()
-                .then(() => res.json("Manager updated."))
+                .then(() => res.json(manager))
                 .catch(err => res.status(400).json("Error: " + err));
         })
         .catch(err => res.status(400).json("Error: " + err))

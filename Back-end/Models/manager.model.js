@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const bcrypt = require('bcrypt');
 const hotel = require("../Models/hotel.model")
 
 const managerSchema = new Schema
@@ -28,9 +29,9 @@ const managerSchema = new Schema
 		trim: true,
 		minlength: 5
 	},
-	hotels:
+	hotel:
     {
-        type: [hotel.schema]
+        type: hotel.schema
 	},
 },
 {
@@ -56,7 +57,7 @@ managerSchema.pre("save", function (next) {
         // hash the password using our new hash function (called salt)
         bcrypt.hash(manager.hashedPassword, salt, function (err, hash) {
             if (err) console.log(err);
-            user.password = hash;
+            manager.password = hash;
             next();
         });
     });
