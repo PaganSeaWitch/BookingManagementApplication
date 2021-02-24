@@ -14,7 +14,6 @@ require('dotenv').config()
 
 const App = () => {
 
-    const [generics, setGenerics] = useState([])
     const [user, setUser] = useState({
         _id: "",
         username: "",
@@ -25,41 +24,51 @@ const App = () => {
         bookings: []
     })
     const [manager, setManager] = useState()
+
     const uri = process.env.REACT_APP_BACK_END_SERVER_URI
-    const [foundPassword, setFoundPassword] = useState("");
 
     const logOut = () => {
         setManager({});
-        setUser({});
-        localStorage.clear();
-        console.log("logged out");
+        setUser({
+            ...user,
+            _id: "",
+            username: "",
+            password: "",
+            firstName: "",
+            lastName: "",
+            email: "",
+            bookings: []
+        });
+        
         
     }
     //this happpens at the start of the apps life cycle
     useEffect(() => {
-        const getGenerics = async () => {
-            //const genericsFromServer = await fetchGenerics()
-
-            //we only add to generics if the data exists
-            //if (genericsFromServer.data.length > 0)
-            //{
-            //    setGenerics(genericsFromServer.data)
-            //}
-            
+       
+        const loggedInUser = localStorage.getItem('LoggedInUser');
+        if (loggedInUser && user.username == "") {
+            const userJSON = JSON.parse(loggedInUser);
+            setUserStateWithoutPassword(userJSON);
+            console.log(userJSON);
         }
 
-        getGenerics()
-        console.log(__dirname);
-        console.log(uri);
+        
+        
     }, [])
 
-    // Fetch Generics
-    const fetchGenerics = async () => {
-        //gets all generics
-        //no implementation for server errors
-        return axios.get( uri +"/generic/")
-            
-            
+    const setUserStateWithoutPassword = (response) => {
+        setUser({
+            ...user,
+            _id: response._id,
+            username: response.username,
+            password: response.password,
+            firstName: response.firstName,
+            lastName: response.lastName,
+            email: response.email,
+            bookings: response.bookings
+        });
+        
+        console.log(response);
     }
 
     const updateManager = async (manager, username, password, email, hotelName, hotelLocation, setWarning) => {
@@ -127,38 +136,60 @@ const App = () => {
         })
             .then(response =>
             {
-                console.log(response.data);
-                setUser(user => ({...user, 
-                    _id: response.data._id,
-                    username: response.data.username,
-                    password: givenPassword,
-                    firstName: response.data.firstName,
-                    lastName: response.data.lastName,
-                    email: response.data.email,
-                    bookings: response.data.bookings
-                }))
-                console.log(user)
+                setUserState(response, givenPassword)
                 props.history.push('/user');
             })
             .catch(err => console.log(err));
-       
 
     };
 
-    const createUser = (username, password, email, firstName, lastName, props) =>
+    const createUser = async (username, password, email, firstName, lastName, props) =>
     {
-        axios.get(uri + "/user/getByUsername/" + username)
+        
+        axios.get(uri + "/user/checkIfUsernameExists/" + username)
             .then(response => {
-                if (response.data != null) {
+                console.log(response.data)
+                if (response.data == "yes") {
                     alert("This username already exists! Please choose another one");
                     return;
                 }
-                
+                else {
+                    const newUser = { username, password, email, firstName, lastName };
+                    axios.post(uri + "/user/add", newUser)
+                        .then(response => { setUserState(response, password); alert("user created!"); props.history.push("/user"); })
+                        .catch(err => console.log("failed Add: " + err));
+                    
+                }
             })
-        const newUser = { username, password, email, firstName, lastName };
-        axios.post(uri + "/user/add", newUser)
-            .then(response => { setUser(response.data); props.history.push("/")})
-        alert("user created!");
+            .catch(err => { console.log("failed check: " + err); });
+        
+    }
+    const setUserState = (response, givenPassword) =>
+    {
+        console.log("SETTING STATE");
+        setUser(user => ({
+            ...user,
+            _id: response.data._id,
+            username: response.data.username,
+            password: givenPassword,
+            firstName: response.data.firstName,
+            lastName: response.data.lastName,
+            email: response.data.email,
+            bookings: response.data.bookings
+        }));
+        const jsonOjb = {
+            _id: response.data._id,
+            username: response.data.username,
+            password: givenPassword,
+            firstName: response.data.firstName,
+            lastName: response.data.lastName,
+            email: response.data.email,
+            bookings: response.data.bookings
+        }
+        const json = JSON.stringify(jsonOjb);
+        console.log("JSON OF STRINGS: " + json);
+        localStorage.setItem('LoggedInUser', json);
+        
     }
 
     const createManager = (username, password, email, hotelName, hotelLocation, props) =>
@@ -184,27 +215,16 @@ const App = () => {
 
         axios.get(uri + "/manager/" + username)
             .then(response => {
-                setFoundPassword(response.data.password);
                 if (hashedPassword == password) {
-                    setFoundPassword("");
                     setManager(response.data);
                     props.history.push('/manager');
                     
                }
             })
-        setFoundPassword("");
         alert("login error!");
     };
 
 
-    const getUser = (username) =>
-    {
-        axios.get(uri + "/user/getByUsername/" + username)
-            .then(response => { setUser(response.data); return user; })
-                
-    }
-
- 
     const deleteManager = (id) => {
         //delete generic from backend
         //no implementation for server errors
@@ -220,16 +240,13 @@ const App = () => {
         console.log("Deleted user!");
     }
 
-    const getManager = (manager) => {
-        axios.get(uri + "/manager/getByUsername/" + manager)
-            .then(response => { setManager(response.data); return manager; })
-
-    }
-
     //where render happens
     return (
-    <Router>  
-            <NavBar />
+
+        <Router>  
+           
+            <NavBar user={user} manager={manager} />
+
             <br />
             <p> {process.env.BACK_END_SERVER_URI} </p>
             {/* Here instead of using the component, we use the render and then the component

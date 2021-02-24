@@ -10,7 +10,6 @@ const hotelSchema = new Schema
         {
             type: String,
             required: true,
-            unique: true,
             trim: true,
             minlength: 3
         },
@@ -18,7 +17,6 @@ const hotelSchema = new Schema
         {
             type: locationSchema,
             required: true,
-            unique: true,
             trim: true,
             minlength: 5
         },

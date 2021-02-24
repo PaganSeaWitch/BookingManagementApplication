@@ -14,7 +14,8 @@ const bookingSchema =
         hotel:
         {
             type: hotel.schema,
-			required: true
+            required: true,
+            unique: false
 		},
         date:
         {
@@ -65,6 +66,7 @@ const userSchema = new Schema
         bookings:
         {
             type: [bookingSchema],
+            required: false,
             unique: false
         },
     },

@@ -20,6 +20,7 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
 
     useEffect(() =>
     {
+        
         if (create == true) {
             setCreate(false);
             if (username.length == 0 || password.length == 0 || email.length == 0) {
@@ -40,6 +41,7 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
                     return;
                 }
                 onCreateManager(username, password, email, hotelName, hotelLocation, props);
+                
             }
         }
 
@@ -181,7 +183,7 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
                 <div>
 
                     <span></span>
-                    <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setCreate(true); }}> LogIn </button>
+                    <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setCreate(true); }}> Create Account </button>
                     <span></span>
 
                 </div>
