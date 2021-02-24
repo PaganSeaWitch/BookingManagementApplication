@@ -19,8 +19,8 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
   
     //this happpens at the start of the apps life cycle
     useEffect(() => {
-
-
+        
+        
 
         //this is a reference to the button
         //basically, we add an event listener after its loaded up
@@ -78,8 +78,16 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
             setCanSave(true);
         }
         checkStates();
+        
+        //only fillforms if the user exists
+        if (user._id != null && username == "") {
+            fillForms();
+        }
     });
-
+    console.log(user);
+    if (user._id == "") {
+        props.history.push("/");
+    }
     //fills out the form based on current user
     const fillForms = () => {
         setUsername(user.username);
@@ -87,6 +95,7 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
         setEmail(user.email);
         setFirstName(user.firstName);
         setLastName(user.lastName);
+
     }
 
     const refToLogout = useRef(null);
@@ -117,13 +126,7 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
     //if not, update data
     //else, tell user
     
-    if (user == null) {
-        props.history.push('/');
-    }
-    //only fillforms if the user exists
-    if (user != null) {
-        fillForms();
-    }
+
 
     const deleteAccount = () =>
     {

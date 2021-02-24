@@ -21,8 +21,6 @@ const Manager = ({ manager, onDelete, logOut, props, onUpdate }) => {
     //this happpens at the start of the apps life cycle
     useEffect(() => {
 
-
-
         //this is a reference to the button
         //basically, we add an event listener after its loaded up
         //the reason we do this instead of directly in-line
@@ -79,15 +77,25 @@ const Manager = ({ manager, onDelete, logOut, props, onUpdate }) => {
             setCanSave(true);
         }
         checkStates();
+        
+        //only fillforms if the user exists
+        if (username == "" && password == "") {
+            fillForms();
+        }
     });
+
+    if (manager._id == "") {
+        props.history.push("/");
+    }
 
     //fills out the form based on current user
     const fillForms = () => {
+        console.log(manager);
         setUsername(manager.username);
         setPassword(manager.password);
         setEmail(manager.email);
-        setHotelName(manager.hotelName);
-        setHotelLocation(manager.hotelLocation);
+        setHotelName(manager.hotel.name);
+        setHotelLocation(manager.hotel.location);
     }
 
     const refToLogout = useRef(null);
@@ -116,13 +124,7 @@ const Manager = ({ manager, onDelete, logOut, props, onUpdate }) => {
     //if not, update data
     //else, tell user
 
-    if (manager == null) {
-        //props.history.push('/');
-    }
-    //only fillforms if the user exists
-    if (manager != null) {
-        fillForms();
-    }
+   
 
     const deleteAccount = () => {
         onDelete(manager._id);

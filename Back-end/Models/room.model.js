@@ -5,18 +5,18 @@ const roomSchema = new Schema
 ({
     roomNumber:
 	{
-		type: int,
+		type: Number,
 		required:true,
 		unique: false
 	},
 	price:
 	{
-		type: int,
+		type: Number,
 		required: true
 	},
 	beds:
 	{
-		type: int,
+		type: Number,
 		required: true
 	},
 	
@@ -27,4 +27,4 @@ const roomSchema = new Schema
 
 const Room = mongoose.model("Room", roomSchema);
 
-module.exports = Room;
+module.exports = roomSchema;

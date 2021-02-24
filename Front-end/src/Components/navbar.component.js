@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = ({  user, manager }) => {
     
     return (
 
@@ -11,15 +11,29 @@ const NavBar = () => {
         <div className="collapse navbar-collapse">
                 <ul className="navbar-nav mr-auto">
                     {/* creates the two items in the navbar for navigation */}
-                    <li className="navbar-item">
-                        <Link to="/" className="nav-link">Gerneric List</Link>
-                    </li>
-                    <li className="navbar-item">
-                        <Link to="/create" className="nav-link">New User</Link>
-                    </li>
-                    <li className="navbar-item">
-                        <Link to="/Login" className="nav-link">Returning User</Link>
-                    </li>
+
+                    {(user._id == "" && manager._id == "")
+                        ? <div>
+                            <li className="navbar-item">
+                                <Link to="/create" className="nav-link">New Account</Link>
+                            </li>
+                            <li className="navbar-item">
+                                <Link to="/Login" className="nav-link">Returning Account</Link>
+                            </li>
+                        </div>
+                        : <div>{(manager._id != "")
+                            ? <div>
+                                <li className="navbar-item">
+                                    <Link to="/manager" className="nav-link">account Information</Link>
+                                </li>
+                            </div>
+                            :
+                            <div>
+                                <li className="navbar-item">
+                                    <Link to="/user" className="nav-link">account Information</Link>
+                                </li>
+                            </div>}
+                        </div>}
             </ul>
         </div>
     </nav>);
