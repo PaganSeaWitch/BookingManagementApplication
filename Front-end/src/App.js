@@ -201,11 +201,13 @@ const App = () => {
         axios.get(uri + "/user/checkIfUsernameExists/" + username)
             .then(response => {
                 console.log(response.data)
-                if (response.data == "yes") {
+                if (response.data == "yes")
+                {
                     alert("This username already exists! Please choose another one");
                     return;
                 }
-                else {
+                else
+                {
                     const newUser = { username, password, email, firstName, lastName };
                     axios.post(uri + "/user/add", newUser)
                         .then(response => { setUserState(response, password); alert("user created!"); props.history.push("/user"); })
