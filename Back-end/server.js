@@ -3,7 +3,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const userRouter = require("./routes/users")
 const managerRouter = require("./routes/managers")
-
+const emailRouter = require("./routes/emails")
 require('dotenv').config();
 
 
@@ -32,6 +32,7 @@ connection.once("open", () => {
 
 app.use("/user", userRouter)
 app.use("/manager", managerRouter)
+app.use("/email", emailRouter)
 
 //start the server
 app.listen(port, () => {
