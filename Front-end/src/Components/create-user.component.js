@@ -66,7 +66,7 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
                     alert("please enter your hotel's postal code!")
                     return;
                 }
-                const hotelLocation = { hotelStreetAddress1, hotelStreetAddress2, hotelCity, hotelState, hotelCountry, hotelPostalCode };
+                const hotelLocation = { streetAddress1: hotelStreetAddress1, streetAddress2: hotelStreetAddress2, city : hotelCity,stateOrProvince: hotelState, country: hotelCountry, postalCode : hotelPostalCode };
                 console.log(hotelLocation);
                 onCreateManager(username, password, email, hotelName, hotelLocation, props);
                 

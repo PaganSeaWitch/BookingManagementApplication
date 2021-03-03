@@ -4,14 +4,21 @@ import Button from '@material-ui/core/Button';
 
 //the user component, also functions as the user information page
 //props for later { user, onDelete, editUser }
-const Manager = ({ manager, onDelete, logOut, props, onUpdate }) => {
+const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
     const [hidden, setHidden] = useState(true);
     const [warning, setWarning] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [hotelName, setHotelName] = useState("");
-    const [hotelLocation, setHotelLocation] = useState("");
+    const [hotelLocation, setHotelLocation] = useState({
+        streetAddress1: "",
+        streetAddress2: "",
+        city: "",
+        stateOrProvince: "",
+        country: "",
+        postalCode: "",
+    });
     const [safty, setSafty] = useState(false);
     const [canSave, setCanSave] = useState(false);
     const [managerSave, setManagerSave] = useState(false);
@@ -19,7 +26,27 @@ const Manager = ({ manager, onDelete, logOut, props, onUpdate }) => {
 
     //this happpens at the start of the apps life cycle
     useEffect(() => {
+        if (hotelName == "" && hotelLocation.streetAddress1 == "")
+        {
+            const response = getHotel(manager.hotel_ID);
+            if (response.data != "") {
+                setHotelName(response.name);
+                setHotelLocation({
+                    ...hotelLocation,
+                    streetAddress1: response.data._id,
+                    streetAddress2: response.data.username,
+                    stateOrProvince: response.data.stateOrProvince,
+                    country: response.data.country,
+                    postalCode: response.data.postalCode,
+                });
+            }
+            else {
+                alert("Cannot get hotel!");
+                setHotelName = "Not Avaliable!"
 
+            }
+            
+        }
         //this is a reference to the button
         //basically, we add an event listener after its loaded up
         //the reason we do this instead of directly in-line
