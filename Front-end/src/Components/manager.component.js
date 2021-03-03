@@ -33,8 +33,8 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
                 setHotelName(response.name);
                 setHotelLocation({
                     ...hotelLocation,
-                    streetAddress1: response.data._id,
-                    streetAddress2: response.data.username,
+                    streetAddress1: response.data.stree,
+                    streetAddress2: response.data.streetAddress2,
                     stateOrProvince: response.data.stateOrProvince,
                     country: response.data.country,
                     postalCode: response.data.postalCode,
@@ -194,11 +194,51 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
                     
                 </div>
                 <div>
-                    <label>Hotel Location:</label>
+                    <label>Hotel Street Address 1:</label>
                     <input
                         type='text'
-                        value={hotelLocation}
-                        onChange={(e) => { setWarning("changes made "); setHotelLocation(e.target.value); }
+                        value={hotelLocation.streetAddress1}
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({streetAddress1: e.target.value }); }
+                        } />
+                </div>
+                <div>
+                    <label>Hotel Street Address 2:</label>
+                    <input
+                        type='text'
+                        value={hotelLocation.streetAddress2}
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({ streetAddress2: e.target.value }); }
+                        } />
+                </div>
+                <div>
+                    <label>Hotel City:</label>
+                    <input
+                        type='text'
+                        value={hotelLocation.city}
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({city: e.target.value }); }
+                        } />
+                </div>
+                <div>
+                    <label>Hotel State/Province:</label>
+                    <input
+                        type='text'
+                        value={hotelLocation.stateOrProvince}
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({ stateOrProvince: e.target.value }); }
+                        } />
+                </div>
+                <div>
+                    <label>Hotel Country:</label>
+                    <input
+                        type='text'
+                        value={hotelLocation.country}
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({ country: e.target.value }); }
+                        } />
+                </div>
+                <div>
+                    <label>Hotel Postal Code:</label>
+                    <input
+                        type='text'
+                        value={hotelLocation.postalCode}
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({postalCode: e.target.value }); }
                         } />
                 </div>
                 <div>

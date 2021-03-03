@@ -57,6 +57,15 @@ const App = () => {
         
         
     }, [])
+
+    const getHotel = (hotel_id) => {
+        axios.get(uri + "/hotel/getByID/" + hotel_id)
+            .then(response => {
+                return response;
+            })
+            .catch(err => {return ""})
+    }
+
     const resetManager = () => {
         setManager({
             ...manager,
@@ -111,7 +120,7 @@ const App = () => {
     const updateManager = async (manager, username, password, email, hotelName, hotelLocation, setWarning) => {
         const hotel = { name: hotelName, location: hotelLocation, rooms: [] }
 
-        const updatedManager = {oldUsername :manager.username, username, password, email, hotel };
+        const updatedManager = { oldUsername: manager.username, username, password, email, hotel_ID: manager.hotel_ID };
         //Todo, call email checking function first
 
         if (manager.username == username) {
@@ -119,6 +128,7 @@ const App = () => {
             axios.post(uri + "/manager/update/", updatedManager)
                 .then(response => { setManagerState(response, password); setWarning(""); })
                 .catch(err => { console.log(err); alert("changes were not saved!") });
+            axios.post(uri + "/hotel/update/", hotel)
         }
         else{
             axios.get(uri + "/manager/checkIfUsernameExists/" + username)
@@ -127,6 +137,8 @@ const App = () => {
                         axios.post(uri + "/manager/update/", updatedManager)
                             .then(response => { setManagerState(response, password); setWarning(""); })
                             .catch(err => { console.log(err); alert("changes were not saved!") });
+                        axios.post(uri + "/hotel/update/", hotel)
+
                     }
                     else
                     {
@@ -364,7 +376,7 @@ const App = () => {
             <Route path="/manager" render={(props) => (
                 <>
                     {/* we pass a function*/}
-                    {<Manager manager={manager} onDelete={deleteManager} logOut={logOut} props={props} onUpdate={updateManager} />}
+                    {<Manager manager={manager} onDelete={deleteManager} logOut={logOut} props={props} getHotel={getHotel} onUpdate={updateManager} />}
                 </>
             )}
             />    
