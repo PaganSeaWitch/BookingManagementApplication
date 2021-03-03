@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
-const hotel = require("../Models/hotel.model")
 
 const managerSchema = new Schema
 ({
@@ -29,9 +28,10 @@ const managerSchema = new Schema
 		trim: true,
 		minlength: 5
 	},
-	hotel:
+	hotel_ID:
     {
-        type: hotel.schema
+        type: String,
+        required: true
 	},
 },
 {
