@@ -1,20 +1,15 @@
 const router = require('express').Router();
-const emailCheck = require('email-check');
-
+const validator = require("email-validator");
 router.route("/checkEmail/:email").get((req, res) => {
     console.log(req.params.email)
-    emailCheck({ email: req.params.email })
-        .then(function (isReal) {
-            if (isReal == true) {
-                res.json("yes");
-            }
-            if (isReal == false) {
-                res.json("no")
-            }
-        })
-        .catch(function (err) {
-            err => res.status(400).json("Error: " + err)
-        });
+    const email = req.params.email;
+    const check = validator.validate(email)
+    if (check == true) {
+        res.json("yes")
+    }
+    if (check == false) {
+        res.json("no")
+    }
 });
 
 module.exports = router;
