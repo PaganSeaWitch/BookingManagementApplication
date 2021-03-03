@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from 'react'
 import NavBar from "./Components/navbar.component";
 import axios from "axios";
@@ -28,11 +27,7 @@ const App = () => {
         username: "",
         password: "",
         email: "",
-        hotel: {
-            name: "",
-            location: "",
-            rooms: []
-        }
+        hotel_ID: ""
 
     })
     
@@ -69,11 +64,7 @@ const App = () => {
             username: "",
             password: "",
             email: "",
-            hotel: {
-                name: "",
-                location: "",
-                rooms: []
-            }
+            hotel_ID: ""
         })
     }
     const resetUser = () => {
@@ -96,7 +87,7 @@ const App = () => {
             username: response.username,
             password: response.password,
             email: response.email,
-            hotel : response.hotel
+            hotel_ID : response.hotel._id
         });
 
         console.log(response);
@@ -255,14 +246,14 @@ const App = () => {
             username: response.data.username,
             password: givenPassword,
             email: response.data.email,
-            hotel: response.data.hotel,
+            hotel: response.data.hotel._id,
         });
         const jsonManagerOjb = {
             _id: response.data._id,
             username: response.data.username,
             password: givenPassword,
             email : response.data.email,
-            hotel: response.data.hotel,
+            hotel_ID: response.data.hotel_ID,
         }
         const jsonManager = JSON.stringify(jsonManagerOjb);
         console.log("JSON OF STRINGS: " + jsonManager);
@@ -271,23 +262,42 @@ const App = () => {
 
     const createManager = (username, password, email, hotelName, hotelLocation, props) =>
     {
-        axios.get(uri + "/manager/checkIfUsernameExists/" + username)
+        axios.get(uri + "email/checkEmail/" + email)
             .then(response => {
-                console.log(response.data)
+                console.log(response.data);
                 if (response.data == "yes") {
-                    alert("This username already exists! Please choose another one");
-                    return;
-                }
-                else {
-                    const hotel = { name: hotelName, location: hotelLocation, rooms: [] }
-                    const newManager = {username, password, email, hotel};
-                    axios.post(uri + "/manager/add", newManager)
-                        .then(response => { setManagerState(response, password); alert("manager created!"); props.history.push("/manager"); })
-                        .catch(err => console.log("failed Add: " + err));
+                    axios.get(uri + "/manager/checkIfUsernameExists/" + username)
+                        .then(response => {
+                            console.log(response.data)
+                            if (response.data == "yes") {
+                                alert("This username already exists! Please choose another one");
+                                return;
+                            }
+                            else
+                            {
+                                const hotel = { name: hotelName, location: hotelLocation, rooms: [] }
+                                axios.post(uri + "hotel/add", hotel)
+                                    .then(hotelResponse => {
+                                        const newManager = {  username, password, email, hotel_ID: hotelResponse.data }
+                                        axios.post(uri + "/manager/add", newManager)
+                                            .then(response => { setManagerState(response, password); alert("manager created!"); props.history.push("/manager"); })
+                                            .catch(err => alert("Coudln't create account!"));
+                                    })
+                                    .catch(err => alert("Coudln't create account!"));
+
+                            }
+                        }) 
+                        .catch(err => alert("Coudln't create account!"));
 
                 }
+                else {
+                    alert("This email doesn't exist! Please choose another one")
+                    return;
+                }
+                
             })
-            .catch(err => { console.log("failed check: " + err); });
+            .catch(err => console.log("failed Add: " + err));
+        
     }
 
     const checkManager = (givenUsername, givenPassword, props) => {
