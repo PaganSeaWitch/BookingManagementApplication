@@ -1,6 +1,7 @@
 import React from 'react';
-
+import Booking from "./booking.component";
 const Dashboard = ({user, manager  }) => {
+	const sample = [Booking, Booking, Booking];
 	
 	
 	return(
@@ -8,6 +9,11 @@ const Dashboard = ({user, manager  }) => {
 			? <div>
 					<div>	
 						You're not logged in!
+						
+							<ul className = "booking-group">
+								{sample.map(listItem => <li> <Booking>listItem </Booking> </li>)}
+							</ul>
+						
 					</div> 
 			</div>
 			: <div>{(manager._id != "") 

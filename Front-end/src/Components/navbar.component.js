@@ -22,18 +22,27 @@ const NavBar = ({  user, manager }) => {
                             <li className="navbar-item">
                                 <Link to="/Login" className="nav-link">Returning Account</Link>
                             </li>
+							<li className="navbar-item">
+                                <Link to="/dashboard" className="nav-link">Dashboard</Link>
+							</li>
                         </div>
                         : <div>{(manager._id != "") //If not true, display second div
                             ? <div>
                                 <li className="navbar-item">
-                                    <Link to="/manager" className="nav-link">account Information</Link>
+                                    <Link to="/manager" className="nav-link">Account Information</Link>
                                 </li>
+								<li className="navbar-item">
+                                <Link to="/dashboard" className="nav-link">Dashboard</Link>
+								</li>
                             </div>
                             :
                             <div>
                                 <li className="navbar-item">
                                     <Link to="/user" className="nav-link">account Information</Link>
                                 </li>
+								<li className="navbar-item">
+                                <Link to="/dashboard" className="nav-link">Dashboard</Link>
+								</li>
                             </div>}
                         </div>}
             </ul>
