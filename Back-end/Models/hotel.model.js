@@ -1,7 +1,40 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const roomSchema = require("../Models/room.model")
-const locationSchema = new Schema({ address:{type: String } });
+const locationSchema = new Schema
+    ({
+        streetAddress1:
+        {
+            type: String,
+            required: true
+        },
+        streetAddress2:
+        {
+            type: String,
+            required: false
+        },
+        city:
+        {
+            type: String,
+            required: true
+        },
+        stateOrProvince:
+        {
+            type: String,
+            required: true
+        },
+        country:
+        {
+            type: String,
+            required: true
+        },
+        postalCode:
+        {
+            type: String,
+            required :false
+        }
+    }
+);
 
 
 const hotelSchema = new Schema
@@ -15,12 +48,14 @@ const hotelSchema = new Schema
         },
         location:
         {
-            type: String,
-            required: true,
-            trim: true,
-            unique: false,
+            locationSchema
         },
         rooms: [roomSchema],
+        pictureLink:
+        {
+            type: String,
+            required:false
+        }
     },
     {
     timestamps: true

@@ -7,12 +7,12 @@ router.route("/all").get((req, res) => {
         .catch(err => res.status(400).json("Error: " + err))
 });
 
-router.route("/add").post((req, res) => {
+router.route("/add").post((req, res) =>{
     const username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
-    const hotel = req.body.hotel;
-    const newManager = new Manager({ username, password, email, hotel });
+    const hotel_ID = req.body.hotel_ID;
+    const newManager = new Manager({ username, password, email, hotel_ID });
     console.log(newManager);
 
     newManager.save()
@@ -63,13 +63,14 @@ router.route("/checkIfUsernameExists/:username").get((req, res) => {
         })
         .catch(err => res.status(400).json("Error: " + err))
 })  
+
 router.route("/update/").post((req, res) => {
     Manager.findOneAndUpdate({ username: req.params.oldUsername  })
         .then((manager) => {
             manager.username = req.body.username;
             manager.password = req.body.password;
             manager.email = req.body.email;
-            manager.hotel = req.body.hotel;
+            manager.hotel_ID = req.body.hotel_ID;
             manager.save()
                 .then(() => res.json(manager))
                 .catch(err => res.status(400).json("Error: " + err));

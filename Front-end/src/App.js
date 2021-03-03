@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from 'react'
 import NavBar from "./Components/navbar.component";
 import axios from "axios";
@@ -28,11 +27,7 @@ const App = () => {
         username: "",
         password: "",
         email: "",
-        hotel: {
-            name: "",
-            location: "",
-            rooms: []
-        }
+        hotel_ID: ""
 
     })
     
@@ -62,6 +57,15 @@ const App = () => {
         
         
     }, [])
+
+    const getHotel = (hotel_id) => {
+        axios.get(uri + "/hotel/getByID/" + hotel_id)
+            .then(response => {
+                return response;
+            })
+            .catch(err => {return ""})
+    }
+
     const resetManager = () => {
         setManager({
             ...manager,
@@ -69,11 +73,7 @@ const App = () => {
             username: "",
             password: "",
             email: "",
-            hotel: {
-                name: "",
-                location: "",
-                rooms: []
-            }
+            hotel_ID: ""
         })
     }
     const resetUser = () => {
@@ -96,7 +96,7 @@ const App = () => {
             username: response.username,
             password: response.password,
             email: response.email,
-            hotel : response.hotel
+            hotel_ID : response.hotel_ID
         });
 
         console.log(response);
@@ -120,7 +120,7 @@ const App = () => {
     const updateManager = async (manager, username, password, email, hotelName, hotelLocation, setWarning) => {
         const hotel = { name: hotelName, location: hotelLocation, rooms: [] }
 
-        const updatedManager = {oldUsername :manager.username, username, password, email, hotel };
+        const updatedManager = { oldUsername: manager.username, username, password, email, hotel_ID: manager.hotel_ID };
         //Todo, call email checking function first
 
         if (manager.username == username) {
@@ -128,6 +128,7 @@ const App = () => {
             axios.post(uri + "/manager/update/", updatedManager)
                 .then(response => { setManagerState(response, password); setWarning(""); })
                 .catch(err => { console.log(err); alert("changes were not saved!") });
+            axios.post(uri + "/hotel/update/", hotel)
         }
         else{
             axios.get(uri + "/manager/checkIfUsernameExists/" + username)
@@ -136,6 +137,8 @@ const App = () => {
                         axios.post(uri + "/manager/update/", updatedManager)
                             .then(response => { setManagerState(response, password); setWarning(""); })
                             .catch(err => { console.log(err); alert("changes were not saved!") });
+                        axios.post(uri + "/hotel/update/", hotel)
+
                     }
                     else
                     {
@@ -197,25 +200,34 @@ const App = () => {
 
     const createUser = async (username, password, email, firstName, lastName, props) =>
     {
-        
-        axios.get(uri + "/user/checkIfUsernameExists/" + username)
+        axios.get(uri + "email/checkEmail/" + email)
             .then(response => {
-                console.log(response.data)
-                if (response.data == "yes")
-                {
-                    alert("This username already exists! Please choose another one");
+                console.log(response.data);
+                if (response.data == "yes") {
+                    axios.get(uri + "/user/checkIfUsernameExists/" + username)
+                        .then(response => {
+                            console.log(response.data)
+                            if (response.data == "yes") {
+                                alert("This username already exists! Please choose another one");
+                                return;
+                            }
+                            else {
+                                const newUser = { username, password, email, firstName, lastName };
+                                axios.post(uri + "/user/add", newUser)
+                                    .then(response => { setUserState(response, password); alert("user created!"); props.history.push("/user"); })
+                                    .catch(err => console.log("failed Add: " + err));
+
+                            }
+                        })
+                        .catch(err => { console.log("failed check: " + err); });
+                }
+                else {
+                    alert("This email doesn't exist! Please choose another one")
                     return;
                 }
-                else
-                {
-                    const newUser = { username, password, email, firstName, lastName };
-                    axios.post(uri + "/user/add", newUser)
-                        .then(response => { setUserState(response, password); alert("user created!"); props.history.push("/user"); })
-                        .catch(err => console.log("failed Add: " + err));
-                    
-                }
+
             })
-            .catch(err => { console.log("failed check: " + err); });
+            .catch(err => console.log("failed Add: " + err));
     }
 
     const setUserState = (response, givenPassword) =>
@@ -255,14 +267,14 @@ const App = () => {
             username: response.data.username,
             password: givenPassword,
             email: response.data.email,
-            hotel: response.data.hotel,
+            hotel_ID: response.data.hotel_ID,
         });
         const jsonManagerOjb = {
             _id: response.data._id,
             username: response.data.username,
             password: givenPassword,
             email : response.data.email,
-            hotel: response.data.hotel,
+            hotel_ID: response.data.hotel_ID,
         }
         const jsonManager = JSON.stringify(jsonManagerOjb);
         console.log("JSON OF STRINGS: " + jsonManager);
@@ -271,23 +283,42 @@ const App = () => {
 
     const createManager = (username, password, email, hotelName, hotelLocation, props) =>
     {
-        axios.get(uri + "/manager/checkIfUsernameExists/" + username)
+        axios.get(uri + "email/checkEmail/" + email)
             .then(response => {
-                console.log(response.data)
+                console.log(response.data);
                 if (response.data == "yes") {
-                    alert("This username already exists! Please choose another one");
-                    return;
-                }
-                else {
-                    const hotel = { name: hotelName, location: hotelLocation, rooms: [] }
-                    const newManager = {username, password, email, hotel};
-                    axios.post(uri + "/manager/add", newManager)
-                        .then(response => { setManagerState(response, password); alert("manager created!"); props.history.push("/manager"); })
-                        .catch(err => console.log("failed Add: " + err));
+                    axios.get(uri + "/manager/checkIfUsernameExists/" + username)
+                        .then(response => {
+                            console.log(response.data)
+                            if (response.data == "yes") {
+                                alert("This username already exists! Please choose another one");
+                                return;
+                            }
+                            else
+                            {
+                                const hotel = { name: hotelName, location: hotelLocation, rooms: [] }
+                                axios.post(uri + "/hotel/add", hotel)
+                                    .then(hotelResponse => {
+                                        const newManager = {  username, password, email, hotel_ID: hotelResponse.data }
+                                        axios.post(uri + "/manager/add", newManager)
+                                            .then(response => { setManagerState(response, password); alert("manager created!"); props.history.push("/manager"); })
+                                            .catch(err => alert("Coudln't create account!"));
+                                    })
+                                    .catch(err => alert("Coudln't create account!"));
+
+                            }
+                        }) 
+                        .catch(err => alert("Coudln't create account!"));
 
                 }
+                else {
+                    alert("This email doesn't exist! Please choose another one")
+                    return;
+                }
+                
             })
-            .catch(err => { console.log("failed check: " + err); });
+            .catch(err => console.log("failed Add: " + err));
+        
     }
 
     const checkManager = (givenUsername, givenPassword, props) => {
@@ -338,14 +369,14 @@ const App = () => {
                 * <Route path="/" exact component={<component>} /> works*/}
             <Route path="/" exact render={(props) => (
                 <>
-                    
+                  
                 </>
             )}
             />
             <Route path="/manager" render={(props) => (
                 <>
                     {/* we pass a function*/}
-                    {<Manager manager={manager} onDelete={deleteManager} logOut={logOut} props={props} onUpdate={updateManager} />}
+                    {<Manager manager={manager} onDelete={deleteManager} logOut={logOut} props={props} getHotel={getHotel} onUpdate={updateManager} />}
                 </>
             )}
             />    
@@ -355,12 +386,14 @@ const App = () => {
                 <>
                     {/* we pass a function*/}
                     {<User user={user} onDelete={deleteUser} logOut={logOut} props={props} onUpdate={updateUser} />}
+
                 </>
             )}
             />
             <Route path="/login" render={(props) => (
                 <>
                     {<Login onUserLogin={checkUser} onManagerLogin={checkManager} props={props} />}
+
                 </>
             )}
             />
