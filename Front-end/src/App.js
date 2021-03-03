@@ -8,7 +8,8 @@ import User from "./Components/user.component";
 import Login from "./Components/login.component";
 import CreateUser from "./Components/create-user.component";
 import Manager from "./Components/manager.component";
-
+import Dashboard from "./Components/dashboard.component";
+import SplashPage from "./Components/splashPage.component";
 require('dotenv').config()
 
 
@@ -329,7 +330,7 @@ const App = () => {
         <Router>  
            
             <NavBar user={user} manager={manager} />
-
+			
             <br />
             <p> {process.env.BACK_END_SERVER_URI} </p>
             {/* Here instead of using the component, we use the render and then the component
@@ -342,6 +343,22 @@ const App = () => {
                 </>
             )}
             />
+			
+			 <Route path="/splashPage" render={(props) => (
+                <>
+                    {/* we pass a function*/}
+                    {<SplashPage />}
+                </>
+            )}
+            />    
+			
+			<Route path="/Dashboard" render={(props) => (
+                <>
+                    {<Dashboard user={user} manager={manager}/>}
+                </>
+            )}
+            />
+			
             <Route path="/manager" render={(props) => (
                 <>
                     {/* we pass a function*/}
