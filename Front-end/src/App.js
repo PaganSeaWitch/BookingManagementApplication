@@ -87,7 +87,7 @@ const App = () => {
             username: response.username,
             password: response.password,
             email: response.email,
-            hotel_ID : response.hotel._id
+            hotel_ID : response.hotel_ID
         });
 
         console.log(response);
@@ -255,7 +255,7 @@ const App = () => {
             username: response.data.username,
             password: givenPassword,
             email: response.data.email,
-            hotel: response.data.hotel._id,
+            hotel_ID: response.data.hotel_ID,
         });
         const jsonManagerOjb = {
             _id: response.data._id,
@@ -285,7 +285,7 @@ const App = () => {
                             else
                             {
                                 const hotel = { name: hotelName, location: hotelLocation, rooms: [] }
-                                axios.post(uri + "hotel/add", hotel)
+                                axios.post(uri + "/hotel/add", hotel)
                                     .then(hotelResponse => {
                                         const newManager = {  username, password, email, hotel_ID: hotelResponse.data }
                                         axios.post(uri + "/manager/add", newManager)
