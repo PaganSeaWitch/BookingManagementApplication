@@ -12,7 +12,12 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
     const [userType, setUserType] = useState("User");
     const [hotelName, setHotelName] = useState("");
     const [create, setCreate] = useState(false);
-    const [hotelLocation, setHotelLocation] = useState("");
+    const [hotelstreetAddress1, sethotelstreetAddress1] = useState("");
+    const [hotelstreetAddress2, sethotelstreetAddress2] = useState("");
+    const [hotelCity, sethotelCity] = useState("");
+    const [hotelState, sethotelState] = useState("");
+    const [hotelCountry, setHotelCountry] = useState("");
+    const [hotelPostalCode, setHotelPostalCode] = useStae("");
     const refToUserForms = useRef(null);
     const refToManagerForms = useRef(null);
 
