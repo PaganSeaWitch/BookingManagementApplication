@@ -15,7 +15,6 @@ router.route("/add").post((req, res) => {
 	const lastName = req.body.lastName;
 	const email = req.body.email;
 	const bookings = req.body.bookings;
-	
     const newUser = new User({ username, password, firstName, lastName, email, bookings});
 
     newUser.save()
@@ -65,7 +64,16 @@ router.route("/deleteById/:id").delete((req, res) => {
         .catch(err => res.status(400).json("Error: " + err));
 });
 
-
+router.route("/updateBookings/").post((req, res) => {
+    User.findOneAndUpdate({ username: req.body.username })
+        .then((user) => {
+            user.bookings = req.body.bookings;
+            user.save()
+                .then(() => res.json("bookings updated"))
+                .catch(err => res.status(400).json("Error: " + err));
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+})
 
 //Updates user by username
 router.route("/update/").post((req, res) => {
