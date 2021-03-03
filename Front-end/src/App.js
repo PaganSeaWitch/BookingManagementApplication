@@ -188,25 +188,34 @@ const App = () => {
 
     const createUser = async (username, password, email, firstName, lastName, props) =>
     {
-        
-        axios.get(uri + "/user/checkIfUsernameExists/" + username)
+        axios.get(uri + "email/checkEmail/" + email)
             .then(response => {
-                console.log(response.data)
-                if (response.data == "yes")
-                {
-                    alert("This username already exists! Please choose another one");
+                console.log(response.data);
+                if (response.data == "yes") {
+                    axios.get(uri + "/user/checkIfUsernameExists/" + username)
+                        .then(response => {
+                            console.log(response.data)
+                            if (response.data == "yes") {
+                                alert("This username already exists! Please choose another one");
+                                return;
+                            }
+                            else {
+                                const newUser = { username, password, email, firstName, lastName };
+                                axios.post(uri + "/user/add", newUser)
+                                    .then(response => { setUserState(response, password); alert("user created!"); props.history.push("/user"); })
+                                    .catch(err => console.log("failed Add: " + err));
+
+                            }
+                        })
+                        .catch(err => { console.log("failed check: " + err); });
+                }
+                else {
+                    alert("This email doesn't exist! Please choose another one")
                     return;
                 }
-                else
-                {
-                    const newUser = { username, password, email, firstName, lastName };
-                    axios.post(uri + "/user/add", newUser)
-                        .then(response => { setUserState(response, password); alert("user created!"); props.history.push("/user"); })
-                        .catch(err => console.log("failed Add: " + err));
-                    
-                }
+
             })
-            .catch(err => { console.log("failed check: " + err); });
+            .catch(err => console.log("failed Add: " + err));
     }
 
     const setUserState = (response, givenPassword) =>
