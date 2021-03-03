@@ -355,12 +355,14 @@ const App = () => {
                 <>
                     {/* we pass a function*/}
                     {<User user={user} onDelete={deleteUser} logOut={logOut} props={props} onUpdate={updateUser} />}
+
                 </>
             )}
             />
             <Route path="/login" render={(props) => (
                 <>
                     {<Login onUserLogin={checkUser} onManagerLogin={checkManager} props={props} />}
+
                 </>
             )}
             />

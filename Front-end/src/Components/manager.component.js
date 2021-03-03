@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import DeleteDialogue from "./deleteDialogue.component"
 import Button from '@material-ui/core/Button';
