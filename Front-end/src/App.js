@@ -338,7 +338,7 @@ const App = () => {
                 * <Route path="/" exact component={<component>} /> works*/}
             <Route path="/" exact render={(props) => (
                 <>
-                    
+                  
                 </>
             )}
             />

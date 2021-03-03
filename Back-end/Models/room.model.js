@@ -19,7 +19,17 @@ const roomSchema = new Schema
 		type: Number,
 		required: true
 	},
-	
+	booked:
+	{
+		type: Boolean,
+		required: true,
+		default : false
+	},
+	tags:
+	{
+		type: [String],
+		required : false,
+    }
 },
 {
     timestamps: true,

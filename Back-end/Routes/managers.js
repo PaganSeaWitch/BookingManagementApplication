@@ -7,7 +7,7 @@ router.route("/all").get((req, res) => {
         .catch(err => res.status(400).json("Error: " + err))
 });
 
-router.route("/add").post((req, res) => {
+router.route("/add").post((req, res) =>{
     const username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
@@ -63,6 +63,7 @@ router.route("/checkIfUsernameExists/:username").get((req, res) => {
         })
         .catch(err => res.status(400).json("Error: " + err))
 })  
+
 router.route("/update/").post((req, res) => {
     Manager.findOneAndUpdate({ username: req.params.oldUsername  })
         .then((manager) => {
