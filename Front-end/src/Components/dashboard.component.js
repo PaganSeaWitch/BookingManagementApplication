@@ -1,11 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { useState, useEffect } from "react";
-
 
 const Dashboard = ({user, manager  }) => {
 	
@@ -14,7 +7,7 @@ const Dashboard = ({user, manager  }) => {
 			(user._id == "" && manager._id == "") //if not logged in, adjust display
 			? <div>
 					<div>	
-						Here's some text!
+						You're not logged in!
 					</div> 
 			</div>
 			: <div>{(manager._id != "") 

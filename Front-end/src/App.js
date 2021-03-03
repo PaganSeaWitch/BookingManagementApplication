@@ -337,24 +337,21 @@ const App = () => {
                 * we do this because the component cannot take in anything without using render
                 * if you just want to route to a componet without passing anyting to it
                 * <Route path="/" exact component={<component>} /> works*/}
+			
+			
             <Route path="/" exact render={(props) => (
                 <>
-                    
+                    {<SplashPage />}
                 </>
             )}
             />
 			
-			 <Route path="/splashPage" render={(props) => (
-                <>
-                    {/* we pass a function*/}
-                    {<SplashPage />}
-                </>
-            )}
-            />    
+			   
 			
 			<Route path="/Dashboard" render={(props) => (
                 <>
                     {<Dashboard user={user} manager={manager}/>}
+					
                 </>
             )}
             />
@@ -372,6 +369,7 @@ const App = () => {
                 <>
                     {/* we pass a function*/}
                     {<User user={user} onDelete={deleteUser} logOut={logOut} props={props} onUpdate={updateUser} />}
+					
                 </>
             )}
             />
