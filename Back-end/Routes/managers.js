@@ -39,6 +39,15 @@ router.route("/getByUsername/").get((req, res) => {
 
 });
 
+router.route("/getByEmail/:email").get((req, res) => {
+    Manager.findOne({ email: req.params.email })
+        .then(manager => {
+            res.json(manager);
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+
+});
+
 //delete by username
 router.route("deleteByUsername/:username").delete((req, res) => {
     Manager.findOneAndDelete({ username: req.params.username })

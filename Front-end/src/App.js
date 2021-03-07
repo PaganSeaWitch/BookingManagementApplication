@@ -8,6 +8,7 @@ import Login from "./Components/login.component";
 import CreateUser from "./Components/create-user.component";
 import Manager from "./Components/manager.component";
 import ForgotPassword from "./Components/forgot-password.component";
+import { AccountRecovery } from "../../Back-end/Models/account-recovery.model";
 
 
 require('dotenv').config()
@@ -360,6 +361,48 @@ const App = () => {
 
 
     const recoverAccount = (email, props) => {
+        axios.get(uri + "/user/getByEmail/" + email)
+            .then(userResponse => {
+                if (userResponse.data == "") {
+                    axios.get(uri + "/manager/getByEmail/" + email)
+                        .then(managerResponse => {
+                            if (managerResponse.data == "") {
+                                alert("please enter an email that is tied to an account!")
+                            }
+                            else {
+                                const managerAccountRecovery = { email: email, account_id: managerResponse.data._id, acountType: "manager" }
+                                axios.post(uri + "/email/AccountRecovery/Add", managerAccountRecovery)
+                                    .then(acountRecoveryResponse => {
+                                        axios.post(uri + "/AccountRecovery/SendEmailRecoveryRequest/" + acountRecoveryResponse.data._id)
+                                            .then(emailSentResponse => {
+                                                console.log(emailSentResponse.data)
+                                                post.history.push("/resetPassword")
+
+                                            })
+                                            .catch(err => alert("email sent error!"));
+                                    })
+                                    .catch(err => alert("adding acount Recovery error!"));
+ 
+                            }
+                        })
+                        .catch(err => alert("getting manager Acount error!"));
+
+                }
+                else {
+                    const userAccountRecovery = { email: email, account_id: userResponse.data._id, acountType: "user" }
+                    axios.post(uri + "/email/AccountRecovery/Add", userAccountRecovery)
+                        .then(acountRecoveryResponse => {
+                            axios.post(uri + "/AccountRecovery/SendEmailRecoveryRequest/" + acountRecoveryResponse.data._id)
+                                .then(emailSentResponse => {
+                                    console.log(emailSentResponse.data)
+                                    post.history.push("/resetPassword")
+                                })
+                                .catch(err => alert("email sent error!"));
+                        })
+                        .catch(err => alert("adding acount Recovery error!"));
+                }
+            })
+            .catch(err => alert("getting user Acount error!"));
 
     }
 
@@ -414,7 +457,14 @@ const App = () => {
             />
             <Route path="/forgotPassword" exact render={(props) => (
                 <>
-                    {<ForgotPassword/>}
+                    {<ForgotPassword props={props} onEmailSubmit={recoverAccount} />}
+                </>
+            )}
+
+            />
+            <Route path="/resetPassword" exact render={(props) => (
+                <>
+                    {<ResetPassword />}
                 </>
             )}
             />

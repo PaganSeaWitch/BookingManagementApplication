@@ -48,6 +48,14 @@ router.route("/getByUsername/").get((req, res) => {
 
 });
 
+router.route("/getByEmail/:email").get((req, res) => {
+    User.findOne({ email: req.params.email })
+        .then(user => {
+            res.json(user);
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+
+});
 
 
 //Deletes user by username
