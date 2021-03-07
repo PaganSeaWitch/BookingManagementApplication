@@ -1,7 +1,17 @@
 const router = require('express').Router();
 const validator = require("email-validator");
 let AccountRecovery = require("../Models/account-recovery.model");
-
+const nodemailer = require("nodemailer");
+// create reusable transporter object using the default SMTP transport
+let transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+        user: testAccount.user, // generated ethereal user
+        pass: testAccount.pass, // generated ethereal password
+    },
+});
 
 router.route("/checkEmail/:email").get((req, res) => {
     console.log(req.params.email)
@@ -33,5 +43,13 @@ router.route("/AccountRecovery/DeleteAllByEmail/:email").delete((req, res) => {
         .catch(err => res.status(400).json("Error: " + err));
 
 });
+
+router.route("/AccountRecovery/SendEmailRecoveryRequest/:_id").post((req, res) =>{
+    AccountRecovery.findById(req.params._id)
+        .Then((accountRecovery) => {
+
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+})
 
 module.exports = router;
