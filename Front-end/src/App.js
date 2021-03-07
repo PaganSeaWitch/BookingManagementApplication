@@ -356,6 +356,13 @@ const App = () => {
         console.log("Deleted user!");
     }
 
+
+
+
+    const recoverAccount = (email, props) => {
+
+    }
+
     //where render happens
     return (
 
