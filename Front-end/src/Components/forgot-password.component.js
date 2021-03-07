@@ -1,7 +1,7 @@
 // JavaScript source code
 import { useState, useEffect } from "react";
 
-const ForgotPassword = ({ onEmailSubmit}) => {
+const ForgotPassword = ({ onEmailSubmit, props}) => {
     const [email, setEmail] = useState("");
     const [recover, setRecover] = useState(false);
 
@@ -13,7 +13,7 @@ const ForgotPassword = ({ onEmailSubmit}) => {
                 return;
             }
             else {
-                onEmailSubmit(email)
+                onEmailSubmit(email, props)
             }
         }
 

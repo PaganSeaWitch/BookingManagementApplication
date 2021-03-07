@@ -49,6 +49,7 @@ router.route("/getByUsername/").get((req, res) => {
 });
 
 router.route("/getByEmail/:email").get((req, res) => {
+    console.log(req.params.email)
     User.findOne({ email: req.params.email })
         .then(user => {
             res.json(user);
@@ -82,7 +83,16 @@ router.route("/updateBookings/").post((req, res) => {
         })
         .catch(err => res.status(400).json("Error: " + err));
 })
-
+router.route("/updatePassword/").post((req, res) => {
+    User.findOneAndUpdate({ _id: req.body.account_id })
+        .then((user) => {
+            user.password = req.body.password;
+            user.save()
+                .then(() => res.json("password updated"))
+                .catch(err => res.status(400).json("Error: " + err));
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+})
 //Updates user by username
 router.route("/update/").post((req, res) => {
     User.findOneAndUpdate({ username: req.body.oldUsername })

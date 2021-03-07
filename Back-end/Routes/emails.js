@@ -16,7 +16,6 @@ let transporter = nodemailer.createTransport({
 });
 
 router.route("/checkEmail/:email").get((req, res) => {
-    console.log(req.params.email)
     const email = req.params.email;
     const check = validator.validate(email)
     if (check == true) {
@@ -28,17 +27,22 @@ router.route("/checkEmail/:email").get((req, res) => {
 });
 
 router.route("/AccountRecovery/Add").post((req, res) => {
-    const email = req.params.email;
-    const account_id = req.params.account_id;
-    const accountType = req.params.accountType;
-    const newAccountRecovery = new AccountRecovery({ email, account_id, accountType });
-    console.log(newAccountRecovery);
+    const email = req.body.email;
+    const account_id = req.body.account_id;
+    const accountType = req.body.accountType;
+    const newAccountRecovery = new AccountRecovery({ email: email, account_id: account_id, accountType: accountType });
     newAccountRecovery.save()
         .then(() => res.json(newAccountRecovery))
         .catch(err => res.status(400).json("Error: " + err));
 
 });
 
+router.route("/AccountRecovery/getById/:id").post((req, res) => {
+    AccountRecovery.findById(req.params.id)
+        .then((account) => res.json(account))
+        .catch(err => res.status(400).json("Error: " + err));
+
+});
 router.route("/AccountRecovery/DeleteAllByEmail/:email").delete((req, res) => {
     AccountRecovery.deleteMany({ email: req.params.email })
         .then(() => res.json("accountRecoveryRequests deleted."))
@@ -46,19 +50,19 @@ router.route("/AccountRecovery/DeleteAllByEmail/:email").delete((req, res) => {
 
 });
 
-router.route("/AccountRecovery/SendEmailRecoveryRequest/:_id").post((req, res) =>{
-    AccountRecovery.findById(req.params._id)
-        .Then((accountRecovery) => {
-            const string = "Please Click on the following link to recover email : " + "http://localhost:3000/recoveryPage" + accountRecovery._id
+router.route("/AccountRecovery/SendEmailRecoveryRequest/:id").post((req, res) => {
+    AccountRecovery.findById(req.params.id)
+        .then((accountRecovery) => {
+            const string = "Please Click on the following link to recover email : " + "http://localhost:3000/resetPassword/" + accountRecovery._id
             transporter.sendMail({
-                from: '"Rendeview" <accountRecovery@rendeview.com>', // sender address
+                from: "AcountRecovery@rendeview.com", // sender address
                 to: accountRecovery.email, // list of receivers
                 subject: "Account Recovery", // Subject line
                 text: string, // plain text body
                 html: `<p>${string}</p>`, // html body
             })
                 .then(() => res.json("message sent"))
-                .catch(err => res.status(400).json("Error: " + err));
+                .catch(err => { res.status(400).json("Error: " + err); console.log(err)});
         })
         .catch(err => res.status(400).json("Error: " + err));
 })

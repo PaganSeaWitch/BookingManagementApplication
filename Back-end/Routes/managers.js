@@ -19,7 +19,16 @@ router.route("/add").post((req, res) =>{
         .then(() => res.json(newManager))
         .catch(err => res.status(400).json("Error: " + err));
 });
-
+router.route("/updatePassword/").post((req, res) => {
+    Manager.findOneAndUpdate({ _id: req.body.account_id })
+        .then((user) => {
+            manager.password = req.body.password;
+            manager.save()
+                .then(() => res.json("password updated"))
+                .catch(err => res.status(400).json("Error: " + err));
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+})
 //get by username
 router.route("/getByUsername/").get((req, res) => {
     console.log(req.params);

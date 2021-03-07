@@ -13,7 +13,7 @@ const accountRecoverySchema = new Schema
             type: String,
             required:true
         },
-        acountType:
+        accountType:
         {
             type: String,
             required:true
@@ -23,4 +23,4 @@ const accountRecoverySchema = new Schema
 const AccountRecovery = mongoose.model("AccountRecovery", accountRecoverySchema);
 
 
-module.exports = { AccountRecovery }
+module.exports = AccountRecovery 

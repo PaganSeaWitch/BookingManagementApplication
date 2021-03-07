@@ -184,7 +184,30 @@ const App = () => {
         console.log(updatedUser.username);
     };
 
-
+    const updatePassword = (password, id,props) =>{
+        axios.get(uri + "/email/AccountRecovery/getById/" + id)
+            .then(accoutTypeResponse => {
+                if (accountTypeResponse.data.accountType == "user") {
+                    const newPassword = ({ account_id: accountTypeResponse.data.account_id, password})
+                    axios.post(uri + "/user/updatePassword/", newPassword)
+                        .then(updatePasswordResponse => {
+                            console.log(updatePasswordResponse.data)
+                            props.history.push("/login")
+                        })
+                        .catch(err => { console.log(err); alert("password reset failed!"); })
+                }
+                if (accountTypeResponse.data.accountType == "manager") {
+                    const newPassword = ({ account_id: accountTypeResponse.data.account_id, password })
+                    axios.post(uri + "/manager/updatePassword/", newPassword)
+                        .then(updatePasswordResponse => {
+                            console.log(updatePasswordResponse.data)
+                            props.history.push("/login")
+                        })
+                        .catch(err => { console.log(err); alert("password reset failed!"); })
+                }
+            })
+            .catch(err => { console.log(err); alert("password reset failed!");})
+    }
 
     const checkUser = (givenUsername, givenPassword, props) => {
         axios.get(uri + "/user/getByUsername/", {
@@ -203,7 +226,7 @@ const App = () => {
 
     const createUser = async (username, password, email, firstName, lastName, props) =>
     {
-        axios.get(uri + "email/checkEmail/" + email)
+        axios.get(uri + "/email/checkEmail/" + email)
             .then(response => {
                 console.log(response.data);
                 if (response.data == "yes") {
@@ -230,7 +253,7 @@ const App = () => {
                 }
 
             })
-            .catch(err => console.log("failed Add: " + err));
+            .catch(err => console.log("failed emailCheck: " + err));
     }
 
     const setUserState = (response, givenPassword) =>
@@ -286,7 +309,7 @@ const App = () => {
 
     const createManager = (username, password, email, hotelName, hotelLocation, props) =>
     {
-        axios.get(uri + "email/checkEmail/" + email)
+        axios.get(uri + "/email/checkEmail/" + email)
             .then(response => {
                 console.log(response.data);
                 if (response.data == "yes") {
@@ -363,46 +386,47 @@ const App = () => {
     const recoverAccount = (email, props) => {
         axios.get(uri + "/user/getByEmail/" + email)
             .then(userResponse => {
-                if (userResponse.data == "") {
+                if (userResponse.data == null) {
                     axios.get(uri + "/manager/getByEmail/" + email)
                         .then(managerResponse => {
-                            if (managerResponse.data == "") {
+                            if (managerResponse.data == null) {
                                 alert("please enter an email that is tied to an account!")
                             }
                             else {
-                                const managerAccountRecovery = { email: email, account_id: managerResponse.data._id, acountType: "manager" }
+                                const managerAccountRecovery = ({ email: email, account_id: managerResponse.data._id, accountType: "manager" })
                                 axios.post(uri + "/email/AccountRecovery/Add", managerAccountRecovery)
                                     .then(acountRecoveryResponse => {
-                                        axios.post(uri + "/AccountRecovery/SendEmailRecoveryRequest/" + acountRecoveryResponse.data._id)
+                                        axios.post(uri + "/email/AccountRecovery/SendEmailRecoveryRequest/" + acountRecoveryResponse.data._id)
                                             .then(emailSentResponse => {
                                                 console.log(emailSentResponse.data)
                                                 props.history.push("/resetPassword")
 
                                             })
-                                            .catch(err => alert("email sent error!"));
+                                            .catch(err => { alert("email sent error!"); console.log(err) });
                                     })
-                                    .catch(err => alert("adding acount Recovery error!"));
- 
+                                    .catch(err => { alert("adding acount Recovery error!"); console.log(err) });
+
                             }
                         })
                         .catch(err => alert("getting manager Acount error!"));
 
                 }
                 else {
-                    const userAccountRecovery = { email: email, account_id: userResponse.data._id, acountType: "user" }
+                    const userAccountRecovery = ({ email: email, account_id: userResponse.data._id, accountType: "user" })
+                    console.log(userAccountRecovery)
                     axios.post(uri + "/email/AccountRecovery/Add", userAccountRecovery)
                         .then(acountRecoveryResponse => {
-                            axios.post(uri + "/AccountRecovery/SendEmailRecoveryRequest/" + acountRecoveryResponse.data._id)
+                            axios.post(uri + "/email/AccountRecovery/SendEmailRecoveryRequest/" + acountRecoveryResponse.data._id)
                                 .then(emailSentResponse => {
                                     console.log(emailSentResponse.data)
                                     props.history.push("/resetPassword")
                                 })
-                                .catch(err => alert("email sent error!"));
+                                .catch(err => { alert("email sent error!"); console.log(err) });
                         })
-                        .catch(err => alert("adding acount Recovery error!"));
+                        .catch(err => { alert("adding acount Recovery error!"); console.log(err)});
                 }
             })
-            .catch(err => alert("getting user Acount error!"));
+            .catch(err => {alert("getting user Acount error!"); console.log(err);});
 
     }
 
@@ -464,13 +488,13 @@ const App = () => {
             />
             <Route path="/resetPassword/:id" exact render={(props) => (
                 <>
-                    {<ResetPassword />}
+                    {<ResetPassword onResetPassword={updatePassword} props={props} />}
                 </>
             )}
             />
             <Route path="/resetPassword/" exact render={(props) => (
                 <>
-                    {<ResetPassword />}
+                    {<ResetPassword onResetPassword={updatePassword} props={props} />}
                 </>
             )}
             />
