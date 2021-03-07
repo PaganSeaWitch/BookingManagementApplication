@@ -58,13 +58,27 @@ router.route("/getByEmail/:email").get((req, res) => {
 });
 
 //delete by username
-router.route("deleteByUsername/:username").delete((req, res) => {
+router.route("/deleteByUsername/:username").delete((req, res) => {
     Manager.findOneAndDelete({ username: req.params.username })
         .then(() => res.json("Manager deleted."))
         .catch(err => res.status(400).json("Error: " + err));
 });
 
-router.route("deleteById/:id").delete((req, res) => {
+router.route("/checkIfEmailExits/:email").get((req, res) => {
+    Manager.findOne({ email: req.params.email})
+        .then((manager) => {
+            if (manager != null) {
+                res.json("yes")
+            }
+            else {
+                res.json("no")
+            }
+        })
+        .catch(err => res.status(400).json("Error: " + err))
+
+})
+
+router.route("/deleteById/:id").delete((req, res) => {
     Manager.findOneAndDelete({ _id: req.params.id })
         .then(() => res.json("Manager deleted."))
         .catch(err => res.status(400).json("Error: " + err));

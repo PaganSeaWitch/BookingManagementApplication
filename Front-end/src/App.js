@@ -124,8 +124,30 @@ const App = () => {
         const hotel = { name: hotelName, location: hotelLocation, rooms: [] }
 
         const updatedManager = { oldUsername: manager.username, username, password, email, hotel_ID: manager.hotel_ID };
-        //Todo, call email checking function first
 
+        if (manager.email != email) {
+            axios.get(uri + "/checkEmail/" + email)
+                .then(response => {
+                    if (response.data.length == 3) {
+                        alert("The email you have chosen is not valid, changes were not saved!");
+                    }
+                })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
+            axios.get(uri + "/user/checkIfEmailExists/" + email)
+                .then(response => {
+                    if (response.data.length == 3) {
+                        alert("The email you have chosen has already been taken, changes were not saved!");
+                    }
+                })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
+            axios.get(uri + "/manager/checkIfEmailExists/" + email)
+                .then(response => {
+                    if (response.data.length == 3) {
+                        alert("The email you have chosen has already been taken, changes were not saved!");
+                    }
+                })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
+        }
         if (manager.username == username) {
 
             axios.post(uri + "/manager/update/", updatedManager)
@@ -156,9 +178,31 @@ const App = () => {
 
     const updateUser = async (user, username, password, email, firstName, lastName, setWarning) =>
     {
-        const updatedUser = { oldUsername : user.username, username, password, email, firstName, lastName };
-        //Todo, call email checking function first
-
+        const updatedUser = { oldUsername: user.username, username, password, email, firstName, lastName };
+        if (user.email != email) {
+            axios.get(uri + "/checkEmail/" + email)
+                .then(response => {
+                    if (response.data.length == 3) {
+                        alert("The email you have chosen is not valid, changes were not saved!");
+                    }
+                })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
+            axios.get(uri + "/user/checkIfEmailExists/" + email)
+                .then(response => {
+                    if (response.data.length == 3) {
+                        alert("The email you have chosen has already been taken, changes were not saved!");
+                    }
+                })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
+            axios.get(uri + "/manager/checkIfEmailExists/" + email)
+                .then(response => {
+                    if (response.data.length == 3) {
+                        alert("The email you have chosen has already been taken, changes were not saved!");
+                    }
+                })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
+        }
+        
         if (user.username == username) {
             
             axios.post(uri + "/user/update/", updatedUser)
@@ -167,6 +211,7 @@ const App = () => {
 
         }
         else {
+           
             axios.get(uri + "/user/checkIfUsernameExists/" + username)
                 .then(response => {
                     console.log(response);
@@ -232,6 +277,26 @@ const App = () => {
 
     const createUser = async (username, password, email, firstName, lastName, props) =>
     {
+        
+            
+        axios.get(uri + "/user/checkIfEmailExits/" + email)
+            .then(response => {
+                if (response.data.length == 3) {
+                    alert("The email you have chosen has already been taken");
+                    return
+                }
+        })
+            .catch(err => { console.log(err); alert("user email check error!") });
+
+        axios.get(uri + "/manager/checkIfEmailExits/" + email)
+            .then(response => {
+                if (response.data.length == 3) {
+                    alert("The email you have chosen has already been taken");
+                    return
+                }
+        })
+                .catch(err => { console.log(err); alert("manager email check error!") });
+        
         axios.get(uri + "/email/checkEmail/" + email)
             .then(response => {
                 console.log(response.data);

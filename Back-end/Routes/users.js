@@ -94,6 +94,21 @@ router.route("/updatePassword/").post((req, res) => {
         })
         .catch(err => res.status(400).json("Error: " + err));
 })
+
+router.route("/checkIfEmailExits/:email").get((req, res) => {
+    User.findOne({ email: req.params.email })
+        .then((user) => {
+            if (user != null) {
+                res.json("yes")
+            }
+            else {
+                res.json("no")
+            }
+        })
+        .catch(err => res.status(400).json("Error: " + err))
+
+})
+
 //Updates user by username
 router.route("/update/").post((req, res) => {
     console.log(req.body)
