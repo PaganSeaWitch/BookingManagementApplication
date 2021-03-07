@@ -7,6 +7,8 @@ import User from "./Components/user.component";
 import Login from "./Components/login.component";
 import CreateUser from "./Components/create-user.component";
 import Manager from "./Components/manager.component";
+import ForgotPassword from "./Components/forgot-password.component";
+
 
 require('dotenv').config()
 
@@ -400,6 +402,12 @@ const App = () => {
             <Route path="/create" render={(props) => (
                 <>
                     {<CreateUser onCreateUser={createUser} onCreateManager={createManager} props={props} />}
+                </>
+            )}
+            />
+            <Route path="/forgotPassword" exact render={(props) => (
+                <>
+                    {<ForgotPassword/>}
                 </>
             )}
             />
