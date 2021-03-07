@@ -8,7 +8,7 @@ import Login from "./Components/login.component";
 import CreateUser from "./Components/create-user.component";
 import Manager from "./Components/manager.component";
 import ForgotPassword from "./Components/forgot-password.component";
-import { AccountRecovery } from "../../Back-end/Models/account-recovery.model";
+import ResetPassword  from "./Components/reset-password.component";
 
 
 require('dotenv').config()
@@ -376,7 +376,7 @@ const App = () => {
                                         axios.post(uri + "/AccountRecovery/SendEmailRecoveryRequest/" + acountRecoveryResponse.data._id)
                                             .then(emailSentResponse => {
                                                 console.log(emailSentResponse.data)
-                                                post.history.push("/resetPassword")
+                                                props.history.push("/resetPassword")
 
                                             })
                                             .catch(err => alert("email sent error!"));
@@ -395,7 +395,7 @@ const App = () => {
                             axios.post(uri + "/AccountRecovery/SendEmailRecoveryRequest/" + acountRecoveryResponse.data._id)
                                 .then(emailSentResponse => {
                                     console.log(emailSentResponse.data)
-                                    post.history.push("/resetPassword")
+                                    props.history.push("/resetPassword")
                                 })
                                 .catch(err => alert("email sent error!"));
                         })
@@ -462,7 +462,13 @@ const App = () => {
             )}
 
             />
-            <Route path="/resetPassword" exact render={(props) => (
+            <Route path="/resetPassword/:id" exact render={(props) => (
+                <>
+                    {<ResetPassword />}
+                </>
+            )}
+            />
+            <Route path="/resetPassword/" exact render={(props) => (
                 <>
                     {<ResetPassword />}
                 </>
