@@ -77,6 +77,13 @@ code {
 	outline: 0;
 
 }
+.recover-stub{
+	margin-top : 15px;
+	margin-bottom : 5px;
+	margin-left : -100px;
+	font-weight: bold;
+	text-align: center;
+}
 
 .rounded-login:focus {
 	border-color: #339933;

@@ -83,7 +83,7 @@ const Login = ({ onUserLogin, onManagerLogin, props }) => {
                 <div>
                     
                     <a href="/create" className="help-links" target="_blank">Create Account</a>
-                    <a href="/create" className="help-links" target="_blank">Forgot password?</a>
+                    <a href="/forgotPassword" className="help-links" target="_blank">Forgot password?</a>
                    
                 </div>
             </form>

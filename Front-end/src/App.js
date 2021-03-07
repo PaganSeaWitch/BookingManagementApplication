@@ -7,6 +7,9 @@ import User from "./Components/user.component";
 import Login from "./Components/login.component";
 import CreateUser from "./Components/create-user.component";
 import Manager from "./Components/manager.component";
+import ForgotPassword from "./Components/forgot-password.component";
+import ResetPassword  from "./Components/reset-password.component";
+
 
 require('dotenv').config()
 
@@ -121,8 +124,30 @@ const App = () => {
         const hotel = { name: hotelName, location: hotelLocation, rooms: [] }
 
         const updatedManager = { oldUsername: manager.username, username, password, email, hotel_ID: manager.hotel_ID };
-        //Todo, call email checking function first
 
+        if (manager.email != email) {
+            axios.get(uri + "/checkEmail/" + email)
+                .then(response => {
+                    if (response.data.length == 3) {
+                        alert("The email you have chosen is not valid, changes were not saved!");
+                    }
+                })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
+            axios.get(uri + "/user/checkIfEmailExists/" + email)
+                .then(response => {
+                    if (response.data.length == 3) {
+                        alert("The email you have chosen has already been taken, changes were not saved!");
+                    }
+                })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
+            axios.get(uri + "/manager/checkIfEmailExists/" + email)
+                .then(response => {
+                    if (response.data.length == 3) {
+                        alert("The email you have chosen has already been taken, changes were not saved!");
+                    }
+                })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
+        }
         if (manager.username == username) {
 
             axios.post(uri + "/manager/update/", updatedManager)
@@ -153,9 +178,31 @@ const App = () => {
 
     const updateUser = async (user, username, password, email, firstName, lastName, setWarning) =>
     {
-        const updatedUser = { oldUsername : user.username, username, password, email, firstName, lastName };
-        //Todo, call email checking function first
-
+        const updatedUser = { oldUsername: user.username, username, password, email, firstName, lastName };
+        if (user.email != email) {
+            axios.get(uri + "/checkEmail/" + email)
+                .then(response => {
+                    if (response.data.length == 3) {
+                        alert("The email you have chosen is not valid, changes were not saved!");
+                    }
+                })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
+            axios.get(uri + "/user/checkIfEmailExists/" + email)
+                .then(response => {
+                    if (response.data.length == 3) {
+                        alert("The email you have chosen has already been taken, changes were not saved!");
+                    }
+                })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
+            axios.get(uri + "/manager/checkIfEmailExists/" + email)
+                .then(response => {
+                    if (response.data.length == 3) {
+                        alert("The email you have chosen has already been taken, changes were not saved!");
+                    }
+                })
+                .catch(err => { console.log(err); alert("changes were not saved!") });
+        }
+        
         if (user.username == username) {
             
             axios.post(uri + "/user/update/", updatedUser)
@@ -164,6 +211,7 @@ const App = () => {
 
         }
         else {
+           
             axios.get(uri + "/user/checkIfUsernameExists/" + username)
                 .then(response => {
                     console.log(response);
@@ -181,7 +229,36 @@ const App = () => {
         console.log(updatedUser.username);
     };
 
-
+    const updatePassword = (password, id,props) =>{
+        axios.get(uri + "/email/AccountRecovery/getById/" + id)
+            .then(accountTypeResponse => {
+                if (accountTypeResponse.data.accountType == "user") {
+                    const newPassword = ({ account_id: accountTypeResponse.data.account_id, password})
+                    axios.post(uri + "/user/updatePassword/", newPassword)
+                        .then(updatePasswordResponse => {
+                            console.log(updatePasswordResponse.data)
+                            props.history.push("/login")
+                            axios.delete(uri + "/email/AccountRecovery/DeleteAllByEmail/" + accountTypeResponse.data.email)
+                                .then(console.log("deleted all"))
+                                .catch(err => { console.log(err); alert("recovery deletes failed!"); })
+                        })
+                        .catch(err => { console.log(err); alert("password reset failed!"); })
+                }
+                if (accountTypeResponse.data.accountType == "manager") {
+                    const newPassword = ({ account_id: accountTypeResponse.data.account_id, password })
+                    axios.post(uri + "/manager/updatePassword/", newPassword)
+                        .then(updatePasswordResponse => {
+                            console.log(updatePasswordResponse.data)
+                            props.history.push("/login")
+                            axios.delete(uri + "/email/AccountRecovery/DeleteAllByEmail/" + accountTypeResponse.data.email)
+                                .then(console.log("deleted all"))
+                                .catch(err => { console.log(err); alert("recovery deletes failed!"); })
+                        })
+                        .catch(err => { console.log(err); alert("password reset failed!"); })
+                }
+            })
+            .catch(err => { console.log(err); alert("password reset failed!");})
+    }
 
     const checkUser = (givenUsername, givenPassword, props) => {
         axios.get(uri + "/user/getByUsername/", {
@@ -200,7 +277,27 @@ const App = () => {
 
     const createUser = async (username, password, email, firstName, lastName, props) =>
     {
-        axios.get(uri + "email/checkEmail/" + email)
+        
+            
+        axios.get(uri + "/user/checkIfEmailExits/" + email)
+            .then(response => {
+                if (response.data.length == 3) {
+                    alert("The email you have chosen has already been taken");
+                    return
+                }
+        })
+            .catch(err => { console.log(err); alert("user email check error!") });
+
+        axios.get(uri + "/manager/checkIfEmailExits/" + email)
+            .then(response => {
+                if (response.data.length == 3) {
+                    alert("The email you have chosen has already been taken");
+                    return
+                }
+        })
+                .catch(err => { console.log(err); alert("manager email check error!") });
+        
+        axios.get(uri + "/email/checkEmail/" + email)
             .then(response => {
                 console.log(response.data);
                 if (response.data == "yes") {
@@ -227,7 +324,7 @@ const App = () => {
                 }
 
             })
-            .catch(err => console.log("failed Add: " + err));
+            .catch(err => console.log("failed emailCheck: " + err));
     }
 
     const setUserState = (response, givenPassword) =>
@@ -283,7 +380,7 @@ const App = () => {
 
     const createManager = (username, password, email, hotelName, hotelLocation, props) =>
     {
-        axios.get(uri + "email/checkEmail/" + email)
+        axios.get(uri + "/email/checkEmail/" + email)
             .then(response => {
                 console.log(response.data);
                 if (response.data == "yes") {
@@ -354,6 +451,56 @@ const App = () => {
         console.log("Deleted user!");
     }
 
+
+
+
+    const recoverAccount = (email, props) => {
+        axios.get(uri + "/user/getByEmail/" + email)
+            .then(userResponse => {
+                if (userResponse.data == null) {
+                    axios.get(uri + "/manager/getByEmail/" + email)
+                        .then(managerResponse => {
+                            if (managerResponse.data == null) {
+                                alert("please enter an email that is tied to an account!")
+                            }
+                            else {
+                                const managerAccountRecovery = ({ email: email, account_id: managerResponse.data._id, accountType: "manager" })
+                                axios.post(uri + "/email/AccountRecovery/Add", managerAccountRecovery)
+                                    .then(acountRecoveryResponse => {
+                                        axios.post(uri + "/email/AccountRecovery/SendEmailRecoveryRequest/" + acountRecoveryResponse.data._id)
+                                            .then(emailSentResponse => {
+                                                console.log(emailSentResponse.data)
+                                                props.history.push("/resetPassword")
+
+                                            })
+                                            .catch(err => { alert("email sent error!"); console.log(err) });
+                                    })
+                                    .catch(err => { alert("adding acount Recovery error!"); console.log(err) });
+
+                            }
+                        })
+                        .catch(err => alert("getting manager Acount error!"));
+
+                }
+                else {
+                    const userAccountRecovery = ({ email: email, account_id: userResponse.data._id, accountType: "user" })
+                    console.log(userAccountRecovery)
+                    axios.post(uri + "/email/AccountRecovery/Add", userAccountRecovery)
+                        .then(acountRecoveryResponse => {
+                            axios.post(uri + "/email/AccountRecovery/SendEmailRecoveryRequest/" + acountRecoveryResponse.data._id)
+                                .then(emailSentResponse => {
+                                    console.log(emailSentResponse.data)
+                                    props.history.push("/resetPassword")
+                                })
+                                .catch(err => { alert("email sent error!"); console.log(err) });
+                        })
+                        .catch(err => { alert("adding acount Recovery error!"); console.log(err)});
+                }
+            })
+            .catch(err => {alert("getting user Acount error!"); console.log(err);});
+
+    }
+
     //where render happens
     return (
 
@@ -400,6 +547,25 @@ const App = () => {
             <Route path="/create" render={(props) => (
                 <>
                     {<CreateUser onCreateUser={createUser} onCreateManager={createManager} props={props} />}
+                </>
+            )}
+            />
+            <Route path="/forgotPassword" exact render={(props) => (
+                <>
+                    {<ForgotPassword props={props} onEmailSubmit={recoverAccount} />}
+                </>
+            )}
+
+            />
+            <Route path="/resetPassword/:id" exact render={(props) => (
+                <>
+                    {<ResetPassword onResetPassword={updatePassword} props={props} />}
+                </>
+            )}
+            />
+            <Route path="/resetPassword/" exact render={(props) => (
+                <>
+                    {<ResetPassword onResetPassword={updatePassword} props={props} />}
                 </>
             )}
             />

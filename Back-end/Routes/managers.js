@@ -19,7 +19,16 @@ router.route("/add").post((req, res) =>{
         .then(() => res.json(newManager))
         .catch(err => res.status(400).json("Error: " + err));
 });
-
+router.route("/updatePassword/").post((req, res) => {
+    Manager.findOneAndUpdate({ _id: req.body.account_id })
+        .then((user) => {
+            manager.password = req.body.password;
+            manager.save()
+                .then(() => res.json("password updated"))
+                .catch(err => res.status(400).json("Error: " + err));
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+})
 //get by username
 router.route("/getByUsername/").get((req, res) => {
     console.log(req.params);
@@ -39,14 +48,37 @@ router.route("/getByUsername/").get((req, res) => {
 
 });
 
+router.route("/getByEmail/:email").get((req, res) => {
+    Manager.findOne({ email: req.params.email })
+        .then(manager => {
+            res.json(manager);
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+
+});
+
 //delete by username
-router.route("deleteByUsername/:username").delete((req, res) => {
+router.route("/deleteByUsername/:username").delete((req, res) => {
     Manager.findOneAndDelete({ username: req.params.username })
         .then(() => res.json("Manager deleted."))
         .catch(err => res.status(400).json("Error: " + err));
 });
 
-router.route("deleteById/:id").delete((req, res) => {
+router.route("/checkIfEmailExits/:email").get((req, res) => {
+    Manager.findOne({ email: req.params.email})
+        .then((manager) => {
+            if (manager != null) {
+                res.json("yes")
+            }
+            else {
+                res.json("no")
+            }
+        })
+        .catch(err => res.status(400).json("Error: " + err))
+
+})
+
+router.route("/deleteById/:id").delete((req, res) => {
     Manager.findOneAndDelete({ _id: req.params.id })
         .then(() => res.json("Manager deleted."))
         .catch(err => res.status(400).json("Error: " + err));
