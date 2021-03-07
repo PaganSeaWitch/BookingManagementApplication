@@ -24,7 +24,7 @@ const ResetPassword = ({ onResetPassword, props }) => {
                 return;
             }
             else {
-                onResetPassword(id, password,props)
+                onResetPassword(password,id ,props)
             }
         }
 

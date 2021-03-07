@@ -186,13 +186,16 @@ const App = () => {
 
     const updatePassword = (password, id,props) =>{
         axios.get(uri + "/email/AccountRecovery/getById/" + id)
-            .then(accoutTypeResponse => {
+            .then(accountTypeResponse => {
                 if (accountTypeResponse.data.accountType == "user") {
                     const newPassword = ({ account_id: accountTypeResponse.data.account_id, password})
                     axios.post(uri + "/user/updatePassword/", newPassword)
                         .then(updatePasswordResponse => {
                             console.log(updatePasswordResponse.data)
                             props.history.push("/login")
+                            axios.delete(uri + "/email/AccountRecovery/DeleteAllByEmail/" + accountTypeResponse.data.email)
+                                .then(console.log("deleted all"))
+                                .catch(err => { console.log(err); alert("recovery deletes failed!"); })
                         })
                         .catch(err => { console.log(err); alert("password reset failed!"); })
                 }
@@ -202,6 +205,9 @@ const App = () => {
                         .then(updatePasswordResponse => {
                             console.log(updatePasswordResponse.data)
                             props.history.push("/login")
+                            axios.delete(uri + "/email/AccountRecovery/DeleteAllByEmail/" + accountTypeResponse.data.email)
+                                .then(console.log("deleted all"))
+                                .catch(err => { console.log(err); alert("recovery deletes failed!"); })
                         })
                         .catch(err => { console.log(err); alert("password reset failed!"); })
                 }

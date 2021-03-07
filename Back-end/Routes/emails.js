@@ -37,7 +37,8 @@ router.route("/AccountRecovery/Add").post((req, res) => {
 
 });
 
-router.route("/AccountRecovery/getById/:id").post((req, res) => {
+router.route("/AccountRecovery/getById/:id").get((req, res) => {
+    console.log(req.params.id)
     AccountRecovery.findById(req.params.id)
         .then((account) => res.json(account))
         .catch(err => res.status(400).json("Error: " + err));
