@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 require('dotenv').config()
 
-const ResetPassword = ({ onResetPassword, props }) => {
+const ResetPassword = ({ onResetPassword, props, checkResetID }) => {
     const [password, setPassword] = useState("");
     const [reset, setReset] = useState(false);
     const [stub, setStub] = useState(false);
@@ -14,6 +14,7 @@ const ResetPassword = ({ onResetPassword, props }) => {
     let id = ""
     if ((page != uri + currentPageType1 && page != uri + currentPageType2)) {
         id = page.substring(uri.length + currentPageType2.length)
+        checkResetID(id, props);
     }
 
     useEffect(() => {

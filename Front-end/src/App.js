@@ -432,7 +432,15 @@ const App = () => {
             .catch(err => alert("Login error!"));
     };
 
-
+    const checkResetId = (id, props) => {
+        axios.get(uri + "/email/AccountRecovery/getById/" + id)
+            .then(accountResponse => {
+                if (accountResponse == null) {
+                    props.history.push("/")
+                }
+            })
+            .catch(err => {props.history.push("/")})
+    }
     const deleteManager = (id) => {
         //delete generic from backend
         //no implementation for server errors
@@ -559,13 +567,13 @@ const App = () => {
             />
             <Route path="/resetPassword/:id" exact render={(props) => (
                 <>
-                    {<ResetPassword onResetPassword={updatePassword} props={props} />}
+                    {<ResetPassword checkResetID={checkResetId} onResetPassword={updatePassword} props={props} />}
                 </>
             )}
             />
             <Route path="/resetPassword/" exact render={(props) => (
                 <>
-                    {<ResetPassword onResetPassword={updatePassword} props={props} />}
+                    {<ResetPassword checkResetID={checkResetId} onResetPassword={updatePassword} props={props} />}
                 </>
             )}
             />

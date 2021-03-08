@@ -44,6 +44,7 @@ router.route("/AccountRecovery/getById/:id").get((req, res) => {
         .catch(err => res.status(400).json("Error: " + err));
 
 });
+
 router.route("/AccountRecovery/DeleteAllByEmail/:email").delete((req, res) => {
     AccountRecovery.deleteMany({ email: req.params.email })
         .then(() => res.json("accountRecoveryRequests deleted."))
