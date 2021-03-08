@@ -10,7 +10,7 @@ const Dashboard = ({user, manager  }) => {
 					<div>	
 						You're not logged in!
 						
-							<ul className = "booking-group">
+							<ul style = {{align: "left", listStyleType: "none"}} className = "booking-group">
 								{sample.map(listItem => <li> <Booking>listItem </Booking> </li>)}
 							</ul>
 						

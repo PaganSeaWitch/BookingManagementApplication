@@ -1,18 +1,24 @@
-
 import { useState, useEffect, useRef } from "react";
 import DeleteDialogue from "./deleteDialogue.component"
 import Button from '@material-ui/core/Button';
 
 //the user component, also functions as the user information page
 //props for later { user, onDelete, editUser }
-const Manager = ({ manager, onDelete, logOut, props, onUpdate }) => {
+const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
     const [hidden, setHidden] = useState(true);
     const [warning, setWarning] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [hotelName, setHotelName] = useState("");
-    const [hotelLocation, setHotelLocation] = useState("");
+    const [hotelLocation, setHotelLocation] = useState({
+        streetAddress1: "",
+        streetAddress2: "",
+        city: "",
+        stateOrProvince: "",
+        country: "",
+        postalCode: "",
+    });
     const [safty, setSafty] = useState(false);
     const [canSave, setCanSave] = useState(false);
     const [managerSave, setManagerSave] = useState(false);
@@ -20,7 +26,27 @@ const Manager = ({ manager, onDelete, logOut, props, onUpdate }) => {
 
     //this happpens at the start of the apps life cycle
     useEffect(() => {
+        if (hotelName == "" && hotelLocation.streetAddress1 == "")
+        {
+            const response = getHotel(manager.hotel_ID);
+            if (response.data != "") {
+                setHotelName(response.name);
+                setHotelLocation({
+                    ...hotelLocation,
+                    streetAddress1: response.data.stree,
+                    streetAddress2: response.data.streetAddress2,
+                    stateOrProvince: response.data.stateOrProvince,
+                    country: response.data.country,
+                    postalCode: response.data.postalCode,
+                });
+            }
+            else {
+                alert("Cannot get hotel!");
+                setHotelName = "Not Avaliable!"
 
+            }
+            
+        }
         //this is a reference to the button
         //basically, we add an event listener after its loaded up
         //the reason we do this instead of directly in-line
@@ -168,11 +194,51 @@ const Manager = ({ manager, onDelete, logOut, props, onUpdate }) => {
                     
                 </div>
                 <div>
-                    <label>Hotel Location:</label>
+                    <label>Hotel Street Address 1:</label>
                     <input
                         type='text'
-                        value={hotelLocation}
-                        onChange={(e) => { setWarning("changes made "); setHotelLocation(e.target.value); }
+                        value={hotelLocation.streetAddress1}
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({streetAddress1: e.target.value }); }
+                        } />
+                </div>
+                <div>
+                    <label>Hotel Street Address 2:</label>
+                    <input
+                        type='text'
+                        value={hotelLocation.streetAddress2}
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({ streetAddress2: e.target.value }); }
+                        } />
+                </div>
+                <div>
+                    <label>Hotel City:</label>
+                    <input
+                        type='text'
+                        value={hotelLocation.city}
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({city: e.target.value }); }
+                        } />
+                </div>
+                <div>
+                    <label>Hotel State/Province:</label>
+                    <input
+                        type='text'
+                        value={hotelLocation.stateOrProvince}
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({ stateOrProvince: e.target.value }); }
+                        } />
+                </div>
+                <div>
+                    <label>Hotel Country:</label>
+                    <input
+                        type='text'
+                        value={hotelLocation.country}
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({ country: e.target.value }); }
+                        } />
+                </div>
+                <div>
+                    <label>Hotel Postal Code:</label>
+                    <input
+                        type='text'
+                        value={hotelLocation.postalCode}
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({postalCode: e.target.value }); }
                         } />
                 </div>
                 <div>

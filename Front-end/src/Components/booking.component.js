@@ -4,10 +4,10 @@ const Booking = ({}) => {
 	
 	
 	return(
-			<div style= {{marginBottom: '50px'}} className={"login-header"}>
+			<div style= {{marginBottom: '50px'}} >
                 <header> 
-                    <div className={"bottom-right-corner"}>
-						<form className={"login-form"}>
+                    <div>
+						<form>
 						<div>
 							<span></span>
 							Room Num 254

@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import { useState, useEffect, useRef } from "react";
+
 const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -12,7 +13,12 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
     const [userType, setUserType] = useState("User");
     const [hotelName, setHotelName] = useState("");
     const [create, setCreate] = useState(false);
-    const [hotelLocation, setHotelLocation] = useState("");
+    const [hotelStreetAddress1, setHotelStreetAddress1] = useState("");
+    const [hotelStreetAddress2, setHotelStreetAddress2] = useState("");
+    const [hotelCity, setHotelCity] = useState("");
+    const [hotelState, setHotelState] = useState("");
+    const [hotelCountry, setHotelCountry] = useState("");
+    const [hotelPostalCode, setHotelPostalCode] = useState("");
     const refToUserForms = useRef(null);
     const refToManagerForms = useRef(null);
 
@@ -23,7 +29,7 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
         
         if (create == true) {
             setCreate(false);
-            if (username.length == 0 || password.length == 0 || email.length == 0) {
+            if (username.length == 0 || password.length <= 5 || email.length == 0) {
                 alert("please enter in all fields and have a password of 5 characters minimum")
                 return;
             }
@@ -36,10 +42,32 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
                 onCreateUser(username, password, email, firstName, lastName, props)
             }
             else {
-                if (hotelName.length == 0 || hotelLocation.length == 0) {
-                    alert("please enter in all fields and have a password of 5 characters minimum")
+                if (hotelName.length == 0){
+                    alert("please enter your hotel name!")
                     return;
                 }
+                if (hotelCity.length == 0) {
+                    alert("please enter your hotel's city!")
+                    return;
+                }
+                if (hotelState.length == 0) {
+                    alert("please enter your hotel's state or province!")
+                    return;
+                }
+                if (hotelStreetAddress1.length == 0) {
+                    alert("please enter your hotel's street address!")
+                    return;
+                }
+                if (hotelCountry.length == 0) {
+                    alert("please enter your hotel's country!")
+                    return;
+                }
+                if (hotelPostalCode.length == 0) {
+                    alert("please enter your hotel's postal code!")
+                    return;
+                }
+                const hotelLocation = { streetAddress1: hotelStreetAddress1, streetAddress2: hotelStreetAddress2, city : hotelCity,stateOrProvince: hotelState, country: hotelCountry, postalCode : hotelPostalCode };
+                console.log(hotelLocation);
                 onCreateManager(username, password, email, hotelName, hotelLocation, props);
                 
             }
@@ -163,7 +191,7 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
                         </div>
                         <div>
                             <span></span>
-                            <label>Hotel Location</label>
+                            <label>Street Address 1</label>
                             <span></span>
                         </div>
                         <div>
@@ -171,8 +199,83 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
 
                             <input className={"rounded-login"}
                                 type='text'
-                                value={hotelLocation}
-                                onChange={(e) => { setHotelLocation(e.target.value); }
+                                value={hotelStreetAddress1}
+                                onChange={(e) => { setHotelStreetAddress1(e.target.value); }
+                                } />
+                            <span></span>
+                        </div>
+                        <div>
+                            <span></span>
+                            <label>Street Address 2</label>
+                            <span></span>
+                        </div>
+                        <div>
+                            <span></span>
+
+                            <input className={"rounded-login"}
+                                type='text'
+                                value={hotelStreetAddress2}
+                                onChange={(e) => { setHotelStreetAddress2(e.target.value); }
+                                } />
+                            <span></span>
+                        </div>
+                        <div>
+                            <span></span>
+                            <label>City</label>
+                            <span></span>
+                        </div>
+                        <div>
+                            <span></span>
+
+                            <input className={"rounded-login"}
+                                type='text'
+                                value={hotelCity}
+                                onChange={(e) => { setHotelCity(e.target.value); }
+                                } />
+                            <span></span>
+                        </div>
+                        <div>
+                            <span></span>
+                            <label>State/Province</label>
+                            <span></span>
+                        </div>
+                        <div>
+                            <span></span>
+
+                            <input className={"rounded-login"}
+                                type='text'
+                                value={hotelState}
+                                onChange={(e) => { setHotelState(e.target.value); }
+                                } />
+                            <span></span>
+                        </div>
+                        <div>
+                            <span></span>
+                            <label>Country</label>
+                            <span></span>
+                        </div>
+                        <div>
+                            <span></span>
+
+                            <input className={"rounded-login"}
+                                type='text'
+                                value={hotelCountry}
+                                onChange={(e) => { setHotelCountry(e.target.value); }
+                                } />
+                            <span></span>
+                        </div>
+                        <div>
+                            <span></span>
+                            <label>Postal Code</label>
+                            <span></span>
+                        </div>
+                        <div>
+                            <span></span>
+
+                            <input className={"rounded-login"}
+                                type='text'
+                                value={hotelPostalCode}
+                                onChange={(e) => { setHotelPostalCode(e.target.value); }
                                 } />
                             <span></span>
                         </div>
