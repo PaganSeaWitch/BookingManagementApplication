@@ -1,17 +1,17 @@
 import React from 'react';
-import Booking from "./booking.component";
-const Dashboard = ({user, manager  }) => {
-	const sample = [Booking, Booking, Booking];
+import Hotel from "./hotel-listing.component";
+
+const Dashboard = ({user, manager, hotels }) => {
 	
-	
+	console.log(hotels)
 	return(
 			(user._id == "" && manager._id == "") //if not logged in, adjust display
 			? <div>
 					<div>	
-						You're not logged in!
+					You're not logged in!
 						
-							<ul style = {{align: "left", listStyleType: "none"}} className = "booking-group">
-								{sample.map(listItem => <li> <Booking>listItem </Booking> </li>)}
+							<ul>
+						{hotels.map(hotel => <li> <Hotel hotel={hotel} /></li>)}
 							</ul>
 						
 					</div> 

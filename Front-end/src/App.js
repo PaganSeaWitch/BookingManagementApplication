@@ -556,7 +556,7 @@ const App = () => {
 			
 			<Route path="/Dashboard" render={(props) => (
                 <>
-                    {<Dashboard user={user} manager={manager}/>}
+                    {<Dashboard user={user} manager={manager} hotels={[{ id: 1000, name: "Chicken", location: { streetAddress1: "cumStreet", streetAddress2: "100 Apt.", city: "bloomington", stateOrProvince: "TEXAS", country: "USA", postalCode: "1001" } }]}/>}
                 </>
             )}
             />
