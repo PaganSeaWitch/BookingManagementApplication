@@ -41,6 +41,7 @@ const NavBar = ({  user, manager }) => {
                                 <Link to="/dashboard" className="nav-link">Dashboard</Link>
                                 </li>
                             </ul>
+                            
                         </div>
                         : <div>
                             < ul className="navbar-nav mr-auto">
@@ -52,9 +53,22 @@ const NavBar = ({  user, manager }) => {
                                 </li>
                             </ul>
                             </div>}
+                    </div>}
+                <form className="form-inline">
+                    {(user._id == "" && manager._id == "") //if true, display first div
+                        ? <div>
+
+                            <label> Welcome to Rendeview!</label>
+                            <label> You are not logged in! </label>
+                        </div>
+                        : <div>
+
+                            <label> Hello {manager.username}{user.username}!</label>
+                            <label> You have 0 messages </label>
                         </div>}
+                </form>
            
-        </div>
+            </div>
     </nav>);
 };
 

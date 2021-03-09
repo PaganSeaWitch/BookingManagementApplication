@@ -28,6 +28,17 @@ code {
 	margin-right : 10px;
 }
 
+.form-inline{
+	position:absolute;
+	bottom:0;
+	right: 0px;
+	margin: auto;
+
+}
+.form-inline label{
+	color: white;
+	
+}
 
 .login-form{
 	margin: auto;
