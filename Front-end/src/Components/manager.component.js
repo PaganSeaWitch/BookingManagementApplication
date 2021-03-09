@@ -23,30 +23,20 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
     const [canSave, setCanSave] = useState(false);
     const [managerSave, setManagerSave] = useState(false);
 
+    useEffect(() => {
+        if (hotelName == "" && hotelLocation.streetAddress1 == "") {
+            getHotel(manager.hotel_ID, setHotelLocation, setHotelName, hotelLocation)
 
+
+        }
+        //only fillforms if the user exists
+        if (username == "" && password == "") {
+            fillForms();
+        }
+    },[])
     //this happpens at the start of the apps life cycle
     useEffect(() => {
-        if (hotelName == "" && hotelLocation.streetAddress1 == "")
-        {
-            const response = getHotel(manager.hotel_ID);
-            if (response.data != "") {
-                setHotelName(response.name);
-                setHotelLocation({
-                    ...hotelLocation,
-                    streetAddress1: response.data.stree,
-                    streetAddress2: response.data.streetAddress2,
-                    stateOrProvince: response.data.stateOrProvince,
-                    country: response.data.country,
-                    postalCode: response.data.postalCode,
-                });
-            }
-            else {
-                alert("Cannot get hotel!");
-                setHotelName = "Not Avaliable!"
-
-            }
-            
-        }
+        
         //this is a reference to the button
         //basically, we add an event listener after its loaded up
         //the reason we do this instead of directly in-line
@@ -70,10 +60,8 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
         //if the user clicked save
         if (managerSave == true) {
             setManagerSave(false);
-            console.log(username);
             saveChanges();
         }
-
         //constantly check whether they can save
         const checkStates = () => {
             if (warning.length == 0) {
@@ -104,10 +92,7 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
         }
         checkStates();
         
-        //only fillforms if the user exists
-        if (username == "" && password == "") {
-            fillForms();
-        }
+        
     });
 
     if (manager._id == "") {
@@ -120,8 +105,6 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
         setUsername(manager.username);
         setPassword(manager.password);
         setEmail(manager.email);
-        setHotelName(manager.hotel.name);
-        setHotelLocation(manager.hotel.location);
     }
 
     const refToLogout = useRef(null);
@@ -198,7 +181,7 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
                     <input
                         type='text'
                         value={hotelLocation.streetAddress1}
-                        onChange={(e) => { setWarning("changes made "); setHotelLocation({streetAddress1: e.target.value }); }
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({ ...hotelLocation,streetAddress1: e.target.value }); }
                         } />
                 </div>
                 <div>
@@ -206,7 +189,7 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
                     <input
                         type='text'
                         value={hotelLocation.streetAddress2}
-                        onChange={(e) => { setWarning("changes made "); setHotelLocation({ streetAddress2: e.target.value }); }
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({ ...hotelLocation, streetAddress2: e.target.value }); }
                         } />
                 </div>
                 <div>
@@ -214,7 +197,7 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
                     <input
                         type='text'
                         value={hotelLocation.city}
-                        onChange={(e) => { setWarning("changes made "); setHotelLocation({city: e.target.value }); }
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({ ...hotelLocation, city: e.target.value }); }
                         } />
                 </div>
                 <div>
@@ -222,7 +205,7 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
                     <input
                         type='text'
                         value={hotelLocation.stateOrProvince}
-                        onChange={(e) => { setWarning("changes made "); setHotelLocation({ stateOrProvince: e.target.value }); }
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({...hotelLocation, stateOrProvince: e.target.value }); }
                         } />
                 </div>
                 <div>
@@ -230,7 +213,7 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
                     <input
                         type='text'
                         value={hotelLocation.country}
-                        onChange={(e) => { setWarning("changes made "); setHotelLocation({ country: e.target.value }); }
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({ ...hotelLocation, country: e.target.value }); }
                         } />
                 </div>
                 <div>
@@ -238,7 +221,7 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
                     <input
                         type='text'
                         value={hotelLocation.postalCode}
-                        onChange={(e) => { setWarning("changes made "); setHotelLocation({postalCode: e.target.value }); }
+                        onChange={(e) => { setWarning("changes made "); setHotelLocation({ ...hotelLocation,postalCode: e.target.value }); }
                         } />
                 </div>
                 <div>

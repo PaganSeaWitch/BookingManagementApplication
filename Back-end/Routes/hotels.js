@@ -1,7 +1,7 @@
 const router = require('express').Router();
-let Hotel = require("../Models/hotel.model");
+let hotelImport = require("../Models/hotel.model");
+let Hotel = hotelImport.model
 let Room = require("../Models/room.model");
-
 //Returns all hotels
 router.route("/allHotels").get((req, res) => {
     Hotel.find()
@@ -16,24 +16,30 @@ router.route("/allRooms").get((req, res) => {
     .catch(err => res.status(400).json("Error: " + err))
 })
 
+//Returns hotel by ID
+router.route("/getHotelByID/:id").get((req, res) => {
+    
+    Hotel.findById(req.params.id)
+        .then(hotel => { console.log(hotel); res.json(hotel) })
+        .catch(err => res.status(400).json("Error: " + err))
+})
 
 //Adds a hotel
 router.route("/addHotel").post((req, res) => {
-    const hotelID = req.body.hotelID;
-    const streetAddress1 = req.body.streetAddress1;
-    const streetAddress2 = req.body.streetAddress2;
-    const city = req.body.city;
-    const stateOrProvince = req.body.stateOrProvince;
-    const country = req.body.country;
-    const postalCode = req.body.postalCode;
-    const numberofRooms = req.body.numberofRooms;
-
-    const newHotel = new Hotel({ hotelID, streetAddress1 , streetAddress2, 
-        city, stateOrProvince, country, postalCode, numberofRooms });
-
+    console.log("trying to add hotel")
+    const hotelName = req.body.name;
+    const streetAddress1 = req.body.location.streetAddress1;
+    const streetAddress2 = req.body.location.streetAddress2;
+    const city = req.body.location.city;
+    const stateOrProvince = req.body.location.stateOrProvince;
+    const country = req.body.location.country;
+    const postalCode = req.body.location.postalCode;
+    const rooms = req.body.rooms;
+    
+    const newHotel = new Hotel({ name: hotelName, location: { streetAddress1, streetAddress2, city, stateOrProvince, country, postalCode } , rooms: rooms });
     newHotel.save()
-    .then(() => res.json(newHotel))
-    .catch(err => res.status(400).json("Error: " + err));
+        .then(() => res.json(newHotel))
+        .catch(err => res.status(400).json("Error: " + err));
 
 })
 
@@ -57,16 +63,16 @@ router.route("/addRoom").post((req, res) => {
 
 //Update hotel info
 router.route("/updateHotel").post((req, res) => {
-    Hotel.findOneAndUpdate({ hotelID: req.params.oldhotelID  })
+    Hotel.findOneAndUpdate({ hotelID: req.body.id  })
         .then((hotel) => {
-            hotel.hotelID = req.body.hotelID;
-            hotel.streetAddress1 = req.body.streetAddress1;
-            hotel.streetAddress2 = req.body.streetAddress2;
-            hotel.city = req.body.city;
-            hotel.stateOrProvince = req.body.stateOrProvince;
-            hotel.country = req.body.country;
-            hotel.postalCode = req.body.postalCode;
-            hotel.numberofRooms = req.numberofRooms;
+            hotel.name = req.body.name;
+            hotel.location.streetAddress1 = req.body.location.streetAddress1;
+            hotel.location.streetAddress2 = req.body.location.streetAddress2;
+            hotel.location.city = req.body.location.city;
+            hotel.location.stateOrProvince = req.body.location.stateOrProvince;
+            hotel.location.country = req.body.location.country;
+            hotel.location.postalCode = req.body.location.postalCode;
+            hotel.rooms = req.body.rooms;
             hotel.save()
                 .then(() => res.json(hotel))
                 .catch(err => res.status(400).json("Error: " + err));

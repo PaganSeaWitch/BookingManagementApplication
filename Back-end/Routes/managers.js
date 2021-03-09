@@ -20,8 +20,8 @@ router.route("/add").post((req, res) =>{
         .catch(err => res.status(400).json("Error: " + err));
 });
 router.route("/updatePassword/").post((req, res) => {
-    Manager.findOneAndUpdate({ _id: req.body.account_id })
-        .then((user) => {
+    Manager.findOneAndUpdate({ id: req.body.account_id })
+        .then((manager) => {
             manager.password = req.body.password;
             manager.save()
                 .then(() => res.json("password updated"))
@@ -34,15 +34,21 @@ router.route("/getByUsername/").get((req, res) => {
     console.log(req.params);
     Manager.findOne({ username: req.query.username })
         .then(manager => {
-            manager.comparePassword(req.query.password)
-                .then((isMatch) => {
-                    if (isMatch == true) {
-                        res.json(manager);
+            if (manager != null) {
+                manager.comparePassword(req.query.password)
+                    .then((isMatch) => {
+                        if (isMatch == true) {
+                            res.json(manager);
 
-                    }
-                    else res.status(400).json("Error: password did not match")
-                })
-                .catch(err => res.status(400).json("Error: " + err));
+                        }
+                        else res.status(400).json("Error: password did not match")
+                    })
+                    .catch(err => res.status(400).json("Error: " + err));
+            }
+            else {
+                res.status(400).json("Error: password did not match")
+
+            }
         })
         .catch(err => res.status(400).json("Error: " + err));
 
@@ -97,14 +103,14 @@ router.route("/checkIfUsernameExists/:username").get((req, res) => {
 })  
 
 router.route("/update/").post((req, res) => {
-    Manager.findOneAndUpdate({ username: req.params.oldUsername  })
+    Manager.findOneAndUpdate({ id: req.body.id  })
         .then((manager) => {
             manager.username = req.body.username;
             manager.password = req.body.password;
             manager.email = req.body.email;
             manager.hotel_ID = req.body.hotel_ID;
             manager.save()
-                .then(() => res.json(manager))
+                .then(() => { console.log(manager); res.json(manager) })
                 .catch(err => res.status(400).json("Error: " + err));
         })
         .catch(err => res.status(400).json("Error: " + err))

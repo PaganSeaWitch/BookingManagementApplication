@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const userRouter = require("./routes/users")
 const managerRouter = require("./routes/managers")
 const emailRouter = require("./routes/emails")
+const hotelRouter = require("./routes/hotels")
 require('dotenv').config();
 
 
@@ -33,6 +34,7 @@ connection.once("open", () => {
 app.use("/user", userRouter)
 app.use("/manager", managerRouter)
 app.use("/email", emailRouter)
+app.use("/hotel", hotelRouter)
 
 //start the server
 app.listen(port, () => {

@@ -48,7 +48,8 @@ const hotelSchema = new Schema
         },
         location:
         {
-            locationSchema
+            type: locationSchema,
+            required:true
         },
         rooms: [roomSchema],
         pictureLink:
@@ -62,6 +63,5 @@ const hotelSchema = new Schema
     });
 
 const Hotel = mongoose.model("Hotel", hotelSchema);
-
 
 module.exports = { model: Hotel, schema: hotelSchema }

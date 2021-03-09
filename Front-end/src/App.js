@@ -63,10 +63,23 @@ const App = () => {
         
     }, [])
 
-    const getHotel = (hotel_id) => {
-        axios.get(uri + "/hotel/getByID/" + hotel_id)
+    const getHotel = (hotel_id, setHoteLocation, setHotelName, hotelLocation) => {
+        console.log("using the getHotel fuctnion")
+        axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
             .then(response => {
-                return response;
+                if (response != null) {
+                    setHotelName(response.data.name);
+                    setHoteLocation({
+                        ...hotelLocation,
+                        streetAddress1: response.data.location.streetAddress1,
+                        streetAddress2: response.data.location.streetAddress2,
+                        city: response.data.location.city,
+                        stateOrProvince: response.data.location.stateOrProvince,
+                        country: response.data.location.country,
+                        postalCode:response.data.location.postalCode
+                    });
+                    console.log(response.data.location)
+                }
             })
             .catch(err => {return ""})
     }
@@ -123,15 +136,16 @@ const App = () => {
     }
 
     const updateManager = async (manager, username, password, email, hotelName, hotelLocation, setWarning) => {
-        const hotel = { name: hotelName, location: hotelLocation, rooms: [] }
+        const hotel = { id: manager.hotel_ID, name: hotelName, location: hotelLocation, rooms: [] }
 
-        const updatedManager = { oldUsername: manager.username, username, password, email, hotel_ID: manager.hotel_ID };
+        const updatedManager = { id: manager._id, username: username, password: password, email: email, hotel_ID: manager.hotel_ID };
 
         if (manager.email != email) {
-            axios.get(uri + "/checkEmail/" + email)
+            axios.get(uri + "/email/checkEmail/" + email)
                 .then(response => {
                     if (response.data.length == 3) {
                         alert("The email you have chosen is not valid, changes were not saved!");
+                        return;
                     }
                 })
                 .catch(err => { console.log(err); alert("changes were not saved!") });
@@ -139,6 +153,7 @@ const App = () => {
                 .then(response => {
                     if (response.data.length == 3) {
                         alert("The email you have chosen has already been taken, changes were not saved!");
+                        return;
                     }
                 })
                 .catch(err => { console.log(err); alert("changes were not saved!") });
@@ -146,6 +161,7 @@ const App = () => {
                 .then(response => {
                     if (response.data.length == 3) {
                         alert("The email you have chosen has already been taken, changes were not saved!");
+                        return;
                     }
                 })
                 .catch(err => { console.log(err); alert("changes were not saved!") });
@@ -155,7 +171,7 @@ const App = () => {
             axios.post(uri + "/manager/update/", updatedManager)
                 .then(response => { setManagerState(response, password); setWarning(""); })
                 .catch(err => { console.log(err); alert("changes were not saved!") });
-            axios.post(uri + "/hotel/update/", hotel)
+            axios.post(uri + "/hotel/updateHotel/", hotel)
         }
         else{
             axios.get(uri + "/manager/checkIfUsernameExists/" + username)
@@ -164,7 +180,7 @@ const App = () => {
                         axios.post(uri + "/manager/update/", updatedManager)
                             .then(response => { setManagerState(response, password); setWarning(""); })
                             .catch(err => { console.log(err); alert("changes were not saved!") });
-                        axios.post(uri + "/hotel/update/", hotel)
+                        axios.post(uri + "/hotel/updateHotel/", hotel)
 
                     }
                     else
@@ -180,12 +196,13 @@ const App = () => {
 
     const updateUser = async (user, username, password, email, firstName, lastName, setWarning) =>
     {
-        const updatedUser = { oldUsername: user.username, username, password, email, firstName, lastName };
+        const updatedUser = { id:user._id, username, password, email, firstName, lastName };
         if (user.email != email) {
-            axios.get(uri + "/checkEmail/" + email)
+            axios.get(uri + "/email/checkEmail/" + email)
                 .then(response => {
                     if (response.data.length == 3) {
                         alert("The email you have chosen is not valid, changes were not saved!");
+                        return;
                     }
                 })
                 .catch(err => { console.log(err); alert("changes were not saved!") });
@@ -193,6 +210,7 @@ const App = () => {
                 .then(response => {
                     if (response.data.length == 3) {
                         alert("The email you have chosen has already been taken, changes were not saved!");
+                        return;
                     }
                 })
                 .catch(err => { console.log(err); alert("changes were not saved!") });
@@ -200,6 +218,7 @@ const App = () => {
                 .then(response => {
                     if (response.data.length == 3) {
                         alert("The email you have chosen has already been taken, changes were not saved!");
+                        return;
                     }
                 })
                 .catch(err => { console.log(err); alert("changes were not saved!") });
@@ -396,7 +415,7 @@ const App = () => {
                             else
                             {
                                 const hotel = { name: hotelName, location: hotelLocation, rooms: [] }
-                                axios.post(uri + "/hotel/add", hotel)
+                                axios.post(uri + "/hotel/addHotel", hotel)
                                     .then(hotelResponse => {
                                         const newManager = {  username, password, email, hotel_ID: hotelResponse.data }
                                         axios.post(uri + "/manager/add", newManager)

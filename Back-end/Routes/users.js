@@ -34,15 +34,21 @@ router.route("/getByUsername/").get((req, res) => {
     User.findOne({ username: req.query.username })
         .then(user =>
         {
-            user.comparePassword(req.query.password)
-                .then((isMatch) => {
-                    if (isMatch == true) {
-                        res.json(user);
+            if (user != null) {
+                user.comparePassword(req.query.password)
+                    .then((isMatch) => {
+                        if (isMatch == true) {
+                            res.json(user);
 
-                    }
-                    else res.status(400).json("Error: password did not match")
-                })
-                .catch(err => res.status(400).json("Error: " + err));
+                        }
+                        else res.status(400).json("Error: password did not match")
+                    })
+                    .catch(err => res.status(400).json("Error: " + err));
+            }
+            else {
+                res.status(400).json("Error: password did not match")
+
+            }
         })
         .catch(err => res.status(400).json("Error: " + err));
 
@@ -112,7 +118,7 @@ router.route("/checkIfEmailExits/:email").get((req, res) => {
 //Updates user by username
 router.route("/update/").post((req, res) => {
     console.log(req.body)
-    User.findOneAndUpdate({ username: req.body.oldUsername })
+    User.findOneAndUpdate({ id: req.body.id })
         .then((user) => {
             user.username = req.body.username;
             user.password = req.body.password;
