@@ -10,8 +10,8 @@ import Manager from "./Components/manager.component";
 import Dashboard from "./Components/dashboard.component";
 import SplashPage from "./Components/splashPage.component";
 import ForgotPassword from "./Components/forgot-password.component";
-import ResetPassword  from "./Components/reset-password.component";
-
+import ResetPassword from "./Components/reset-password.component";
+import Hotel from "./Components/hotel.component";
 
 require('dotenv').config()
 
@@ -35,7 +35,7 @@ const App = () => {
         hotel_ID: ""
 
     })
-    
+    const [hotels, setHotels] = useState([])
     const uri = process.env.REACT_APP_BACK_END_SERVER_URI
 
     const logOut = () => {
@@ -59,11 +59,43 @@ const App = () => {
             setManagerStateWithoutPassword(managerJSON);
             console.log(managerJSON);
         }
-        
+        if (hotels.length == 0) {
+            getHotels()
+        }
         
     }, [])
 
-    const getHotel = (hotel_id, setHoteLocation, setHotelName, hotelLocation) => {
+    const getHotels = () => {
+        axios.get(uri + "/hotel/allHotels")
+            .then(response => {
+                console.log(response.data)
+                setHotels(response.data)
+            })
+    }
+
+    const getHotel = (hotel_id, setHotelLocation, setHotelName, setHotelRooms, props) => {
+        console.log("Getting hotel!")
+        axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
+            .then(response => {
+                if (response == null) {
+                    props.history.push("/")
+                }
+                else {
+                    setHotelName(response.data.name);
+                    setHotelLocation({
+                        streetAddress1: response.data.location.streetAddress1,
+                        streetAddress2: response.data.location.streetAddress2,
+                        city: response.data.location.city,
+                        stateOrProvince: response.data.location.stateOrProvince,
+                        country: response.data.location.country,
+                        postalCode: response.data.location.postalCode
+                    });
+                    setHotelRooms(response.data.rooms)
+                }
+            })
+            .catch(err => { props.history.push("/") })
+    }
+    const getHotelForManager = (hotel_id, setHoteLocation, setHotelName, hotelLocation) => {
         console.log("using the getHotel fuctnion")
         axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
             .then(response => {
@@ -452,8 +484,12 @@ const App = () => {
             })
             .catch(err => alert("Login error!"));
     };
+    const onHotelClick = (id, props) => {
+        props.history.push("/hotel/" +id)
 
+    }
     const checkResetId = (id, props) => {
+        console.log("checking reset ID!")
         axios.get(uri + "/email/AccountRecovery/getById/" + id)
             .then(accountResponse => {
                 if (accountResponse == null) {
@@ -552,11 +588,16 @@ const App = () => {
             )}
             />
 			
-			   
+            <Route path="/hotel/:id" render={(props) => (
+                <>
+                    {<Hotel getHotel={getHotel} props={props} />}
+                </>
+            )}
+            />
 			
 			<Route path="/Dashboard" render={(props) => (
                 <>
-                    {<Dashboard user={user} manager={manager}/>}
+                    {<Dashboard user={user} manager={manager} props={props} hotels={hotels} onHotelClick={onHotelClick} />}
                 </>
             )}
             />
@@ -564,7 +605,7 @@ const App = () => {
             <Route path="/manager" render={(props) => (
                 <>
                     {/* we pass a function*/}
-                    {<Manager manager={manager} onDelete={deleteManager} logOut={logOut} props={props} getHotel={getHotel} onUpdate={updateManager} />}
+                    {<Manager manager={manager} onDelete={deleteManager} logOut={logOut} props={props} getHotel={getHotelForManager} onUpdate={updateManager} />}
                 </>
             )}
             />    
