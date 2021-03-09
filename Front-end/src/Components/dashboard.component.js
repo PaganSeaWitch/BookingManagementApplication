@@ -1,19 +1,16 @@
 import React from 'react';
-import Hotel from "./hotel-listing.component";
+import HotelListing from "./hotel-listing.component";
 
-const Dashboard = ({user, manager, hotels }) => {
+const Dashboard = ({user, manager, hotels, onHotelClick, props }) => {
 	
 	console.log(hotels)
 	return(
 			(user._id == "" && manager._id == "") //if not logged in, adjust display
 			? <div>
-					<div>	
-					You're not logged in!
-						
+					<div>							
 							<ul>
-						{hotels.map(hotel => <li> <Hotel hotel={hotel} /></li>)}
+						{hotels.map(hotel => <li> <HotelListing hotel={hotel} onClick={onHotelClick} props={props} /></li>)}
 							</ul>
-						
 					</div> 
 			</div>
 			: <div>{(manager._id != "") 

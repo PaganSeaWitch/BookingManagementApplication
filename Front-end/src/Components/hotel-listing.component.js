@@ -1,6 +1,7 @@
 import { BiArrowBack } from 'react-icons/bi'
 
-const Hotel = ({ hotel, onClick }) => {
+const HotelListing = ({ hotel, onClick, props }) => {
+
     return (
         <div>
             <h3>
@@ -8,7 +9,7 @@ const Hotel = ({ hotel, onClick }) => {
                 {/* creates a x icon */}
                 <BiArrowBack
                     style={{ color: 'green', cursor: 'pointer' }}
-                    onClick={() => onClick(hotel._id)}
+                    onClick={() => onClick(hotel._id, props)}
                 />
 
             </h3>
@@ -26,4 +27,4 @@ const Hotel = ({ hotel, onClick }) => {
     )
 }
 
-export default Hotel
+export default HotelListing

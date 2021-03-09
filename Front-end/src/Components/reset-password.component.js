@@ -12,11 +12,14 @@ const ResetPassword = ({ onResetPassword, props, checkResetID }) => {
     const currentPageType1 = "/resetPassword"
     const currentPageType2 = "/resetPassword/"
     let id = ""
-    if ((page != uri + currentPageType1 && page != uri + currentPageType2)) {
-        id = page.substring(uri.length + currentPageType2.length)
-        checkResetID(id, props);
-    }
+    
+    useEffect(() => {
+        if ((page != uri + currentPageType1 && page != uri + currentPageType2)) {
+            id = page.substring(uri.length + currentPageType2.length)
+            checkResetID(id, props);
+        }
 
+    },[])
     useEffect(() => {
         if (reset == true) {
             setReset(false);
