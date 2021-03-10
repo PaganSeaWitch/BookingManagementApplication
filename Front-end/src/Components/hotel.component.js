@@ -1,5 +1,5 @@
 import { useState, useEffect} from "react";
-import Booking from "./booking.component";
+import RoomListing from "./room-listing.component";
 
 
 // JavaScript source code
@@ -47,8 +47,11 @@ const Hotel = ({ getHotel, props }) => {
 
 
             </form>
-            <h3> Avaliable Rooms </h3>
-            <Booking/>
+            <h3> Available Rooms </h3>
+            
+			<ul style = {{listStyleType: "none"}}>
+						{rooms.map(room => <li> <RoomListing room={room} props={props} /></li>)}
+			</ul>
         </div>
     )
 }

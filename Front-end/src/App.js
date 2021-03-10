@@ -115,6 +115,18 @@ const App = () => {
             })
             .catch(err => {return ""})
     }
+	
+	const getRooms = () => {
+		 axios.get(uri + "/hotel/allRooms")
+            .then(response => {
+                console.log(response.data)
+                setHotels(response.data)
+            })
+	}
+
+	
+	
+	
 
     const resetManager = () => {
         setManager({
@@ -597,7 +609,7 @@ const App = () => {
 			
 			<Route path="/Dashboard" render={(props) => (
                 <>
-                    {<Dashboard user={user} manager={manager} props={props} hotels={hotels} onHotelClick={onHotelClick} />}
+                    {<Dashboard user={user} manager={manager} props={props} hotels={hotels} onHotelClick={onHotelClick}  props={props}/>}
                 </>
             )}
             />
