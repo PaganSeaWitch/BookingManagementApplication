@@ -116,6 +116,17 @@ const App = () => {
             .catch(err => {return ""})
     }
 	
+	const getRoom = (room_id) => {
+		console.log("using the getRoomByID function");
+		axios.get(uri + "/hotel/getRoomByID/" + room_id)
+			.then(response => {
+				
+				
+			})
+	.catch(err => {return ""})
+		
+	}
+	
 	const getRooms = () => {
 		 axios.get(uri + "/hotel/allRooms")
             .then(response => {
@@ -606,6 +617,9 @@ const App = () => {
                 </>
             )}
             />
+			
+			
+		
 			
 			<Route path="/Dashboard" render={(props) => (
                 <>

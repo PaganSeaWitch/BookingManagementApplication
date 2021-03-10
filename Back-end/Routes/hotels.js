@@ -24,6 +24,12 @@ router.route("/getHotelByID/:id").get((req, res) => {
         .catch(err => res.status(400).json("Error: " + err))
 })
 
+router.route("/getRoomByID/:id").get((req, res) => {
+	Room.findById(req.params.id)
+		.then(room => { console.log(room); res.json(room) })
+        .catch(err => res.status(400).json("Error: " + err))
+})
+
 //Adds a hotel
 router.route("/addHotel").post((req, res) => {
     console.log("trying to add hotel")
