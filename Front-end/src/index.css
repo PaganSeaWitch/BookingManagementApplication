@@ -88,6 +88,41 @@ code {
 	outline: 0;
 
 }
+
+.hotel-listing {
+	display: inline-block;
+	padding: 5px;
+	border: 5px solid #999;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 5px;
+	outline: 0;
+	background-color: #add8e6;
+	background-image: "url(/hotelStockPhoto.jpg)";
+	font-family: "Georgia", "Times New Roman", sans-serif;
+}
+
+.hotel-page{
+	text-align: center;
+	border: 3px solid #000;
+	background-color: #add8e6;
+}
+
+.splash-page{
+	marginTop: 0;
+	backgroundSize: cover;  
+	height: 1600px; 
+	backgroundImage: 'url(/hotelStockPhoto.jpg)'; 
+}
+.dashboard{
+	position: absolute;
+	background-image: url("/images/hotelStockPhoto.jpg");
+
+	cover: true;
+	width: 100%;
+	height: 100%;
+	
+} 
 .recover-stub{
 	margin-top : 15px;
 	margin-bottom : 5px;

@@ -7,14 +7,14 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props }) => {
 	console.log(hotels)
 	return(
 			(user._id == "" && manager._id == "") //if not logged in, adjust display
-			? <div>
+			? <div class = 'dashboard'>
 					<div>							
 							<ul style = {{listStyleType: "none"}}>
 						{hotels.map(hotel => <li> <HotelListing hotel={hotel} onClick={onHotelClick} props={props} /></li>)}
 							</ul>
 					</div> 
 			</div>
-			: <div>{(manager._id != "") 
+			: <div class = 'dashboard'>{(manager._id != "") 
 				? <div> 
 					<div>							
 							<ul style = {{listStyleType: "none"}}>
@@ -22,7 +22,7 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props }) => {
 							</ul>
 					</div> 
 				</div>
-				:<div> 
+				:<div class = 'dashboard'> 
 					<div>							
 							<ul style = {{listStyleType: "none"}}>
 						{hotels.map(hotel => <li> <HotelListing hotel={hotel} onClick={onHotelClick} props={props} /></li>)}

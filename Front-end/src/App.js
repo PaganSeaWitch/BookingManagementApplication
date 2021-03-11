@@ -36,6 +36,8 @@ const App = () => {
         hotel_ID: ""
 
     })
+	
+	
     const [hotels, setHotels] = useState([])
     const uri = process.env.REACT_APP_BACK_END_SERVER_URI
 

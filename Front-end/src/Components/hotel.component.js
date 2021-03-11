@@ -28,7 +28,7 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
     }
     
     return (
-        <div>
+        <div class = 'hotel-page'>
             
             <h1>
                 {hotelName}{' '}
