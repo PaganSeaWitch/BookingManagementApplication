@@ -12,6 +12,7 @@ import SplashPage from "./Components/splashPage.component";
 import ForgotPassword from "./Components/forgot-password.component";
 import ResetPassword from "./Components/reset-password.component";
 import Hotel from "./Components/hotel.component";
+import Room from "./Components/room.component";
 
 require('dotenv').config()
 
@@ -41,12 +42,12 @@ const App = () => {
     const logOut = () => {
         resetManager();
         resetUser();
-        
-        
+
+
     }
     //this happpens at the start of the apps life cycle
     useEffect(() => {
-       
+
         const loggedInUser = localStorage.getItem('LoggedInUser');
         if (loggedInUser && user.username == "") {
             const userJSON = JSON.parse(loggedInUser);
@@ -62,7 +63,7 @@ const App = () => {
         if (hotels.length == 0) {
             getHotels()
         }
-        
+
     }, [])
 
     const getHotels = () => {
@@ -73,6 +74,32 @@ const App = () => {
             })
     }
 
+    const getRooms = (roomIDList, setRooms) => {
+        const tempRoomList = [];
+        roomIDList.forEach(roomID => {
+            axios.get(uri + "/room/getRoomByID/" + roomID)
+                .then(response => {
+                    if (response.data != null) {
+                        tempRoomList.push(response.data)
+                    }
+                })
+                .catch(err => console.log(err))
+        })
+        setRooms(tempRoomList)
+
+
+    }
+
+    const addRoom = (hotel_id, roomNumber, roomPrice, roomBedAmount, roomTags, props) => {
+        const newRoom = ({ roomNumber, price: roomPrice, beds: roomBedAmount, tags:roomTags, bookedDates:[] })
+        axios.post(uri + "/room/addRoom", newRoom)
+            .then(response => {
+                const hotelUpdate = ({id:hotel_id, roomId: response.data.id })
+                axios.post(uri + "/hotel/updateRoomsForHotel", hotelUpdate)
+                    .catch(err => { console.log(err); return })
+                alert("Room has been created!"); props.history.push("/editRoom/" + response.data.id)
+            })
+    }
     const getHotel = (hotel_id, setHotelLocation, setHotelName, setHotelRooms, props) => {
         console.log("Getting hotel!")
         axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
@@ -90,7 +117,7 @@ const App = () => {
                         country: response.data.location.country,
                         postalCode: response.data.location.postalCode
                     });
-                    setHotelRooms(response.data.rooms)
+                    getRooms(response.data.rooms, setHotelRooms)
                 }
             })
             .catch(err => { props.history.push("/") })
@@ -116,24 +143,7 @@ const App = () => {
             .catch(err => {return ""})
     }
 	
-	const getRoom = (room_id) => {
-		console.log("using the getRoomByID function");
-		axios.get(uri + "/hotel/getRoomByID/" + room_id)
-			.then(response => {
-				
-				
-			})
-	.catch(err => {return ""})
-		
-	}
-	
-	const getRooms = () => {
-		 axios.get(uri + "/hotel/allRooms")
-            .then(response => {
-                console.log(response.data)
-                setHotels(response.data)
-            })
-	}
+
 
 	
 	

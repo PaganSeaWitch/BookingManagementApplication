@@ -40,7 +40,17 @@ router.route("/addHotel").post((req, res) => {
 })
 
 
-
+//Update hotel info
+router.route("/updateRoomForHotel").post((req, res) => {
+    Hotel.findByIdAndUpdate(req.body.id)
+        .then((hotel) => {
+            hotel.rooms = hotel.rooms.push(req.body.roomId);
+            hotel.save()
+                .then(() => res.json(hotel))
+                .catch(err => res.status(400).json("Error: " + err));
+        })
+        .catch(err => res.status(400).json("Error: " + err))
+})  
 
 //Update hotel info
 router.route("/updateHotel").post((req, res) => {

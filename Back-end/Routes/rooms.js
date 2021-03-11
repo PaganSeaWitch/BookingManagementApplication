@@ -30,14 +30,13 @@ router.route("/addRoom").post((req, res) => {
 })
 
 //Update hotel rooms
-//Come back
 router.route("/updateRoom").post((req, res) => {
-    Hotel.findOneAndUpdate({ booked: req.params.booked })
+    Hotel.findByIdAndUpdate(req.body.id)
         .then((room) => {
             room.roomNumber = req.body.roomNumber;
             room.price = req.body.price;
             room.beds = req.body.beds;
-            room.booked_dates = req.body.bookedDates;
+            room.dates = req.body.dates;
             room.tags = req.body.tags;
             room.save()
                 .then(() => res.json(room))
