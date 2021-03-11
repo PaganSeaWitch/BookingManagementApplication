@@ -50,6 +50,9 @@ const Room = ({getRoom, props}) => {
                     <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
 
                 </div>
+                <label> Total Price : {roomPrice} </label>
+                <button className="btn btn-success" onClick={(e) => { e.preventDefault();}}> Book Room </button>
+
             </form>
             
         </div>
