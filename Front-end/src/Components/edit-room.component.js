@@ -1,10 +1,12 @@
 // JavaScript source code
+// JavaScript source code
 import { useState, useEffect } from "react";
 import axios from "axios";
 require('dotenv').config()
 const uri = process.env.REACT_APP_BACK_END_SERVER_URI
+const frontURI = process.env.REACT_APP_FRONT_END_SERVER_URI
 
-const checkRoomNumber = (hotelID, roomNumber,props) => {
+const checkRoomNumber = (hotelID, roomNumber, props) => {
     axios.get(uri + "/hotel/getHotelByID/" + hotelID)
         .then(response => {
             if (response != null) {
@@ -28,19 +30,30 @@ const checkRoomNumber = (hotelID, roomNumber,props) => {
     return false;
 }
 
-const CreateRoom = ({ manager, onCreateRoom, props }) => {
+const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
     const [hotelID, setHotelID] = useState("")
     const [hotelName, setHotelName] = useState("")
     const [roomPrice, setRoomPrice] = useState(0);
     const [amountOfBeds, setAmountOfBeds] = useState(1);
     const [tags, setTags] = useState([])
-    const [createRoom, setCreateRoom] = useState(false)
+    const [editRoom, setEditRoom] = useState(false)
     const [roomNumber, setRoomNumber] = useState(100);
     const [tagString, setTagString] = useState("")
+    const [roomID, setRoomID] = useState("")
     useEffect(() => {
 
         if (manager._id == "") {
             props.history.push("/");
+        }
+        const currentPageType1 = "/editRoom/"
+        let id = ""
+        const page = window.location.href;
+
+        if (page != frontURI + currentPageType1 && hotelName == "") {
+            id = page.substring(frontURI.length + currentPageType1.length)
+            console.log(page)
+            setRoomID(id)
+            getRoom(id, setRoomNumber, setRoomPrice, setAmountOfBeds, setTagString, props);
         }
         axios.get(uri + "/hotel/getHotelByID/" + manager.hotel_ID)
             .then(response => {
@@ -48,6 +61,9 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
                     console.log(response.data)
                     setHotelID(response.data._id)
                     setHotelName(response.data.name)
+                    if (response.data.roomroom_IDs.includes(id) == false) {
+                        props.push("/editRooms")
+                    }
                 }
                 else {
                     props.push("/")
@@ -60,8 +76,8 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
 
     useEffect(() => {
 
-        if (createRoom == true) {
-            setCreateRoom(false)
+        if (editRoom == true) {
+            setEditRoom(false)
             if (isNaN(roomPrice)) {
                 alert("Please enter a number for price")
                 return;
@@ -90,22 +106,22 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
                 setTags([...tags, tempString])
             }
             if (checkRoomNumber(hotelID, roomNumber, props) == false) {
-                onCreateRoom(hotelID, roomNumber, amountOfBeds, roomPrice, tags, props)
+                onRoomUpdate(roomID, roomNumber, amountOfBeds, roomPrice, tags, props)
 
             }
             else {
                 alert("Room number already exists!")
-                
+
             }
         }
 
-    },[createRoom])
+    }, [editRoom])
 
     return (
         <div>
 
             <div className={"login-header"}>
-                <header>Create New Room for {hotelName} </header>
+                <header>Edit existing room for {hotelName} </header>
             </div>
 
             <form className={"login-form"}>
@@ -184,7 +200,7 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
                 <div>
 
                     <span></span>
-                    <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setCreateRoom(true); }}> Create Room </button>
+                    <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setEditRoom(true); }}> Update Room </button>
                     <span></span>
 
                 </div>
@@ -196,4 +212,4 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
     )
 }
 
-export default CreateRoom
+export default EditRoom

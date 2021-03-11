@@ -10,7 +10,7 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props }) => {
 			? <div>
 					<div>							
 							<ul style = {{listStyleType: "none"}}>
-						{hotels.map(hotel => <li> <HotelListing hotel={hotel} onClick={onHotelClick} props={props} /></li>)}
+							{hotels.map((hotel, index) => <HotelListing hotel={hotel} key={index} onClick={onHotelClick} props={props} />)}
 							</ul>
 					</div> 
 			</div>
@@ -18,14 +18,14 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props }) => {
 				? <div> 
 					<div>							
 							<ul style = {{listStyleType: "none"}}>
-						{hotels.map(hotel => <li> <HotelListing hotel={hotel} onClick={onHotelClick} props={props} /></li>)}
+							{hotels.map((hotel, index) => <HotelListing hotel={hotel} key={index} onClick={onHotelClick} props={props} />)}
 							</ul>
 					</div> 
 				</div>
 				:<div> 
 					<div>							
 							<ul style = {{listStyleType: "none"}}>
-						{hotels.map(hotel => <li> <HotelListing hotel={hotel} onClick={onHotelClick} props={props} /></li>)}
+							{hotels.map((hotel, index) => <HotelListing hotel={hotel} key={index}onClick={onHotelClick} props={props} />)}
 							</ul>
 					</div> 
 				 </div>}
