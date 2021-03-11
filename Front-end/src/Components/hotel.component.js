@@ -30,10 +30,10 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
     return (
         <div class = 'hotel-page'>
             
-            <h1>
+            <header>
                 {hotelName}{' '}
                 
-            </h1>
+            </header>
 
             <form>
 
@@ -50,7 +50,7 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
             <h3> Available Rooms </h3>
             
 			<ul style = {{listStyleType: "none"}}>
-                {rooms.map(room => <li> <RoomListing room={room} onClick={onRoomClick} props={props} /></li>)}
+                {rooms.map((room, index) => <RoomListing key={index} room={room} onClick={onRoomClick} props={props} />)}
 			</ul>
         </div>
     )

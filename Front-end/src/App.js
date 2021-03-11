@@ -14,6 +14,8 @@ import ResetPassword from "./Components/reset-password.component";
 import Hotel from "./Components/hotel.component";
 import Room from "./Components/room.component";
 import CreateRoom from "./Components/create-room.component"
+import EditRooms from "./Components/edit-rooms.component"
+import EditRoom from "./Components/edit-room.component"
 require('dotenv').config()
 
 
@@ -97,14 +99,18 @@ const App = () => {
         props.history.push("/room/" + id)
 
     }
+    const onEditRoomClick = (id, props) => {
+        props.history.push("/editRoom/" + id)
+    }
     const addRoom = (hotel_id, roomNumber, roomPrice, roomBedAmount, roomTags, props) => {
         const newRoom = ({ roomNumber, price: roomPrice, beds: roomBedAmount, tags:roomTags, bookedDates:[] })
         axios.post(uri + "/room/addRoom", newRoom)
             .then(response => {
-                const hotelUpdate = ({id:hotel_id, roomId: response.data.id })
+                const hotelUpdate = ({id:hotel_id, roomId: response.data._id })
                 axios.post(uri + "/hotel/updateRoomsForHotel", hotelUpdate)
+                    .then(()=>{ alert("Room has been created!"); props.history.push("/editRooms")})
                     .catch(err => { console.log(err); return })
-                alert("Room has been created!"); props.history.push("/editRoom/" + response.data.id)
+                
             })
     }
 
@@ -138,6 +144,22 @@ const App = () => {
                     setRoomTags(response.data.tags);
                     setRoomBookedDates(response.data.bookedDates);
                     getHotelForRoom(room_id, setHotelId, setHotelName, props)
+                }
+            })
+            .catch(err => { console.log(err); props.history.push("/") })
+    }
+
+    const getRoomForManger = (room_id, setRoomNumber, setRoomPrice, setRoomBedAmount, setRoomTags, props) => {
+        axios.get(uri + "/room/getRoomByID/" + room_id)
+            .then(response => {
+                if (response == null) {
+                    props.history.push("/")
+                }
+                else {
+                    setRoomNumber(response.data.roomNumber);
+                    setRoomPrice(response.data.price);
+                    setRoomBedAmount(response.data.beds);
+                    setRoomTags(response.data.tags);
                 }
             })
             .catch(err => { console.log(err); props.history.push("/") })
@@ -382,6 +404,13 @@ const App = () => {
                 }
             })
             .catch(err => { console.log(err); alert("password reset failed!");})
+    }
+
+    const updateRoom = (roomID, roomNumber, roomPrice, roomAmountBeds, roomTags, props) => {
+        const updatedRoom = ({ roomID, roomNumber, roomPrice, roomAmountBeds, roomTags })
+        axios.post(uri + "/room/updateRoom", updatedRoom)
+            .then(response => { alert("changes were saved!"); props.history.push("/editRooms")  })
+            .catch(err => { console.log(err); alert("changes were not saved!") });
     }
 
     const checkUser = (givenUsername, givenPassword, props) => {
@@ -642,8 +671,6 @@ const App = () => {
            
             <NavBar user={user} manager={manager} />
 			
-            <br />
-            <p> {process.env.BACK_END_SERVER_URI} </p>
             {/* Here instead of using the component, we use the render and then the component
                 * we do this because the component cannot take in anything without using render
                 * if you just want to route to a componet without passing anyting to it
@@ -682,7 +709,23 @@ const App = () => {
             <Route path="/createRoom" render={(props) => (
                 <>
                     {/* we pass a function*/}
-                    {<CreateRoom manager={manager}  props={props}/>}
+                    {<CreateRoom manager={manager} onCreateRoom={addRoom} props={props} />}
+                </>
+            )}
+            />
+
+            <Route path="/editRooms" render={(props) => (
+                <>
+                    {/* we pass a function*/}
+                    {<EditRooms manager={manager} onRoomClick={onEditRoomClick} props={props} />}
+                </>
+            )}
+            />
+
+            <Route path="/editRoom/:id" render={(props) => (
+                <>
+                    {/* we pass a function*/}
+                    {<EditRoom manager={manager} getRoom={getRoomForManger} onRoomUpdate={updateRoom} props={props} />}
                 </>
             )}
             />
