@@ -1,7 +1,7 @@
 import React from 'react';
 import { BiArrowBack } from 'react-icons/bi'
 
-const RoomListing = ({room, props}) => {
+const RoomListing = ({room, onClick,  props}) => {
 	
 	
 	return(
@@ -9,7 +9,8 @@ const RoomListing = ({room, props}) => {
                    <h1> room.roomNumber </h1>
 				   <BiArrowBack
 						style={{ color: 'green', cursor: 'pointer' }}
-							
+						onClick={() => onClick(room._id, props)}
+
 					/>
 				 <form>
 

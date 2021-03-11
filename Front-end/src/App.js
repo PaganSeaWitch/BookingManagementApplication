@@ -90,6 +90,11 @@ const App = () => {
 
     }
 
+
+    const onRoomClick = (id, props) => {
+        props.history.push("/room/" + id)
+
+    }
     const addRoom = (hotel_id, roomNumber, roomPrice, roomBedAmount, roomTags, props) => {
         const newRoom = ({ roomNumber, price: roomPrice, beds: roomBedAmount, tags:roomTags, bookedDates:[] })
         axios.post(uri + "/room/addRoom", newRoom)
@@ -100,6 +105,25 @@ const App = () => {
                 alert("Room has been created!"); props.history.push("/editRoom/" + response.data.id)
             })
     }
+
+    const getRoom = (room_id, setRoomNumber, setRoomPrice, setRoomBedAmount, setRoomTags, setRoomBookedDates, props) => {
+        console.log("Getting Room!")
+        axios.get(uri + "/room/getRoomByID/" + room_id)
+            .then(response => {
+                if (response == null) {
+                    props.history.push("/")
+                }
+                else {
+                    setRoomNumber(response.data.roomNumber);
+                    setRoomPrice(response.data.price);
+                    setRoomBedAmount(response.data.beds);
+                    setRoomTags(response.data.tags);
+                    setRoomBookedDates(response.data.bookedDates);
+                }
+            })
+            .catch(err => { console.log(err); props.history.push("/") })
+    }
+
     const getHotel = (hotel_id, setHotelLocation, setHotelName, setHotelRooms, props) => {
         console.log("Getting hotel!")
         axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
@@ -117,11 +141,12 @@ const App = () => {
                         country: response.data.location.country,
                         postalCode: response.data.location.postalCode
                     });
-                    getRooms(response.data.rooms, setHotelRooms)
+                    getRooms(response.data.room_IDs, setHotelRooms)
                 }
             })
-            .catch(err => { props.history.push("/") })
+            .catch(err => { console.log(err);props.history.push("/") })
     }
+
     const getHotelForManager = (hotel_id, setHoteLocation, setHotelName, hotelLocation) => {
         console.log("using the getHotel fuctnion")
         axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
@@ -143,12 +168,6 @@ const App = () => {
             .catch(err => {return ""})
     }
 	
-
-
-	
-	
-	
-
     const resetManager = () => {
         setManager({
             ...manager,
@@ -517,6 +536,7 @@ const App = () => {
             })
             .catch(err => alert("Login error!"));
     };
+
     const onHotelClick = (id, props) => {
         props.history.push("/hotel/" +id)
 
@@ -548,9 +568,6 @@ const App = () => {
 
         console.log("Deleted user!");
     }
-
-
-
 
     const recoverAccount = (email, props) => {
         axios.get(uri + "/user/getByEmail/" + email)
@@ -623,15 +640,12 @@ const App = () => {
 			
             <Route path="/hotel/:id" render={(props) => (
                 <>
-                    {<Hotel getHotel={getHotel} props={props} />}
+                    {<Hotel getHotel={getHotel} onRoomClick={onRoomClick} props={props}/>}
                 </>
             )}
             />
-			
-			
-		
-			
-			<Route path="/Dashboard" render={(props) => (
+
+			<Route path="/dashboard" render={(props) => (
                 <>
                     {<Dashboard user={user} manager={manager} props={props} hotels={hotels} onHotelClick={onHotelClick}  props={props}/>}
                 </>
@@ -645,7 +659,14 @@ const App = () => {
                 </>
             )}
             />    
-            
+
+            <Route path="/room/:id" render={(props) => (
+                <>
+                    {<Room getRoom={getRoom} props={props} />}
+
+                </>
+            )}
+            />
            
             <Route path="/user" render={(props) => (
                 <>

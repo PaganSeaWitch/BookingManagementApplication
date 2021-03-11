@@ -1,6 +1,7 @@
+import { useState, useEffect } from "react";
 
 
-const Room = ({}) => {
+const Room = ({getRoom, props}) => {
 	
 }
 

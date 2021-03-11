@@ -45,11 +45,5 @@ router.route("/updateRoom").post((req, res) => {
         .catch(err => res.status(400).json("Error: " + err))
 })  
 
-//Delete room by room number
-router.route("deleteByRoomNumber/:roomNumber").delete((req, res) => {
-    Room.findOneAndDelete({ roomNumber: req.params.roomNumber })
-        .then(() => res.json("Room deleted."))
-        .catch(err => res.status(400).json("Error: " + err));
-});
 
 module.exports = router;
