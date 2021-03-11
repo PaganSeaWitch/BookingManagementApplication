@@ -14,6 +14,7 @@ import ResetPassword from "./Components/reset-password.component";
 import Hotel from "./Components/hotel.component";
 import Room from "./Components/room.component";
 import CreateRoom from "./Components/create-room.component"
+import EditRooms from "./Components/edit-rooms.component"
 require('dotenv').config()
 
 
@@ -95,14 +96,18 @@ const App = () => {
         props.history.push("/room/" + id)
 
     }
+    const onEditRoomClick = (id, props) => {
+        props.history.push("/editRoom/" + id)
+    }
     const addRoom = (hotel_id, roomNumber, roomPrice, roomBedAmount, roomTags, props) => {
         const newRoom = ({ roomNumber, price: roomPrice, beds: roomBedAmount, tags:roomTags, bookedDates:[] })
         axios.post(uri + "/room/addRoom", newRoom)
             .then(response => {
-                const hotelUpdate = ({id:hotel_id, roomId: response.data.id })
+                const hotelUpdate = ({id:hotel_id, roomId: response.data._id })
                 axios.post(uri + "/hotel/updateRoomsForHotel", hotelUpdate)
+                    .then(()=>{ alert("Room has been created!"); props.history.push("/editRooms")})
                     .catch(err => { console.log(err); return })
-                alert("Room has been created!"); props.history.push("/editRoom/" + response.data.id)
+                
             })
     }
 
@@ -680,11 +685,17 @@ const App = () => {
             <Route path="/createRoom" render={(props) => (
                 <>
                     {/* we pass a function*/}
-                    {<CreateRoom manager={manager}  props={props}/>}
+                    {<CreateRoom manager={manager} onCreateRoom={addRoom} props={props} />}
                 </>
             )}
             />
-
+            <Route path="/editRooms" render={(props) => (
+                <>
+                    {/* we pass a function*/}
+                    {<EditRooms manager={manager} onRoomClick={onEditRoomClick} props={props} />}
+                </>
+            )}
+            />
             <Route path="/room/:id" render={(props) => (
                 <>
                     {<Room getRoom={getRoom} props={props} />}

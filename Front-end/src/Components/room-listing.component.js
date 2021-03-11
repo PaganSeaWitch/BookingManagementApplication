@@ -6,12 +6,13 @@ const RoomListing = ({room, onClick,  props}) => {
 	
 	return(
 			<div style= {{marginBottom: '50px'}} >
-                   <h1> room.roomNumber </h1>
+			<h1> Room: {room.roomNumber} 
 				   <BiArrowBack
 						style={{ color: 'green', cursor: 'pointer' }}
 						onClick={() => onClick(room._id, props)}
 
-					/>
+				/>
+				</h1>
 				 <form>
 
 					<h3>Information </h3>

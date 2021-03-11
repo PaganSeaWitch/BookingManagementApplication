@@ -40,6 +40,12 @@ const NavBar = ({  user, manager }) => {
 								<li className="navbar-item">
                                 <Link to="/dashboard" className="nav-link">Dashboard</Link>
                                 </li>
+                                <li className="navbar-item">
+                                    <Link to="/createRoom" className="nav-link">Create Room</Link>
+                                </li>
+                                <li className="navbar-item">
+                                    <Link to="/editRooms" className="nav-link">Edit Rooms</Link>
+                                </li>
                             </ul>
                             
                         </div>
