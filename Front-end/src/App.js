@@ -16,6 +16,8 @@ import Room from "./Components/room.component";
 import CreateRoom from "./Components/create-room.component"
 import EditRooms from "./Components/edit-rooms.component"
 import EditRoom from "./Components/edit-room.component"
+import Bookings from "./Components/bookings.component"
+import Booking from "./Components/booking.component"
 require('dotenv').config()
 
 
@@ -160,6 +162,7 @@ const App = () => {
             })
             .catch(err => { console.log(err); props.history.push("/") })
     }
+
 
     const getHotel = (hotel_id, setHotelLocation, setHotelName, setHotelRooms, rooms, props) => {
         console.log("Getting hotel!")
@@ -701,7 +704,13 @@ const App = () => {
                 </>
             )}
             />    
-
+            <Route path="/bookings" render={(props) => (
+                <>
+                    {/* we pass a function*/}
+                    {<Bookings user={user}  props={props} getBookings={getBookings} />}
+                </>
+            )}
+            />
             <Route path="/createRoom" render={(props) => (
                 <>
                     {/* we pass a function*/}
