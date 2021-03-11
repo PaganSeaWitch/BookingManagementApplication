@@ -12,6 +12,8 @@ const Room = ({getRoom, props}) => {
 	const [roomTags, setRoomTags] = useState([])
 	const [roomBookedDates, setRoomBookedDates] = useState([])
 	
+	const [userBookDates, setUserBookedDates] = useState([])
+	
 	const [startDate, setStartDate] = useState(new Date());
 	const [endDate, setEndDate] = useState(null);
 	
@@ -19,7 +21,8 @@ const Room = ({getRoom, props}) => {
     const [start, end] = dates;
 		setStartDate(start);
 		setEndDate(end);
-	
+		setRoomBookedDates(dates);
+		setUserBookedDates(dates);
 	
 	};
 	
@@ -53,7 +56,7 @@ const Room = ({getRoom, props}) => {
 
                 <div>
                     <label>Book range</label>
-                    <DatePicker selected={startDate} onChange={onChange} startDate={startDate} endDate = {endDate} selectsRange inline />
+                    <DatePicker selected={startDate} onChange={onChange} startDate={startDate} endDate = {endDate} minDate = {new Date()} excludeDates={[roomBookedDates]} selectsRange inline />
                    
 
                 </div>
