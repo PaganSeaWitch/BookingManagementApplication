@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 const hotel  = require("../Models/hotel.model")
-const Date = require("../Models/date.model")
 const bookingSchema =
     new Schema({
         room_ID:
@@ -15,7 +14,7 @@ const bookingSchema =
             type: hotel.schema,
             required: true
 		},
-        date_booked:
+        dates_booked:
         {
             type: [Date],
             required: true

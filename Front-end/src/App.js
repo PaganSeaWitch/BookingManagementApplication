@@ -13,7 +13,7 @@ import ForgotPassword from "./Components/forgot-password.component";
 import ResetPassword from "./Components/reset-password.component";
 import Hotel from "./Components/hotel.component";
 import Room from "./Components/room.component";
-
+import CreateRoom from "./Components/create-room.component"
 require('dotenv').config()
 
 
@@ -106,7 +106,23 @@ const App = () => {
             })
     }
 
-    const getRoom = (room_id, setRoomNumber, setRoomPrice, setRoomBedAmount, setRoomTags, setRoomBookedDates, props) => {
+    const getHotelForRoom =(room_id, setHotelId, setHotelName, props) => {
+        axios.get(uri + "/hotel/getHotelByRoomID/" + room_id)
+            .then(response => {
+                if (response == null) {
+                    alert("Hotel for rooom does not exist!")
+                    //axios.delete(uri + "/room/deleteByRoomID/" + room_id)
+                    props.history.push("/")
+                }
+                else {
+                    setHotelId(response.data.id);
+                    setHotelName(response.data.name);
+                }
+            })
+            .catch(err => console.log(err))
+    }
+
+    const getRoom = (room_id, setRoomNumber, setRoomPrice, setRoomBedAmount, setRoomTags, setRoomBookedDates, setHotelId, setHotelName, props) => {
         console.log("Getting Room!")
         axios.get(uri + "/room/getRoomByID/" + room_id)
             .then(response => {
@@ -119,6 +135,7 @@ const App = () => {
                     setRoomBedAmount(response.data.beds);
                     setRoomTags(response.data.tags);
                     setRoomBookedDates(response.data.bookedDates);
+                    getHotelForRoom(room_id, setHotelId, setHotelName, props)
                 }
             })
             .catch(err => { console.log(err); props.history.push("/") })
@@ -659,6 +676,14 @@ const App = () => {
                 </>
             )}
             />    
+
+            <Route path="/createRoom" render={(props) => (
+                <>
+                    {/* we pass a function*/}
+                    {<CreateRoom manager={manager}  props={props}/>}
+                </>
+            )}
+            />
 
             <Route path="/room/:id" render={(props) => (
                 <>

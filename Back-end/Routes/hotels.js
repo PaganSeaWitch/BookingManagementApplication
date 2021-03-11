@@ -9,7 +9,12 @@ router.route("/allHotels").get((req, res) => {
     .then(hotel => res.json(hotel))
     .catch(err => res.status(400).json("Error: " + err))
 })
-
+//Returns all hotels
+router.route("/getHotelByRoomID/:id").get((req, res) => {
+    Hotel.findOne({ room_IDs : req.params.id})
+        .then(hotel => res.json(hotel))
+        .catch(err => res.status(400).json("Error: " + err))
+})
 
 //Returns hotel by ID
 router.route("/getHotelByID/:id").get((req, res) => {
@@ -73,8 +78,8 @@ router.route("/updateHotel").post((req, res) => {
 
 
 //Delete hotel by hotelID
-router.route("deleteByHotelID/:hotelID").delete((req, res) => {
-    Hotel.findOneAndDelete({ hotelID: req.params.hotelID })
+router.route("/deleteByHotelID/:hotelID").delete((req, res) => {
+    Hotel.findOneAndDelete({ _id: req.params.hotelID })
         .then(() => res.json("Hotel deleted."))
         .catch(err => res.status(400).json("Error: " + err));
 });
