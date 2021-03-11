@@ -33,7 +33,7 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
 
     
     return (
-        <div>
+        <div class = 'hotel-page'>
             
             <header>
                 {hotelName}{' '}

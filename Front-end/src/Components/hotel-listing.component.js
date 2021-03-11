@@ -3,7 +3,7 @@ import { BiArrowBack } from 'react-icons/bi'
 const HotelListing = ({ hotel, onClick, props }) => {
 
     return (
-        <div>
+        <div class = 'hotel-listing'>
             <h3>
                 {hotel.name}{' '}
                 {/* creates a x icon */}

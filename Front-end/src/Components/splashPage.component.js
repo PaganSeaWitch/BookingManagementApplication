@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const SplashPage = () => {
 	
 	return(
-			 <div style = {{marginTop: '0',backgroundSize: 'cover',  height: '1600px', backgroundImage: 'url(/hotelStockPhoto.jpg) ' }}>
+			 <div class = 'splash-page'>
 				<center>	
 				<p>
 						Welcome to RendezView! 
