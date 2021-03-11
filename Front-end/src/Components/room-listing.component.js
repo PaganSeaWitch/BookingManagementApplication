@@ -3,7 +3,7 @@ import { BiArrowBack } from 'react-icons/bi'
 
 const RoomListing = ({room, onClick,  props}) => {
 	
-	
+	console.log(room)
 	return(
 			<div style= {{marginBottom: '50px'}} >
 			<h1> Room: {room.roomNumber} 

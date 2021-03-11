@@ -31,7 +31,7 @@ router.route("/addRoom").post((req, res) => {
 
 //Update hotel rooms
 router.route("/updateRoom").post((req, res) => {
-    console.log(req)
+
     Room.findByIdAndUpdate(req.body.roomID)
         .then((room) => {
             room.roomNumber = req.body.roomNumber;
