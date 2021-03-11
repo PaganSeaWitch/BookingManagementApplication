@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
+const Date = require("../Models/date.model")
 const roomSchema = new Schema
 ({
     roomNumber:
@@ -29,7 +29,9 @@ const roomSchema = new Schema
 	{
 		type: [String],
 		required : false,
-    }
+	},
+	dates: [Date]
+
 },
 {
     timestamps: true,
