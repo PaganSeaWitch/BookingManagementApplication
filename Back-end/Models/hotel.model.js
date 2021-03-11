@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const roomSchema = require("../Models/room.model")
 
 const locationSchema = new Schema
     ({
