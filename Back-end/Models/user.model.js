@@ -13,12 +13,12 @@ const bookingSchema =
         hotel:
         {
             type: hotel.schema,
-            required: true,
-            unique: false
+            required: true
 		},
-        date:
+        date_booked:
         {
-		    type: [Date]
+            type: [Date],
+            required: true
 		},
 	});
 

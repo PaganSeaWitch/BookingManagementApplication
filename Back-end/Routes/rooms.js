@@ -19,14 +19,13 @@ router.route("/addRoom").post((req, res) => {
     const roomNumber = req.body.roomNumber;
     const price = req.body.price;
     const beds = req.body.beds;
-    const booked = req.body.booked;
-
-    const newRoom = new Room({ roomNumber, price, beds, booked });
+    const tags = req.body.tags;
+    const booked_dates = req.body.bookedDates;
+    const newRoom = new Room({ roomNumber, price, beds, tags, booked_dates });
 
     newRoom.save()
         .then(() => res.json(newRoom))
         .catch(err => res.status(400).json("Error: " + err));
-
 
 })
 
@@ -38,8 +37,8 @@ router.route("/updateRoom").post((req, res) => {
             room.roomNumber = req.body.roomNumber;
             room.price = req.body.price;
             room.beds = req.body.beds;
-            room.booked = req.body.booked;
-
+            room.booked_dates = req.body.bookedDates;
+            room.tags = req.body.tags;
             room.save()
                 .then(() => res.json(room))
                 .catch(err => res.status(400).json("Error: " + err));
