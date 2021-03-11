@@ -13,19 +13,24 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
         country: "",
         postalCode: "",
     });
+
     const [rooms, setHotelRooms] = useState([])
 
+    useEffect(() => {
 
-    const page = window.location.href;
-    const uri = process.env.REACT_APP_FRONT_END_SERVER_URI
-    console.log(page)
+        const page = window.location.href;
+        const uri = process.env.REACT_APP_FRONT_END_SERVER_URI
 
-    const currentPageType1 = "/hotel/"
-    let id = ""
-    if (page != uri + currentPageType1 && hotelName == "") {
-        id = page.substring(uri.length + currentPageType1.length)
-        getHotel(id, setHotelLocation, setHotelName, setHotelRooms, props);
-    }
+        const currentPageType1 = "/hotel/"
+        let id = ""
+        if (page != uri + currentPageType1 && hotelName == "") {
+            id = page.substring(uri.length + currentPageType1.length)
+            getHotel(id, setHotelLocation, setHotelName, setHotelRooms,rooms, props);
+        }
+
+
+    },[]);
+
     
     return (
         <div class = 'hotel-page'>
