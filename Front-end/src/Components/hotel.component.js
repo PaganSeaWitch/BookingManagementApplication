@@ -13,6 +13,7 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
         country: "",
         postalCode: "",
     });
+
     const [rooms, setHotelRooms] = useState([])
 
     useEffect(() => {
@@ -29,8 +30,7 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
 
 
     },[]);
-    useEffect(() => {
-    })
+
     
     return (
         <div>

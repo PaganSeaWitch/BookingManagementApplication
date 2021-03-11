@@ -76,20 +76,17 @@ const App = () => {
     }
 
     const getRooms = (roomIDList, setRooms, rooms) => {
-        const tempRoomList = [];
         roomIDList.forEach(roomID => {
             console.log(roomID)
             axios.get(uri + "/room/getRoomByID/" + roomID)
                 .then(response => {
                     if (response.data != null) {
                         console.log(response.data)
-                        tempRoomList.push(response.data)
+                        setRooms([...rooms, response.data])
                     }
                 })
                 .catch(err => console.log(err))
         })
-        console.log(tempRoomList)
-        setRooms([...rooms, tempRoomList])
 
     }
 
