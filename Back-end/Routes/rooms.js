@@ -10,7 +10,7 @@ router.route("/allRooms").get((req, res) => {
 
 router.route("/getRoomByID/:id").get((req, res) => {
     Room.findById(req.params.id)
-        .then(room => { console.log(room); res.json(room) })
+        .then(room => { res.json(room) })
         .catch(err => res.status(400).json("Error: " + err))
 })
 
@@ -31,13 +31,16 @@ router.route("/addRoom").post((req, res) => {
 
 //Update hotel rooms
 router.route("/updateRoom").post((req, res) => {
-    Hotel.findByIdAndUpdate(req.body.id)
+    console.log(req)
+    Room.findByIdAndUpdate(req.body.roomID)
         .then((room) => {
             room.roomNumber = req.body.roomNumber;
-            room.price = req.body.price;
-            room.beds = req.body.beds;
-            room.dates = req.body.dates;
-            room.tags = req.body.tags;
+            room.price = req.body.roomPrice;
+            room.beds = req.body.roomAmountBeds;
+            if (req.body.dates != undefined) {
+                room.dates = req.body.dates;
+            }
+            room.tags = req.body.roomTags;
             room.save()
                 .then(() => res.json(room))
                 .catch(err => res.status(400).json("Error: " + err));

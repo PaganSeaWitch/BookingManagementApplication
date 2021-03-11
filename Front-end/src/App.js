@@ -15,6 +15,7 @@ import Hotel from "./Components/hotel.component";
 import Room from "./Components/room.component";
 import CreateRoom from "./Components/create-room.component"
 import EditRooms from "./Components/edit-rooms.component"
+import EditRoom from "./Components/edit-room.component"
 require('dotenv').config()
 
 
@@ -141,6 +142,22 @@ const App = () => {
                     setRoomTags(response.data.tags);
                     setRoomBookedDates(response.data.bookedDates);
                     getHotelForRoom(room_id, setHotelId, setHotelName, props)
+                }
+            })
+            .catch(err => { console.log(err); props.history.push("/") })
+    }
+
+    const getRoomForManger = (room_id, setRoomNumber, setRoomPrice, setRoomBedAmount, setRoomTags, props) => {
+        axios.get(uri + "/room/getRoomByID/" + room_id)
+            .then(response => {
+                if (response == null) {
+                    props.history.push("/")
+                }
+                else {
+                    setRoomNumber(response.data.roomNumber);
+                    setRoomPrice(response.data.price);
+                    setRoomBedAmount(response.data.beds);
+                    setRoomTags(response.data.tags);
                 }
             })
             .catch(err => { console.log(err); props.history.push("/") })
@@ -385,6 +402,13 @@ const App = () => {
                 }
             })
             .catch(err => { console.log(err); alert("password reset failed!");})
+    }
+
+    const updateRoom = (roomID, roomNumber, roomPrice, roomAmountBeds, roomTags, props) => {
+        const updatedRoom = ({ roomID, roomNumber, roomPrice, roomAmountBeds, roomTags })
+        axios.post(uri + "/room/updateRoom", updatedRoom)
+            .then(response => { alert("changes were saved!"); props.history.push("/editRooms")  })
+            .catch(err => { console.log(err); alert("changes were not saved!") });
     }
 
     const checkUser = (givenUsername, givenPassword, props) => {
@@ -645,8 +669,6 @@ const App = () => {
            
             <NavBar user={user} manager={manager} />
 			
-            <br />
-            <p> {process.env.BACK_END_SERVER_URI} </p>
             {/* Here instead of using the component, we use the render and then the component
                 * we do this because the component cannot take in anything without using render
                 * if you just want to route to a componet without passing anyting to it
@@ -689,6 +711,7 @@ const App = () => {
                 </>
             )}
             />
+
             <Route path="/editRooms" render={(props) => (
                 <>
                     {/* we pass a function*/}
@@ -696,6 +719,15 @@ const App = () => {
                 </>
             )}
             />
+
+            <Route path="/editRoom/:id" render={(props) => (
+                <>
+                    {/* we pass a function*/}
+                    {<EditRoom manager={manager} getRoom={getRoomForManger} onRoomUpdate={updateRoom} props={props} />}
+                </>
+            )}
+            />
+
             <Route path="/room/:id" render={(props) => (
                 <>
                     {<Room getRoom={getRoom} props={props} />}
