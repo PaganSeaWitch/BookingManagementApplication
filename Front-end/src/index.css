@@ -12,6 +12,15 @@ code {
     monospace;
 }
 
+.splash{
+	background-color: #add8e6;
+	font-family: "Georgia", "Times New Roman", sans-serif;
+	opacity: 0.90;
+	padding: 5px;
+	border: 3px solid #000;
+	margin-top: 5px;
+	
+}
 .main-header{
 	text-decoration: underline;
 	text-align: center;
@@ -98,8 +107,8 @@ code {
 	border-radius: 5px;
 	outline: 0;
 	background-color: #add8e6;
-	background-image: "url(/hotelStockPhoto.jpg)";
 	font-family: "Georgia", "Times New Roman", sans-serif;
+	opacity: 0.90;
 }
 
 .hotel-page{
@@ -120,7 +129,7 @@ code {
 .dashboard{
 	position: absolute;
 	background-size: cover;
-	background-image: url(images/hotelStockPhoto.jpg);
+	background-image: url(images/dashboardStockPhoto.jpg);
 	background-position: center;
     background-repeat: no-repeat;
 	width: 100%;
@@ -144,6 +153,14 @@ code {
 	width:10%;
 	
 }
+.manager{
+	background-size: cover;
+	background-image: url(images/dashboardStockPhoto.jpg);
+	background-position: center;
+    background-repeat: no-repeat;
+	width:100%;
+	height:100%;
+}
 
 .user-information header{
 	margin-bottom : 20px;
@@ -157,10 +174,11 @@ code {
 }
 
 .user-information{
+	background-color: #add8e6;
 	margin: auto;
 	max-width: 650px;
 	position:relative;
-	border:1px #ccc solid;
+	border:1px #000 solid;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;

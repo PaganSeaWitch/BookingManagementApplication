@@ -7,14 +7,13 @@ const SplashPage = () => {
 	return(
 			 <div class = 'splash-page'>
 				<center>	
-				<p>
+				<span class = 'splash'>
 						Welcome to RendezView! 
-                               
-                </p> 
-				
-				<div> 
-					 <Link to={"/Dashboard"} >See our bookings!</Link>
-				</div>
+                </span> 
+				<br/><br/>
+				<span class = 'splash'> 
+					  <Link to={"/Dashboard"} >See our bookings!</Link>
+				</span>
 				</center>
 			</div>
 	);

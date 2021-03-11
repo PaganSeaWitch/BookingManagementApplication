@@ -18,7 +18,7 @@ const Room = ({getRoom, props}) => {
 	const [endDate, setEndDate] = useState(null);
 	
 	const onChange = dates => {
-    const [start, end] = dates;
+		const [start, end] = dates;
 		setStartDate(start);
 		setEndDate(end);
 		setRoomBookedDates(dates);
