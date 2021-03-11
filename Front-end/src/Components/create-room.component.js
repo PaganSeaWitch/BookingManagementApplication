@@ -1,6 +1,7 @@
 // JavaScript source code
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { create } from "../../../Back-end/Models/account-recovery.model";
 require('dotenv').config()
 const uri = process.env.REACT_APP_BACK_END_SERVER_URI
 
@@ -8,6 +9,12 @@ const uri = process.env.REACT_APP_BACK_END_SERVER_URI
 const CreateRoom = ({ manager, createRoom, props }) => {
     const [hotelID, setHotelID] = useState("")
     const [hotelName, setHotelName] = useState("")
+    const [price, setPrice] = useState(0);
+    const [amountOfBeds, setAmountOfBeds] = useState(1);
+    const [tags, setTags] = useState([])
+    const [createRoom, setCreateRoom] = useState(false)
+    const [roomNumber, setRoomNumber] = useState(100);
+
     useEffect(() => {
 
         if (manager._id == "") {
@@ -27,6 +34,30 @@ const CreateRoom = ({ manager, createRoom, props }) => {
 
     }, [])
 
+
+    useEffect(() => {
+
+        if (createRoom == true) {
+            setCreateRoom(false)
+            if (isNaN(price)) {
+                alert("Please enter a number for price")
+                return;
+            }
+            if (isNaN(amountOfBeds)) {
+                alert("Please enter a number for amount of beds")
+                return;
+
+            }
+            if (isNaN(roomNumber)) {
+                alert("Please enter a number for hotel room")
+                return;
+
+            }
+            createRoom()
+        }
+
+    },[createRoom])
+
     return (
         <div>
 
@@ -45,7 +76,7 @@ const CreateRoom = ({ manager, createRoom, props }) => {
 
                 <label>Tags : </label>
 
-                <button className="btn btn-success" onClick={(e) => { e.preventDefault(); }}> Create Room </button>
+                <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setCreateRoom(true) }}> Create Room </button>
 
             </form>
 
