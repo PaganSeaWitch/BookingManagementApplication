@@ -16,7 +16,7 @@ const Room = ({getRoom, props}) => {
     console.log(page)
     const [startDate, setStartDate] = useState(new Date());
 
-    const currentPageType1 = "/hotel/"
+    const currentPageType1 = "/room/"
     let id = ""
     if (page != uri + currentPageType1 && hotelName == "") {
         id = page.substring(uri.length + currentPageType1.length)
