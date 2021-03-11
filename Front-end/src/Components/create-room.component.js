@@ -14,7 +14,7 @@ const CreateRoom = ({ manager, createRoom, props }) => {
     const [tags, setTags] = useState([])
     const [createRoom, setCreateRoom] = useState(false)
     const [roomNumber, setRoomNumber] = useState(100);
-
+    const [tagString, setTagString] = useState("")
     useEffect(() => {
 
         if (manager._id == "") {
@@ -53,7 +53,17 @@ const CreateRoom = ({ manager, createRoom, props }) => {
                 return;
 
             }
-            createRoom()
+            let tempString = ""
+            for (let i = 0; i < tagString.length; i++) {
+                if (tagString.charAt(i) == ',') {
+                    setTags([...tags, tempString])
+                    tempString = ""
+                }
+                else {
+                    tempString = tempString + tagString.charAt(i)
+                }
+            }
+            createRoom(hotelID, roomNumber, amountOfBeds, price, tags)
         }
 
     },[createRoom])
@@ -61,21 +71,77 @@ const CreateRoom = ({ manager, createRoom, props }) => {
     return (
         <div>
 
-            <h1>
-                {hotelName}{' '}
+            <div className={"login-header"}>
+                <header> New Room </header>
+            </div>
 
-            </h1>
+            <form className={"login-form"}>
 
-            <form>
+                <div>
+                    <span></span>
+                    <label>Room Number</label>
+                    <span></span>
+                </div>
+                <div>
+                    <span></span>
 
-                <h3>Room : </h3>
+                    <input className={"rounded-login"}
+                        type='number'
+                        value={roomNumber}
+                        onChange={(e) => { setRoomNumber(e.target.value); }
+                        } />
+                    <span></span>
 
-                <label>Price :  </label>
-                <br></br>
-                <label>Beds : </label>
+                </div>
+                <div>
+                    <span></span>
+                    <label>Price per Night</label>
+                    <span></span>
+                </div>
+                <div>
+                    <span></span>
 
-                <label>Tags : </label>
+                    <input className={"rounded-login"}
+                        type='number'
+                        value={roomPrice}
+                        onChange={(e) => { setRoomNumber(e.target.value); }
+                        } />
+                    <span></span>
 
+                </div>
+                <div>
+                    <span></span>
+                    <label>Amount of Beds</label>
+                    <span></span>
+                </div>
+                <div>
+                    <span></span>
+
+                    <input className={"rounded-login"}
+                        type='number'
+                        value={amountOfBeds}
+                        onChange={(e) => { setAmountOfBeds(e.target.value); }
+                        } />
+                    <span></span>
+
+                </div>
+
+                <div>
+                    <span></span>
+                    <label>Tags (seperate by commas)</label>
+                    <span></span>
+                </div>
+                <div>
+                    <span></span>
+
+                    <input className={"rounded-login"}
+                        type='number'
+                        value={tagString}
+                        onChange={(e) => { setTagString(e.target.value); }
+                        } />
+                    <span></span>
+
+                </div>
                 <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setCreateRoom(true) }}> Create Room </button>
 
             </form>
