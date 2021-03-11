@@ -1,25 +1,23 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
-const roomSchema = require("../Models/user.model") 
 const hotel  = require("../Models/hotel.model")
-
 const bookingSchema =
     new Schema({
-        rooms:
+        room_ID:
         {
-		    type: [roomSchema],
+		    type: [String],
 			required: true
 		},
         hotel:
         {
             type: hotel.schema,
-            required: true,
-            unique: false
+            required: true
 		},
-        date:
+        dates_booked:
         {
-		    type: String
+            type: [Date],
+            required: true
 		},
 	});
 

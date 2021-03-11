@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
 const roomSchema = new Schema
 ({
     roomNumber:
@@ -19,17 +18,17 @@ const roomSchema = new Schema
 		type: Number,
 		required: true
 	},
-	booked:
-	{
-		type: Boolean,
-		required: true,
-		default : false
-	},
 	tags:
 	{
 		type: [String],
 		required : false,
-    }
+	},
+	booked_dates:
+	{
+		type : [Date],
+		required : true
+	}
+
 },
 {
     timestamps: true,
@@ -37,4 +36,4 @@ const roomSchema = new Schema
 
 const Room = mongoose.model("Room", roomSchema);
 
-module.exports = roomSchema;
+module.exports = Room;

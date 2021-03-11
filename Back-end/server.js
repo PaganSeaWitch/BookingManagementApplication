@@ -5,6 +5,7 @@ const userRouter = require("./routes/users")
 const managerRouter = require("./routes/managers")
 const emailRouter = require("./routes/emails")
 const hotelRouter = require("./routes/hotels")
+const roomRouter = require("./routes/rooms")
 require('dotenv').config();
 
 
@@ -35,6 +36,7 @@ app.use("/user", userRouter)
 app.use("/manager", managerRouter)
 app.use("/email", emailRouter)
 app.use("/hotel", hotelRouter)
+app.use("/room", roomRouter)
 
 //start the server
 app.listen(port, () => {

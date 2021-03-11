@@ -3,7 +3,7 @@ import RoomListing from "./room-listing.component";
 
 
 // JavaScript source code
-const Hotel = ({ getHotel, props }) => {
+const Hotel = ({ getHotel, onRoomClick, props}) => {
     const [hotelName, setHotelName] = useState("");
     const [hotelLocation, setHotelLocation] = useState({
         streetAddress1: "",
@@ -50,7 +50,7 @@ const Hotel = ({ getHotel, props }) => {
             <h3> Available Rooms </h3>
             
 			<ul style = {{listStyleType: "none"}}>
-						{rooms.map(room => <li> <RoomListing room={room} props={props} /></li>)}
+                {rooms.map(room => <li> <RoomListing room={room} onClick={onRoomClick} props={props} /></li>)}
 			</ul>
         </div>
     )

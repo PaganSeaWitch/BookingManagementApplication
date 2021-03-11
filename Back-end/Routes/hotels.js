@@ -1,19 +1,19 @@
 const router = require('express').Router();
 let hotelImport = require("../Models/hotel.model");
 let Hotel = hotelImport.model
-let Room = require("../Models/room.model");
+
+
 //Returns all hotels
 router.route("/allHotels").get((req, res) => {
     Hotel.find()
     .then(hotel => res.json(hotel))
     .catch(err => res.status(400).json("Error: " + err))
 })
-
-//Returns all rooms
-router.route("/allRooms").get((req, res) => {
-    Room.find()
-    .then(room => res.json(room))
-    .catch(err => res.status(400).json("Error: " + err))
+//Returns all hotels
+router.route("/getHotelByRoomID/:id").get((req, res) => {
+    Hotel.findOne({ room_IDs : req.params.id})
+        .then(hotel => res.json(hotel))
+        .catch(err => res.status(400).json("Error: " + err))
 })
 
 //Returns hotel by ID
@@ -24,11 +24,6 @@ router.route("/getHotelByID/:id").get((req, res) => {
         .catch(err => res.status(400).json("Error: " + err))
 })
 
-router.route("/getRoomByID/:id").get((req, res) => {
-	Room.findById(req.params.id)
-		.then(room => { console.log(room); res.json(room) })
-        .catch(err => res.status(400).json("Error: " + err))
-})
 
 //Adds a hotel
 router.route("/addHotel").post((req, res) => {
@@ -50,22 +45,17 @@ router.route("/addHotel").post((req, res) => {
 })
 
 
-//Adds a room
-router.route("/addRoom").post((req, res) => {
-    const roomNumber = req.body.roomNumber;
-    const price = req.body.price;
-    const beds = req.body.beds;
-    const booked = req.body.booked;
-
-    const newRoom = new Room({roomNumber, price, beds, booked});
-
-    newRoom.save()
-    .then(() => res.json(newRoom))
-    .catch(err => res.status(400).json("Error: " + err));
-
-
-})
-
+//Update hotel info
+router.route("/updateRoomForHotel").post((req, res) => {
+    Hotel.findByIdAndUpdate(req.body.id)
+        .then((hotel) => {
+            hotel.rooms = hotel.rooms.push(req.body.roomId);
+            hotel.save()
+                .then(() => res.json(hotel))
+                .catch(err => res.status(400).json("Error: " + err));
+        })
+        .catch(err => res.status(400).json("Error: " + err))
+})  
 
 //Update hotel info
 router.route("/updateHotel").post((req, res) => {
@@ -86,34 +76,12 @@ router.route("/updateHotel").post((req, res) => {
         .catch(err => res.status(400).json("Error: " + err))
 })  
 
-//Update hotel rooms
-//Come back
-router.route("/updateRoom").post((req, res) => {
-    Hotel.findOneAndUpdate({ booked: req.params.booked  })
-        .then((room) => {
-            room.roomNumber = req.body.roomNumber;
-            room.price = req.body.price;
-            room.beds = req.body.beds;
-            room.booked = req.body.booked;
-
-            room.save()
-                .then(() => res.json(room))
-                .catch(err => res.status(400).json("Error: " + err));
-        })
-        .catch(err => res.status(400).json("Error: " + err))
-})  
 
 //Delete hotel by hotelID
-router.route("deleteByHotelID/:hotelID").delete((req, res) => {
-    Hotel.findOneAndDelete({ hotelID: req.params.hotelID })
+router.route("/deleteByHotelID/:hotelID").delete((req, res) => {
+    Hotel.findOneAndDelete({ _id: req.params.hotelID })
         .then(() => res.json("Hotel deleted."))
         .catch(err => res.status(400).json("Error: " + err));
 });
 
-//Delete room by room number
-router.route("deleteByRoomNumber/:roomNumber").delete((req, res) => {
-    Room.findOneAndDelete({ roomNumber: req.params.roomNumber })
-        .then(() => res.json("Room deleted."))
-        .catch(err => res.status(400).json("Error: " + err));
-});
 module.exports = router;
