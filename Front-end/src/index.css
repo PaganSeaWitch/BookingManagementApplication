@@ -22,7 +22,6 @@ code {
 	margin: auto;
 	max-width: 320px;
 	margin-bottom: 10px;
-	margin-top:50px;
 }
 
 .switch-button{
@@ -109,17 +108,21 @@ code {
 	background-color: #add8e6;
 }
 
-.splash-page{
-	marginTop: 0;
-	backgroundSize: cover;  
-	height: 1600px; 
-	backgroundImage: 'url(/hotelStockPhoto.jpg)'; 
+.splash-page{ 
+    position: absolute;
+	background-size: cover;
+	background-image: url(images/hotelStockPhoto.jpg);
+	background-position: center;
+    background-repeat: no-repeat;
+	width: 100%;
+	height: 100%;
 }
 .dashboard{
 	position: absolute;
-	background-image: url("/images/hotelStockPhoto.jpg");
-
-	cover: true;
+	background-size: cover;
+	background-image: url(images/hotelStockPhoto.jpg);
+	background-position: center;
+    background-repeat: no-repeat;
 	width: 100%;
 	height: 100%;
 	
@@ -154,10 +157,7 @@ code {
 }
 
 .user-information{
-	margin-top : 50px;
-	margin-bottom: auto;
-	margin-left :auto;
-	margin-right :auto;
+	margin: auto;
 	max-width: 650px;
 	position:relative;
 	border:1px #ccc solid;

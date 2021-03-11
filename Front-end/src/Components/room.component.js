@@ -11,10 +11,22 @@ const Room = ({getRoom, props}) => {
 	const [roomBedAmount, setRoomBedAmount] = useState(0)
 	const [roomTags, setRoomTags] = useState([])
 	const [roomBookedDates, setRoomBookedDates] = useState([])
+	
+	const [startDate, setStartDate] = useState(new Date());
+	const [endDate, setEndDate] = useState(null);
+	
+	const onChange = dates => {
+    const [start, end] = dates;
+		setStartDate(start);
+		setEndDate(end);
+	
+	
+	};
+	
     const page = window.location.href;
     const uri = process.env.REACT_APP_FRONT_END_SERVER_URI
     console.log(page)
-    const [startDate, setStartDate] = useState(new Date());
+    
 
     const currentPageType1 = "/room/"
     let id = ""
@@ -40,16 +52,12 @@ const Room = ({getRoom, props}) => {
                 <label>Beds : {roomBedAmount} </label>
 
                 <div>
-                    <label>Book from</label>
-                    <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+                    <label>Book range</label>
+                    <DatePicker selected={startDate} onChange={onChange} startDate={startDate} endDate = {endDate} selectsRange inline />
                    
 
                 </div>
-                <div>
-                    <label>Book to</label>
-                    <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
-
-                </div>
+                
                 <label> Total Price : {roomPrice} </label>
                 <button className="btn btn-success" onClick={(e) => { e.preventDefault();}}> Book Room </button>
 
