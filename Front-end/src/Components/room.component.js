@@ -17,14 +17,21 @@ const Room = ({getRoom, props}) => {
 	const [startDate, setStartDate] = useState(new Date());
 	const [endDate, setEndDate] = useState(null);
 	
+	var selectedDates = [];
+	
 	const onChange = dates => {
 		const [start, end] = dates;
 		setStartDate(start);
 		setEndDate(end);
-		setRoomBookedDates(dates);
-		setUserBookedDates(dates);
+		selectedDates = dates.slice();
+		
 	
 	};
+	
+	const bookRoom = () => {
+        setRoomBookedDates(selectedDates);
+		setUserBookedDates(selectedDates);
+    };
 	
     const page = window.location.href;
     const uri = process.env.REACT_APP_FRONT_END_SERVER_URI
@@ -62,7 +69,7 @@ const Room = ({getRoom, props}) => {
                 </div>
                 
                 <label> Total Price : {roomPrice} </label>
-                <button className="btn btn-success" onClick={(e) => { e.preventDefault();}}> Book Room </button>
+                <button className="btn btn-success" onClick={(bookRoom)}> Book Room </button>
 
             </form>
             
