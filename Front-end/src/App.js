@@ -762,7 +762,13 @@ const App = () => {
                 </>
             )}
             />
-
+            <Route path="/booking/:id" render={(props) => (
+                <>
+                    {/* we pass a function*/}
+                    {<Booking user={user} props={props} getHotel={getHotelForBookings} getRoom={getRoomForBookings} />}
+                </>
+            )}
+            />
 			<Route path="/dashboard" render={(props) => (
                 <>
                     {<Dashboard user={user} manager={manager} props={props} hotels={hotels} onHotelClick={onHotelClick}  props={props}/>}

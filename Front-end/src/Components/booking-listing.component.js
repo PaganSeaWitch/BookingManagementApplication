@@ -6,22 +6,22 @@ const BookingListing = ({ bookingID, hotel, room, onClick, props }) => {
 	const [hotelNumber, setHotelNumber] = useState(0);
 	const [hotelPrice, setHotelPrice] = useState(0);
 	const [hotelBeds, setHotelBeds] = useState(0);
-	hotel.then(response => {
-		console.log(response)
-		setHotelName(response.name)
-	})
-		.catch(err => console.log(err))
-
-	room.then(response => {
-		setHotelNumber(response.roomNumber);
-		setHotelPrice(response.price);
-		setHotelBeds(response.beds);
-	})
-		.catch(err => console.log(err))
+	
 	useEffect(() => {
 		
+		hotel.then(response => {
+			console.log(response)
+			setHotelName(response.name)
+		})
+			.catch(err => console.log(err))
 
-	});
+		room.then(response => {
+			setHotelNumber(response.roomNumber);
+			setHotelPrice(response.price);
+			setHotelBeds(response.beds);
+		})
+			.catch(err => console.log(err))
+	},[]);
 	return (
 		<div style={{ marginBottom: '50px' }} >
 
