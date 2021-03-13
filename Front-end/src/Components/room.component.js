@@ -15,9 +15,10 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 	const [userBookDates, setUserBookedDates] = useState([])
 	const [book, setBook] = useState(false)
 	const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(null);
-    const [roomID, setRoomID] = useState("")
-    useEffect(() => {
+  const [endDate, setEndDate] = useState(null);
+  const [roomID, setRoomID] = useState("")
+  
+  useEffect(() => {
 
         
         let id = ""
@@ -34,7 +35,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 
 
     }, []);
-    useEffect(() => {
+		useEffect(() => {
 
         if (book == true) {
             
@@ -97,6 +98,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
         setUserBookedDates([...datesList]);
 	};
 	
+
     
 
    
@@ -124,8 +126,10 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 
                 </div>
 
+
                 <label> Total Price : {userBookDates.length == 0 ? roomPrice : roomPrice * userBookDates.length} </label>
                 <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setBook(true); }}> Book Room </button>
+
 
             </form>
             

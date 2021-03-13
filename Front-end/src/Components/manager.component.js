@@ -144,7 +144,7 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
 
     return (
 
-        <div>
+        <div class = 'manager'>
 
             <form className={"user-information"}>
                 {/* we wrap this function call in a lambda to prevent render infi loop*/}
