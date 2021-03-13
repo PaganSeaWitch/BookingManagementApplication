@@ -30,7 +30,6 @@ router.route("/add").post((req, res) => {
 
 //Looks up user by username
 router.route("/getByUsername/").get((req, res) => {
-    console.log(req.params);
     User.findOne({ username: req.query.username })
         .then(user =>
         {
@@ -93,7 +92,7 @@ router.route("/updateBookings/").post((req, res) => {
 })
 
 router.route("/updatePassword/").post((req, res) => {
-    console.log(req.body.account_id)
+    console.log("updating password")
     User.findOneAndUpdate({ id: req.body.account_id })
         .then((user) => {
             user.password = req.body.password;

@@ -124,7 +124,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 
                 </div>
 
-                <label> Total Price : {roomPrice * userBookDates.length} </label>
+                <label> Total Price : {userBookDates.length == 0 ? roomPrice : roomPrice * userBookDates.length} </label>
                 <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setBook(true); }}> Book Room </button>
 
             </form>

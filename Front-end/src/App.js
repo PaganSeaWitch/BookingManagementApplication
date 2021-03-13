@@ -53,7 +53,7 @@ const App = () => {
     }
     //this happpens at the start of the apps life cycle
     useEffect(() => {
-
+        console.log("LOGGING IN ACCIYNT")
         const loggedInUser = localStorage.getItem('LoggedInUser');
         if (loggedInUser && user.username == "") {
             const userJSON = JSON.parse(loggedInUser);
@@ -177,7 +177,7 @@ const App = () => {
     }
 
 
-    const getHotel = (hotel_id, setHotelLocation, setHotelName, setHotelRooms, rooms, props) => {
+    const getHotel =  (hotel_id, setHotelLocation, setHotelName, setHotelRooms, rooms, props) => {
         console.log("Getting hotel!")
         axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
             .then(response => {
@@ -200,35 +200,39 @@ const App = () => {
             .catch(err => { console.log(err);props.history.push("/") })
     }
 
-    const getHotelForBookings = (hotel_id) =>{
-        axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
-            .then(response => {
+    const getHotelForBookings = async (hotel_id) => {
+        let hotel = ({})
+       await axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
+           .then(response => {
                 if (response == null) {
                     const defaultHotel= ({ name: "Default"})
-                    return defaultHotel;
-                }
+                    hotel = defaultHotel;                }
                 else {
-                    return response.data;
+                     hotel = response.data;
                 }
             })
-            .catch(err => { console.log(err) })
+           .catch(err => { console.log(err); hotel = ({ name: "Default" }); ; })
 
-        
+        return hotel
+
     }
 
-    const getRoomForBookings = (room_id) => {
-        axios.get(uri + "/room/getRoomByID/" + room_id)
+    const getRoomForBookings = async (room_id) => {
+        let room = ({})
+
+        await axios.get(uri + "/room/getRoomByID/" + room_id)
             .then(response => {
+                console.log(response.data)
                 if (response == null) {
                     const defaultRoom = ({ roomNumber: 0, beds: 0, price: 0 })
-                    return defaultRoom;
+                    room =  defaultRoom;
                 }
                 else {
-                    return response.data;
+                    room =  response.data;
                 }
             })
-            .catch(err => { console.log(err) })
-
+            .catch(err => { console.log(err); room = ({ roomNumber: 0, beds: 0, price: 0 });})
+        return room;
     }
 
     const getHotelForManager = (hotel_id, setHoteLocation, setHotelName, hotelLocation) => {
@@ -295,7 +299,7 @@ const App = () => {
             ...user,
             _id: response._id,
             username: response.username,
-            password: user.password,
+            password: response.password,
             firstName: response.firstName,
             lastName: response.lastName,
             email: response.email,
@@ -422,6 +426,7 @@ const App = () => {
 
     const updateUserBookings = (user, newBooking, props) =>{
         const updateBooking = ({ id: user._id, booking: newBooking })
+        console.log(user.password)
         console.log("begining user update")
         axios.post(uri + "/user/updateBookings/", updateBooking)
             .then(response => { setUserState(response, user.password); props.history.push("/bookings"); })
@@ -569,6 +574,7 @@ const App = () => {
             bookings: response.data.bookings
         }
         const json = JSON.stringify(jsonOjb);
+        console.log(user);
         console.log("JSON OF STRINGS: " + json);
         localStorage.setItem('LoggedInUser', json);
         
@@ -774,7 +780,7 @@ const App = () => {
             <Route path="/bookings" render={(props) => (
                 <>
                     {/* we pass a function*/}
-                    {<Bookings user={user} props={props} getHotel={getHotelForBookings} getRoom={getRoomForBookings}/>}
+                    {<Bookings user={user} props={props} getHotel={getHotelForBookings} getRoom={getRoomForBookings} onBookingClick={onBookingClick}/>}
                 </>
             )}
             />

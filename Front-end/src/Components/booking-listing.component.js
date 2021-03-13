@@ -1,14 +1,34 @@
 import { BiArrowBack } from 'react-icons/bi'
+import { useState, useEffect } from "react";
 
-const BookingListing = ({booking, hotel, room, onClick, props }) => {
-    
+const BookingListing = ({ bookingID, hotel, room, onClick, props }) => {
+	const [hotelName, setHotelName] = useState("");
+	const [hotelNumber, setHotelNumber] = useState(0);
+	const [hotelPrice, setHotelPrice] = useState(0);
+	const [hotelBeds, setHotelBeds] = useState(0);
+	hotel.then(response => {
+		console.log(response)
+		setHotelName(response.name)
+	})
+		.catch(err => console.log(err))
+
+	room.then(response => {
+		setHotelNumber(response.roomNumber);
+		setHotelPrice(response.price);
+		setHotelBeds(response.beds);
+	})
+		.catch(err => console.log(err))
+	useEffect(() => {
+		
+
+	});
 	return (
 		<div style={{ marginBottom: '50px' }} >
 
-			<h1> Hotel:{hotel.name} Room: {room.roomNumber}
+			<h1> Hotel:{hotelName} Room: {hotelNumber}
 				<BiArrowBack
 					style={{ color: 'green', cursor: 'pointer' }}
-					onClick={() => onClick(booking._id, props)}
+					onClick={() => onClick(bookingID, props)}
 
 				/>
 			</h1>
@@ -16,9 +36,9 @@ const BookingListing = ({booking, hotel, room, onClick, props }) => {
 
 				<h3>Information </h3>
 
-				<label>Price : {room.price} </label>
+				<label>Price : {hotelPrice} </label>
 				<br></br>
-				<label>Beds : {room.beds} </label>
+				<label>Beds : {hotelBeds} </label>
 				<br></br>
 
 
