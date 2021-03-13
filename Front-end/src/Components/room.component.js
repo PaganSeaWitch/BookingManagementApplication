@@ -13,17 +13,38 @@ const Room = ({getRoom, props}) => {
 	const [roomBookedDates, setRoomBookedDates] = useState([])
 	
 	const [userBookDates, setUserBookedDates] = useState([])
-	
+	const [book, setBook] = useState(false)
 	const [startDate, setStartDate] = useState(new Date());
 	const [endDate, setEndDate] = useState(null);
-	
+    useEffect(() => {
+
+        if (book == true) {
+            setBook(false)
+        }
+
+
+
+
+    }, [book]);
 	const onChange = dates => {
-    const [start, end] = dates;
+        const [start, end] = dates;
 		setStartDate(start);
-		setEndDate(end);
-		setRoomBookedDates(dates);
-		setUserBookedDates(dates);
-	
+        setEndDate(end);
+        const datesList = [];
+        let tempStart = start;
+
+        const addDays = function (days) {
+            var date = new Date(this.valueOf());
+            date.setDate(date.getDate() + days);
+            console.log(date)
+            return date;
+        };
+        while (tempStart <= end) {
+            datesList.push(tempStart);
+            tempStart = addDays.call(tempStart, 1);
+        }
+
+        setUserBookedDates([...datesList]);
 	};
 	
     const page = window.location.href;
@@ -60,9 +81,9 @@ const Room = ({getRoom, props}) => {
                    
 
                 </div>
-                
-                <label> Total Price : {roomPrice} </label>
-                <button className="btn btn-success" onClick={(e) => { e.preventDefault();}}> Book Room </button>
+
+                <label> Total Price : {endDate == null ? roomPrice : roomPrice + roomPrice * (Math.floor((Math.abs(endDate - startDate) / 1000) / (60 * 60 * 24)))} </label>
+                <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setBook(true); }}> Book Room </button>
 
             </form>
             

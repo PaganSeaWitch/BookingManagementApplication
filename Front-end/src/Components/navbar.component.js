@@ -57,6 +57,9 @@ const NavBar = ({  user, manager }) => {
 								<li className="navbar-item">
                                 <Link to="/dashboard" className="nav-link">Dashboard</Link>
                                 </li>
+                                <li className="navbar-item">
+                                    <Link to="/bookings" className="nav-link">Bookings</Link>
+                                </li>
                             </ul>
                             </div>}
                     </div>}

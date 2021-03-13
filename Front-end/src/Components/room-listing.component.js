@@ -1,4 +1,3 @@
-import React from 'react';
 import { BiArrowBack } from 'react-icons/bi'
 
 const RoomListing = ({room, onClick,  props}) => {

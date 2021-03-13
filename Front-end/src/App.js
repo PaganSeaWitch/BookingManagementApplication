@@ -102,6 +102,10 @@ const App = () => {
     const onEditRoomClick = (id, props) => {
         props.history.push("/editRoom/" + id)
     }
+
+    const onBookingClick = (id, props) => {
+        props.history.push("/booking/" + id)
+    }
     const addRoom = (hotel_id, roomNumber, roomPrice, roomBedAmount, roomTags, props) => {
         const newRoom = ({ roomNumber, price: roomPrice, beds: roomBedAmount, tags:roomTags, bookedDates:[] })
         axios.post(uri + "/room/addRoom", newRoom)
@@ -188,7 +192,35 @@ const App = () => {
             })
             .catch(err => { console.log(err);props.history.push("/") })
     }
+    const getHotelForBookings = (hotel_id) =>{
+        axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
+            .then(response => {
+                if (response == null) {
+                    const defaultHotel= ({ name: "Default"})
+                    return defaultHotel;
+                }
+                else {
+                    return response.data;
+                }
+            })
+            .catch(err => { console.log(err) })
 
+        
+    }
+    const getRoomForBookings = (room_id) => {
+        axios.get(uri + "/room/getRoomByID/" + room_id)
+            .then(response => {
+                if (response == null) {
+                    const defaultRoom = ({ roomNumber: 0, beds: 0, price: 0 })
+                    return defaultRoom;
+                }
+                else {
+                    return response.data;
+                }
+            })
+            .catch(err => { console.log(err) })
+
+    }
     const getHotelForManager = (hotel_id, setHoteLocation, setHotelName, hotelLocation) => {
         console.log("using the getHotel fuctnion")
         axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
@@ -709,7 +741,7 @@ const App = () => {
             <Route path="/bookings" render={(props) => (
                 <>
                     {/* we pass a function*/}
-                    {<Bookings user={user}  props={props} getBookings={getBookings} />}
+                    {<Bookings user={user} props={props} getHotel={getHotelForBookings} getRoom={getRoomForBookings}/>}
                 </>
             )}
             />
