@@ -31,19 +31,18 @@ router.route("/addRoom").post((req, res) => {
 
 //Update hotel rooms
 router.route("/updateRoom").post((req, res) => {
-
     Room.findByIdAndUpdate(req.body.roomID)
         .then((room) => {
             room.roomNumber = req.body.roomNumber;
             room.price = req.body.roomPrice;
             room.beds = req.body.roomAmountBeds;
             if (req.body.dates != undefined) {
-                room.dates = req.body.dates;
+                room.booked_dates.push(...req.body.dates);
             }
             room.tags = req.body.roomTags;
             room.save()
                 .then(() => res.json(room))
-                .catch(err => res.status(400).json("Error: " + err));
+                .catch(err => { res.status(400).json("Error: " + err);});
         })
         .catch(err => res.status(400).json("Error: " + err))
 })  

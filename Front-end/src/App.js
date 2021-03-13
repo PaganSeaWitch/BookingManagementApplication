@@ -16,6 +16,8 @@ import Room from "./Components/room.component";
 import CreateRoom from "./Components/create-room.component"
 import EditRooms from "./Components/edit-rooms.component"
 import EditRoom from "./Components/edit-room.component"
+import Bookings from "./Components/bookings.component"
+import Booking from "./Components/booking.component"
 require('dotenv').config()
 
 
@@ -51,7 +53,7 @@ const App = () => {
     }
     //this happpens at the start of the apps life cycle
     useEffect(() => {
-
+        console.log("LOGGING IN ACCIYNT")
         const loggedInUser = localStorage.getItem('LoggedInUser');
         if (loggedInUser && user.username == "") {
             const userJSON = JSON.parse(loggedInUser);
@@ -100,6 +102,10 @@ const App = () => {
     const onEditRoomClick = (id, props) => {
         props.history.push("/editRoom/" + id)
     }
+
+    const onBookingClick = (id, props) => {
+        props.history.push("/booking/" + id)
+    }
     const addRoom = (hotel_id, roomNumber, roomPrice, roomBedAmount, roomTags, props) => {
         const newRoom = ({ roomNumber, price: roomPrice, beds: roomBedAmount, tags:roomTags, bookedDates:[] })
         axios.post(uri + "/room/addRoom", newRoom)
@@ -121,7 +127,7 @@ const App = () => {
                     props.history.push("/")
                 }
                 else {
-                    setHotelId(response.data.id);
+                    setHotelId(response.data._id);
                     setHotelName(response.data.name);
                 }
             })
@@ -140,7 +146,14 @@ const App = () => {
                     setRoomPrice(response.data.price);
                     setRoomBedAmount(response.data.beds);
                     setRoomTags(response.data.tags);
-                    setRoomBookedDates(response.data.bookedDates);
+                    const tempDateList = []
+                    response.data.booked_dates.forEach(booked => {
+                        let tempDate = new Date(booked);
+                        console.log(tempDate)
+                        tempDateList.push(tempDate);
+                    })
+                    setRoomBookedDates([...tempDateList]);
+
                     getHotelForRoom(room_id, setHotelId, setHotelName, props)
                 }
             })
@@ -163,7 +176,8 @@ const App = () => {
             .catch(err => { console.log(err); props.history.push("/") })
     }
 
-    const getHotel = (hotel_id, setHotelLocation, setHotelName, setHotelRooms, rooms, props) => {
+
+    const getHotel =  (hotel_id, setHotelLocation, setHotelName, setHotelRooms, rooms, props) => {
         console.log("Getting hotel!")
         axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
             .then(response => {
@@ -184,6 +198,41 @@ const App = () => {
                 }
             })
             .catch(err => { console.log(err);props.history.push("/") })
+    }
+
+    const getHotelForBookings = async (hotel_id) => {
+        let hotel = ({})
+       await axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
+           .then(response => {
+                if (response == null) {
+                    const defaultHotel= ({ name: "Default"})
+                    hotel = defaultHotel;                }
+                else {
+                     hotel = response.data;
+                }
+            })
+           .catch(err => { console.log(err); hotel = ({ name: "Default" }); ; })
+
+        return hotel
+
+    }
+
+    const getRoomForBookings = async (room_id) => {
+        let room = ({})
+
+        await axios.get(uri + "/room/getRoomByID/" + room_id)
+            .then(response => {
+                console.log(response.data)
+                if (response == null) {
+                    const defaultRoom = ({ roomNumber: 0, beds: 0, price: 0 })
+                    room =  defaultRoom;
+                }
+                else {
+                    room =  response.data;
+                }
+            })
+            .catch(err => { console.log(err); room = ({ roomNumber: 0, beds: 0, price: 0 });})
+        return room;
     }
 
     const getHotelForManager = (hotel_id, setHoteLocation, setHotelName, hotelLocation) => {
@@ -217,6 +266,7 @@ const App = () => {
             hotel_ID: ""
         })
     }
+
     const resetUser = () => {
         setUser({
             ...user,
@@ -230,6 +280,7 @@ const App = () => {
         });
         localStorage.clear();
     }
+
     const setManagerStateWithoutPassword = (response) => {
         setManager({
             ...manager,
@@ -373,6 +424,28 @@ const App = () => {
         console.log(updatedUser.username);
     };
 
+    const updateUserBookings = (user, newBooking, props) =>{
+        const updateBooking = ({ id: user._id, booking: newBooking })
+        console.log(user.password)
+        console.log("begining user update")
+        axios.post(uri + "/user/updateBookings/", updateBooking)
+            .then(response => { setUserState(response, user.password); props.history.push("/bookings"); })
+            .catch(err => { console.log(err); alert("booking was not saved!"); return; });
+        console.log("end user update")
+
+    }
+
+    const updateRoomBookings = async (id, roomNumber, roomPrice, roomBedAmount ,roomTags, bookedDates, newDates) => {
+        
+        let response = false;
+        console.log(id);
+        const updatedRoom = ({ roomID: id, roomNumber, roomPrice, roomAmountBeds : roomBedAmount, roomTags, dates: newDates })
+        await axios.post(uri + "/room/updateRoom", updatedRoom)
+            .then(() => { return true; })
+            .catch(err => { console.log(err); alert("booking not done were not saved!"); response = false; });
+       
+    }
+
     const updatePassword = (password, id,props) =>{
         axios.get(uri + "/email/AccountRecovery/getById/" + id)
             .then(accountTypeResponse => {
@@ -501,6 +574,7 @@ const App = () => {
             bookings: response.data.bookings
         }
         const json = JSON.stringify(jsonOjb);
+        console.log(user);
         console.log("JSON OF STRINGS: " + json);
         localStorage.setItem('LoggedInUser', json);
         
@@ -688,7 +762,13 @@ const App = () => {
                 </>
             )}
             />
-
+            <Route path="/booking/:id" render={(props) => (
+                <>
+                    {/* we pass a function*/}
+                    {<Booking user={user} props={props} getHotel={getHotelForBookings} getRoom={getRoomForBookings} />}
+                </>
+            )}
+            />
 			<Route path="/dashboard" render={(props) => (
                 <>
                     {<Dashboard user={user} manager={manager} props={props} hotels={hotels} onHotelClick={onHotelClick}  props={props}/>}
@@ -703,7 +783,13 @@ const App = () => {
                 </>
             )}
             />    
-
+            <Route path="/bookings" render={(props) => (
+                <>
+                    {/* we pass a function*/}
+                    {<Bookings user={user} props={props} getHotel={getHotelForBookings} getRoom={getRoomForBookings} onBookingClick={onBookingClick}/>}
+                </>
+            )}
+            />
             <Route path="/createRoom" render={(props) => (
                 <>
                     {/* we pass a function*/}
@@ -730,7 +816,7 @@ const App = () => {
 
             <Route path="/room/:id" render={(props) => (
                 <>
-                    {<Room getRoom={getRoom} props={props} />}
+                    {<Room user={user} getRoom={getRoom} updateUser={updateUserBookings} updateRoom={updateRoomBookings} props={props} />}
 
                 </>
             )}

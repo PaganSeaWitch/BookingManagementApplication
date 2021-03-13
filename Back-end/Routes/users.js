@@ -30,7 +30,6 @@ router.route("/add").post((req, res) => {
 
 //Looks up user by username
 router.route("/getByUsername/").get((req, res) => {
-    console.log(req.params);
     User.findOne({ username: req.query.username })
         .then(user =>
         {
@@ -80,17 +79,20 @@ router.route("/deleteById/:id").delete((req, res) => {
 });
 
 router.route("/updateBookings/").post((req, res) => {
-    User.findOneAndUpdate({ username: req.body.username })
+    console.log("UPDATING BOOKINGS")
+    console.log(req.body)
+    User.findByIdAndUpdate({ _id: req.body.id })
         .then((user) => {
-            user.bookings = req.body.bookings;
+            user.bookings.push(req.body.booking);
             user.save()
-                .then(() => res.json("bookings updated"))
+                .then(() => res.json(user))
                 .catch(err => res.status(400).json("Error: " + err));
         })
         .catch(err => res.status(400).json("Error: " + err));
 })
+
 router.route("/updatePassword/").post((req, res) => {
-    console.log(req.body.account_id)
+    console.log("updating password")
     User.findOneAndUpdate({ id: req.body.account_id })
         .then((user) => {
             user.password = req.body.password;

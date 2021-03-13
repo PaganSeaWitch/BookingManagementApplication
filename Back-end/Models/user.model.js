@@ -6,12 +6,12 @@ const bookingSchema =
     new Schema({
         room_ID:
         {
-		    type: [String],
+		    type: String,
 			required: true
 		},
-        hotel:
+        hotel_ID:
         {
-            type: hotel.schema,
+            type: String,
             required: true
 		},
         dates_booked:
