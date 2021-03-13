@@ -127,7 +127,7 @@ const App = () => {
                     props.history.push("/")
                 }
                 else {
-                    setHotelId(response.data.id);
+                    setHotelId(response.data._id);
                     setHotelName(response.data.name);
                 }
             })
@@ -146,7 +146,14 @@ const App = () => {
                     setRoomPrice(response.data.price);
                     setRoomBedAmount(response.data.beds);
                     setRoomTags(response.data.tags);
-                    setRoomBookedDates([...response.data.booked_dates]);
+                    const tempDateList = []
+                    response.data.booked_dates.forEach(booked => {
+                        let tempDate = new Date(booked);
+                        console.log(tempDate)
+                        tempDateList.push(tempDate);
+                    })
+                    setRoomBookedDates([...tempDateList]);
+
                     getHotelForRoom(room_id, setHotelId, setHotelName, props)
                 }
             })
@@ -414,19 +421,24 @@ const App = () => {
     };
 
     const updateUserBookings = (user, newBooking, props) =>{
-        let updateBooking = ({username: user.username, booking: newBooking})
+        const updateBooking = ({ id: user._id, booking: newBooking })
+        console.log("begining user update")
         axios.post(uri + "/user/updateBookings/", updateBooking)
-            .then(response => { setUserState(response, user.password); props.history.push("/bookings/"); })
+            .then(response => { setUserState(response, user.password); props.history.push("/bookings"); })
             .catch(err => { console.log(err); alert("booking was not saved!"); return; });
+        console.log("end user update")
+
     }
 
-    const updateRoomBookings = (id, roomNumber, roomPrice, roomBedAmount ,roomTags, bookedDates, newDates) => {
-        bookedDates.push(...newDates);
-        const updatedRoom = ({id, roomNumber, roomPrice, roomBedAmount, roomTags, dates: bookedDates })
-        axios.post(uri + "/user/updateRoom", updatedRoom)
-            .then(()=> { return true; })
-            .catch(err => { console.log(err); alert("booking not done were not saved!"); return false; });
+    const updateRoomBookings = async (id, roomNumber, roomPrice, roomBedAmount ,roomTags, bookedDates, newDates) => {
         
+        let response = false;
+        console.log(id);
+        const updatedRoom = ({ roomID: id, roomNumber, roomPrice, roomAmountBeds : roomBedAmount, roomTags, dates: newDates })
+        await axios.post(uri + "/room/updateRoom", updatedRoom)
+            .then(() => { return true; })
+            .catch(err => { console.log(err); alert("booking not done were not saved!"); response = false; });
+       
     }
 
     const updatePassword = (password, id,props) =>{

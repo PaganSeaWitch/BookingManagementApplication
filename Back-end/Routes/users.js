@@ -80,11 +80,11 @@ router.route("/deleteById/:id").delete((req, res) => {
 });
 
 router.route("/updateBookings/").post((req, res) => {
-    User.findOneAndUpdate({ username: req.body.username })
+    console.log("UPDATING BOOKINGS")
+    console.log(req.body)
+    User.findByIdAndUpdate({ _id: req.body.id })
         .then((user) => {
-            const currentBookings = user.bookings;
-            currentBookings.push(req.body.booking)
-            user.bookings = currentBookings;
+            user.bookings.push(req.body.booking);
             user.save()
                 .then(() => res.json(user))
                 .catch(err => res.status(400).json("Error: " + err));
