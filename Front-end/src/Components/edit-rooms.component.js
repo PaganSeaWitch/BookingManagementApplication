@@ -44,7 +44,8 @@ const EditRooms = ({ manager, onRoomClick, props }) => {
 
 
     return (
-        <div>
+		<div className = 'login-background'>
+        <div className = 'hotel-listing'>
 
             <header>
                 {hotelName}{' '}
@@ -58,6 +59,7 @@ const EditRooms = ({ manager, onRoomClick, props }) => {
                 {rooms.map((room, index) => <RoomListing key={index} room={room} onClick={onRoomClick} props={props} />)}
             </ul>
         </div>
+		</div>
     )
 }
 

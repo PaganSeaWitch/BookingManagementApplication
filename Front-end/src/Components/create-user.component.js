@@ -76,9 +76,9 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
     })
 
     return (
-        <div>
+        <div className= {"login-background"}>
             <div className={"login-header"}>
-                <header> New {userType}
+<header className = {"bold"}> New {userType}
                     <div className={"bottom-right-corner"}>
                         <Button variant={userButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setCreateUser(true); setUserType("User"); setUserButtonType("contained"); setManagerButtonType("outlined"); }}> User </Button>
                         <Button variant={managerButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setCreateUser(false); setUserType("Manager");setUserButtonType("outlined"); setManagerButtonType("contained"); }}> Manager </Button>

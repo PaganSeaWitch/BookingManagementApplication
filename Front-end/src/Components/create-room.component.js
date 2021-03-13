@@ -102,10 +102,10 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
     },[createRoom])
 
     return (
-        <div>
+        <div className = 'login-background'>
 
             <div className={"login-header"}>
-                <header>Create New Room for {hotelName} </header>
+                <header className = 'bold'>Create New Room for {hotelName} </header>
             </div>
 
             <form className={"login-form"}>

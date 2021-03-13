@@ -118,10 +118,10 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
     }, [editRoom])
 
     return (
-        <div>
+        <div className = 'login-background'>
 
             <div className={"login-header"}>
-                <header>Edit existing room for {hotelName} </header>
+                <header className = 'bold'>Edit existing room for {hotelName} </header>
             </div>
 
             <form className={"login-form"}>

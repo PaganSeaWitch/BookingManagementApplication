@@ -20,7 +20,7 @@ const ForgotPassword = ({ onEmailSubmit, props}) => {
     })
 
     return (
-        <div>
+<div className = {"login-background"}>
             <div className={"login-header"}>
                 <header> Password Recovery
                     

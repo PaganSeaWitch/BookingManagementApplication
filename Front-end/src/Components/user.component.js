@@ -138,7 +138,7 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
  
     return (
 
-        <div>
+        <div className= {"user-background"}>
             
             <form className={"user-information"}>
                 {/* we wrap this function call in a lambda to prevent render infi loop*/}

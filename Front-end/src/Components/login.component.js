@@ -26,9 +26,9 @@ const Login = ({ onUserLogin, onManagerLogin, props }) => {
     })
 
     return (
-        <div>
+        <div className = {"login-background"}>
             <div className={"login-header"}>
-                <header> {loginType} Login
+                <header className = {"bold"}> {loginType} Login
                     <div className={"bottom-right-corner"}>
                         <Button variant={userButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setLoginAsUser(true); setLoginType("User"); setUserButtonType("contained"); setManagerButtonType("outlined");}}> User </Button>
                         <Button variant={managerButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setLoginAsUser(false); setLoginType("Manager");setUserButtonType("outlined"); setManagerButtonType("contained");}}> Manager </Button>

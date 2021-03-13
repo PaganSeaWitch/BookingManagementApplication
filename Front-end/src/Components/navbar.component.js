@@ -52,7 +52,7 @@ const NavBar = ({  user, manager }) => {
                         : <div>
                             < ul className="navbar-nav mr-auto">
                                 <li className="navbar-item">
-                                    <Link to="/user" className="nav-link">account Information</Link>
+                                    <Link to="/user" className="nav-link">Account Information</Link>
                                 </li>
 								<li className="navbar-item">
                                 <Link to="/dashboard" className="nav-link">Dashboard</Link>

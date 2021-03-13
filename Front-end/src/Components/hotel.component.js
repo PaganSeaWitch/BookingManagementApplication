@@ -33,9 +33,10 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
 
     
     return (
+		<div className = 'login-background'>
         <div className = 'hotel-page'>
             
-            <header>
+            <header className = 'bold'>
                 {hotelName}{' '}
                 
             </header>
@@ -58,6 +59,7 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
                 {rooms.map((room, index) => <RoomListing key={index} room={room} onClick={onRoomClick} props={props} />)}
 			</ul>
         </div>
+		</div>
     )
 }
 

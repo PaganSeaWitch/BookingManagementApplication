@@ -104,7 +104,8 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
    
 
     return (
-        <div>
+		<div className = 'login-background'>
+        <div className = 'hotel-listing'>
 
             <h1>
                 {hotelName}{' '}
@@ -134,6 +135,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
             </form>
             
         </div>
+		</div>
     )
 }
 

@@ -34,10 +34,12 @@ code {
 	margin-right : auto;
 	max-width: 320px;
 	margin-bottom: 10px;
+	
 }
 
 .switch-button{
 	margin-right : 10px;
+
 }
 
 .form-inline{
@@ -52,14 +54,26 @@ code {
 	
 }
 
+.login-background{
+
+	position: absolute;
+	background-size: cover;
+	background-image: url(images/dashboardStockPhoto.jpg);
+	background-position: center;
+    background-repeat: no-repeat;
+	width: 100%;
+	height: 100%;
+}
 .login-form{
+	
 	margin : auto;
 	max-width: 320px;
-	border:1px #ccc solid;
+	border:1px #000 solid;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
+	background-color: #add8e6;
 }
 .help-links{
 	font-size: 0.875rem;
@@ -93,11 +107,12 @@ code {
 	display: inline-block;
 	padding: 5px;
 	width: 30%;
-	border: 1px solid #ccc;
+	border: 2px solid #000;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
 	outline: 0;
+	
 
 }
 
@@ -111,13 +126,15 @@ code {
 	outline: 0;
 	background-color: #add8e6;
 	font-family: "Georgia", "Times New Roman", sans-serif;
-	opacity: 0.90;
+	opacity: 0.95;
 }
 
 .hotel-page{
+	display: inline-block;
 	text-align: center;
 	border: 3px solid #000;
 	background-color: #add8e6;
+	
 }
 
 .splash-page{ 
@@ -161,8 +178,20 @@ code {
 	background-image: url(images/dashboardStockPhoto.jpg);
 	background-position: center;
     background-repeat: no-repeat;
+	position: absolute;
 	width:100%;
 	height:100%;
+}
+
+.user-background{
+	background-size: cover;
+	background-image: url(images/userStockPhoto.jfif);
+	background-position: center;
+    background-repeat: no-repeat;
+	width:100%;
+	height:100%;
+	position: absolute;
+	
 }
 
 .user-information header{
@@ -176,11 +205,14 @@ code {
 	right:0;
 }
 
+.bold{
+ font-weight: bold;	
+}
 .user-information{
 	background-color: #add8e6;
 	margin: auto;
 	max-width: 650px;
-	position:relative;
+	position: relative;
 	border:1px #000 solid;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	-moz-border-radius: 10px;
@@ -208,4 +240,6 @@ code {
 	bottom:0;
 	right: 0px;
 	margin: auto;
+	background-color: #add8e6;
+	border: 1px #000 solid
 }
