@@ -146,7 +146,7 @@ const App = () => {
                     setRoomPrice(response.data.price);
                     setRoomBedAmount(response.data.beds);
                     setRoomTags(response.data.tags);
-                    setRoomBookedDates(response.data.bookedDates);
+                    setRoomBookedDates([...response.data.booked_dates]);
                     getHotelForRoom(room_id, setHotelId, setHotelName, props)
                 }
             })
@@ -192,6 +192,7 @@ const App = () => {
             })
             .catch(err => { console.log(err);props.history.push("/") })
     }
+
     const getHotelForBookings = (hotel_id) =>{
         axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
             .then(response => {
@@ -207,6 +208,7 @@ const App = () => {
 
         
     }
+
     const getRoomForBookings = (room_id) => {
         axios.get(uri + "/room/getRoomByID/" + room_id)
             .then(response => {
@@ -221,6 +223,7 @@ const App = () => {
             .catch(err => { console.log(err) })
 
     }
+
     const getHotelForManager = (hotel_id, setHoteLocation, setHotelName, hotelLocation) => {
         console.log("using the getHotel fuctnion")
         axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
@@ -252,6 +255,7 @@ const App = () => {
             hotel_ID: ""
         })
     }
+
     const resetUser = () => {
         setUser({
             ...user,
@@ -265,6 +269,7 @@ const App = () => {
         });
         localStorage.clear();
     }
+
     const setManagerStateWithoutPassword = (response) => {
         setManager({
             ...manager,
@@ -283,7 +288,7 @@ const App = () => {
             ...user,
             _id: response._id,
             username: response.username,
-            password: response.password,
+            password: user.password,
             firstName: response.firstName,
             lastName: response.lastName,
             email: response.email,
@@ -407,6 +412,22 @@ const App = () => {
         };
         console.log(updatedUser.username);
     };
+
+    const updateUserBookings = (user, newBooking, props) =>{
+        let updateBooking = ({username: user.username, booking: newBooking})
+        axios.post(uri + "/user/updateBookings/", updateBooking)
+            .then(response => { setUserState(response, user.password); props.history.push("/bookings/"); })
+            .catch(err => { console.log(err); alert("booking was not saved!"); return; });
+    }
+
+    const updateRoomBookings = (id, roomNumber, roomPrice, roomBedAmount ,roomTags, bookedDates, newDates) => {
+        bookedDates.push(...newDates);
+        const updatedRoom = ({id, roomNumber, roomPrice, roomBedAmount, roomTags, dates: bookedDates })
+        axios.post(uri + "/user/updateRoom", updatedRoom)
+            .then(()=> { return true; })
+            .catch(err => { console.log(err); alert("booking not done were not saved!"); return false; });
+        
+    }
 
     const updatePassword = (password, id,props) =>{
         axios.get(uri + "/email/AccountRecovery/getById/" + id)
@@ -771,7 +792,7 @@ const App = () => {
 
             <Route path="/room/:id" render={(props) => (
                 <>
-                    {<Room getRoom={getRoom} props={props} />}
+                    {<Room user={user} getRoom={getRoom} updateUser={updateUserBookings} updateRoom={updateRoomBookings} props={props} />}
 
                 </>
             )}

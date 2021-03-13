@@ -38,7 +38,7 @@ router.route("/updateRoom").post((req, res) => {
             room.price = req.body.roomPrice;
             room.beds = req.body.roomAmountBeds;
             if (req.body.dates != undefined) {
-                room.dates = req.body.dates;
+                room.booked_dates = req.body.dates;
             }
             room.tags = req.body.roomTags;
             room.save()
