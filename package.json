@@ -7,7 +7,7 @@
     "name": ""
   },
   "scripts": {
-    "start": "node Server.js"
+    "start": "node Server.js && cd front-end npm start"
   },
   "dependencies": {
     "bootstrap": "^4.6.0",
