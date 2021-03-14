@@ -1,11 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const userRouter = require("./back-end/routes/users")
-const managerRouter = require("./back-end/routes/managers")
-const emailRouter = require("./back-end/routes/emails")
-const hotelRouter = require("./back-end/routes/hotels")
-const roomRouter = require("./back-end/routes/rooms")
+const userRouter = require("./routes/users")
+const managerRouter = require("./routes/managers")
+const emailRouter = require("./routes/emails")
+const hotelRouter = require("./routes/hotels")
+const roomRouter = require("./routes/rooms")
 require('dotenv').config();
 
 
