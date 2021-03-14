@@ -7,7 +7,7 @@
     "name": ""
   },
   "scripts": {
-	"start": "cd Back-end && node server.js",
+	"start": "cd Back-end && nodemon server.js",
     "heroku-postbuild": "cd Front-end && npm install --only=dev && npm install && npm run build"
  },
   "dependencies": {
