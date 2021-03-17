@@ -10,8 +10,8 @@ router.route("/all").get((req, res) => {
 })
 
 //Returns all nonviewed messages
-router.route("/all").get((req, res) => {
-    Message.find({viewed : false})
+router.route("/allNonViewed").get((req, res) => {
+    Message.find({ viewed: false, recipient_id : req.body.recipient_id})
         .then(message => res.json(message))
         .catch(err => res.status(400).json("Error: " + err))
 })
@@ -40,8 +40,8 @@ router.route("/add").post((req, res) => {
 })
 
 //Update message to viewed
-router.route("/updateViewed").post((req, res) => {
-    Message.findByIdAndUpdate(req.body.message_id)
+router.route("/updateViewed/:message_id").post((req, res) => {
+    Message.findByIdAndUpdate(req.params.message_id)
         .then((message) => {
             message.viewed = true;
             message.save()
