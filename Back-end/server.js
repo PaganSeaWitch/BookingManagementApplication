@@ -6,6 +6,7 @@ const managerRouter = require("./routes/managers")
 const emailRouter = require("./routes/emails")
 const hotelRouter = require("./routes/hotels")
 const roomRouter = require("./routes/rooms")
+const messageRouter = require("./routes/messages")
 require('dotenv').config();
 
 
@@ -37,7 +38,7 @@ app.use("/manager", managerRouter)
 app.use("/email", emailRouter)
 app.use("/hotel", hotelRouter)
 app.use("/room", roomRouter)
-
+app.use("/message", messageRouter)
 //start the server
 app.listen(port, () => {
     console.log(`server is running on port: ${port}`);

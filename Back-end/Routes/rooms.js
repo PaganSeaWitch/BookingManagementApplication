@@ -24,7 +24,7 @@ router.route("/addRoom").post((req, res) => {
     const newRoom = new Room({ roomNumber, price, beds, tags, booked_dates });
 
     newRoom.save()
-        .then(() => res.json(newRoom))
+        .then((room) => res.json(room))
         .catch(err => res.status(400).json("Error: " + err));
 
 })
@@ -41,7 +41,7 @@ router.route("/updateRoom").post((req, res) => {
             }
             room.tags = req.body.roomTags;
             room.save()
-                .then(() => res.json(room))
+                .then((savedRoom) => res.json(savedRoom))
                 .catch(err => { res.status(400).json("Error: " + err);});
         })
         .catch(err => res.status(400).json("Error: " + err))
