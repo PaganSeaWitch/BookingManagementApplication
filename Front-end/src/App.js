@@ -18,6 +18,7 @@ import EditRooms from "./Components/edit-rooms.component"
 import EditRoom from "./Components/edit-room.component"
 import Bookings from "./Components/bookings.component"
 import Booking from "./Components/booking.component"
+const rug = require('random-username-generator');
 require('dotenv').config()
 
 
@@ -446,7 +447,8 @@ const App = () => {
        
     }
 
-    const updatePassword = (password, id,props) =>{
+    const updatePassword = (password, id, props) => {
+        console.log(id)
         axios.get(uri + "/email/AccountRecovery/getById/" + id)
             .then(accountTypeResponse => {
                 if (accountTypeResponse.data.accountType == "user") {
@@ -549,6 +551,62 @@ const App = () => {
 
             })
             .catch(err => console.log("failed emailCheck: " + err));
+    }
+
+    const googleLogin = async (google_id, firstName, lastName, email, props) => {
+        let exists = true;
+
+        await axios.get(uri + "/user/checkIfIdExists/" + google_id)
+            .then(response => {
+                if (response.data.length == 3) {
+                    axios.get(uri + "/user/getById/" + google_id)
+                        .then(response => {
+                            setUserStateWithoutPassword(response.data);
+                            props.push("/user")
+                        })
+                        .catch(err => { console.log(err); alert("google Login error!") });
+
+                }
+                else {
+                    exists = false;
+
+                }
+            })
+            .catch(err => {
+                exists = false;
+            });
+        console.log(exists)
+        if (exists == false) {
+            let randomUsername = rug.generate();
+            console.log(randomUsername)
+            let isUnique = false
+            while (isUnique == false) {
+                await axios.get(uri + "/user/checkIfUsernameExists/" + randomUsername)
+                    .then(response => {
+                        if (response.data.length == 2) {
+                            isUnique = true;
+                        }
+                        console.log(randomUsername)
+                    })
+                    .catch(err => { console.log(err); alert("google Login error!") });
+                randomUsername = rug.generate();
+            }
+           await axios.get(uri + "/user/checkIfEmailExits/" + email)
+                .then(response => {
+                    if (response.data.length == 3) {
+                        alert("The email you have chosen has already been taken");
+                        return
+                    }
+                })
+                .catch(err => { console.log(err); alert("An accout already has this email!") });
+            const newUser = ({ _id: google_id, username: randomUsername, password: "default", firstName, lastName, email })
+            axios.post(uri + "/user/addGoogle", newUser)
+                .then(response => { console.log("LETS GO"); setUserState(response, "default"); alert("user created!"); props.history.push("/user"); })
+               .catch(err => console.log("failed Add: " + err));
+        }
+        
+
+                
     }
 
     const setUserState = (response, givenPassword) =>
@@ -661,6 +719,7 @@ const App = () => {
         props.history.push("/hotel/" +id)
 
     }
+
     const checkResetId = (id, props) => {
         console.log("checking reset ID!")
         axios.get(uri + "/email/AccountRecovery/getById/" + id)
@@ -671,6 +730,7 @@ const App = () => {
             })
             .catch(err => {props.history.push("/")})
     }
+
     const deleteManager = (id) => {
         //delete generic from backend
         //no implementation for server errors
@@ -831,7 +891,7 @@ const App = () => {
             />
             <Route path="/login" render={(props) => (
                 <>
-                    {<Login onUserLogin={checkUser} onManagerLogin={checkManager} props={props} />}
+                    {<Login onUserLogin={checkUser} onGoogleLogin={googleLogin} onManagerLogin={checkManager} props={props} />}
 
                 </>
             )}

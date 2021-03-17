@@ -1,6 +1,7 @@
 import Button from '@material-ui/core/Button';
 import { useState, useEffect } from "react";
-const Login = ({ onUserLogin, onManagerLogin, props }) => {
+import GoogleSocialAuth from "./google-auth.component";
+const Login = ({ onUserLogin, onManagerLogin, props, onGoogleLogin }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [userButtonType, setUserButtonType] = useState("contained");
@@ -36,8 +37,8 @@ const Login = ({ onUserLogin, onManagerLogin, props }) => {
                 </header>
             </div>
             <form className={"login-form"}>
-                
-                
+
+                {loginAsUser ? <GoogleSocialAuth loginUser={onGoogleLogin} props={props} /> : <div> </div>}
                 <div>
                     <span></span>
                     <label>Username</label>
@@ -86,6 +87,7 @@ const Login = ({ onUserLogin, onManagerLogin, props }) => {
                     <a href="/forgotPassword" className="help-links" target="_blank">Forgot password?</a>
                    
                 </div>
+                
             </form>
         </div>
     )
