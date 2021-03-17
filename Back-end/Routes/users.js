@@ -22,11 +22,23 @@ router.route("/add").post((req, res) => {
         .catch(err => res.status(400).json("Error: " + err));
 });
 
-/*router.route("/:id").get((req, res) => {
-    User.findById(req.params.id)
-        .then(user => res.json(user))
+router.route("/addGoogle").post((req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const email = req.body.email;
+    const bookings = req.body.bookings;
+    const _id = req.body._id;
+    const newUser = new User({ _id, username, password, firstName, lastName, email, bookings });
+    console.log("UserID : " + newUser._id + " givenID : " + req.body._id);
+    newUser._id = req.body._id
+    console.log("UserID : " + newUser._id + " givenID : " + req.body._id);
+
+    newUser.save()
+        .then(() => res.json(newUser))
         .catch(err => res.status(400).json("Error: " + err));
-}); */
+});
 
 //Looks up user by username
 router.route("/getByUsername/").get((req, res) => {
@@ -63,6 +75,14 @@ router.route("/getByEmail/:email").get((req, res) => {
 
 });
 
+router.route("/getById/:id").get((req, res) => {
+    User.findById(req.params.id)
+        .then(user => {
+            res.json(user);
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+
+});
 
 //Deletes user by username
 router.route("/deleteByUsername/:username").delete((req, res) => {
@@ -104,6 +124,7 @@ router.route("/updatePassword/").post((req, res) => {
         .catch(err => res.status(400).json("Error: " + err));
 })
 
+
 router.route("/checkIfEmailExits/:email").get((req, res) => {
     User.findOne({ email: req.params.email })
         .then((user) => {
@@ -118,6 +139,19 @@ router.route("/checkIfEmailExits/:email").get((req, res) => {
 
 })
 
+router.route("/checkIfIdExists/:id").get((req, res) => {
+    User.findById(req.params.id)
+        .then((user) => {
+            if (user != null) {
+                res.json("yes")
+            }
+            else {
+                res.json("no")
+            }
+        })
+        .catch(err => res.status(400).json(err))
+
+})
 //Updates user by username
 router.route("/update/").post((req, res) => {
     console.log(req.body)

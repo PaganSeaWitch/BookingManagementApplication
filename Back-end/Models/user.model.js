@@ -23,6 +23,7 @@ const bookingSchema =
 
 const userSchema = new Schema
     ({
+        _id: Schema.Types.Mixed,
         username:
         {
             type: String,
