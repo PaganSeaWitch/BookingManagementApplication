@@ -6,17 +6,18 @@ const ResetPassword = ({ onResetPassword, props, checkResetID }) => {
     const [password, setPassword] = useState("");
     const [reset, setReset] = useState(false);
     const [stub, setStub] = useState(false);
+    const [id, setId] = useState("")
     const page = window.location.href;
     const uri = process.env.REACT_APP_FRONT_END_SERVER_URI
     console.log(page)
     const currentPageType1 = "/resetPassword"
     const currentPageType2 = "/resetPassword/"
-    let id = ""
+    
     
     useEffect(() => {
         if ((page != uri + currentPageType1 && page != uri + currentPageType2)) {
-            id = page.substring(uri.length + currentPageType2.length)
-            checkResetID(id, props);
+            setId(page.substring(uri.length + currentPageType2.length))
+            checkResetID(page.substring(uri.length + currentPageType2.length), props);
         }
 
     },[])

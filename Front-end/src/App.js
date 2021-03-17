@@ -446,7 +446,8 @@ const App = () => {
        
     }
 
-    const updatePassword = (password, id,props) =>{
+    const updatePassword = (password, id, props) => {
+        console.log(id)
         axios.get(uri + "/email/AccountRecovery/getById/" + id)
             .then(accountTypeResponse => {
                 if (accountTypeResponse.data.accountType == "user") {
