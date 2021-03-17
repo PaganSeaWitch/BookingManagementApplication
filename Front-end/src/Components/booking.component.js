@@ -27,6 +27,8 @@ const Booking = ({ user, getRoom, getHotel}) => {
             let roomID = "0"
             let hotelID = "0"
             let dates = []
+            const tempDateList = [];
+
             user.bookings.filter((booking) => {
 
                 if (booking._id == id) {
@@ -34,6 +36,12 @@ const Booking = ({ user, getRoom, getHotel}) => {
                     roomID = booking.room_ID;
                     hotelID = booking.hotel_ID;
                     dates = booking.dates_booked;
+                    dates.forEach(booked => {
+                        let tempDate = new Date(booked);
+                        console.log(tempDate)
+                        tempDateList.push(tempDate);
+                    })
+                    setUserBookedDates([...tempDateList])
                 }
             })
             getHotel(hotelID).then(response => {
@@ -45,7 +53,7 @@ const Booking = ({ user, getRoom, getHotel}) => {
                 setRoomPrice(response.price);
                 setRoomBedAmount(response.beds);
             })
-            setUserBookedDates([...dates])
+
             console.log(dates)
         }
 
@@ -76,7 +84,7 @@ const Booking = ({ user, getRoom, getHotel}) => {
 
                 <div>
                     <label>Booked Dates</label>
-                    <DatePicker selected={userBookDates[0]}  selectsRange inline />
+                    <DatePicker selected={userBookDates[0]} startDate={userBookDates[0]} endDate={userBookDates[userBookDates.length - 1]} minDate={userBookDates[0] } maxDate={userBookDates[userBookDates.length - 1]} selectsRange inline />
 
 
                 </div>

@@ -15,8 +15,8 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 	const [userBookDates, setUserBookedDates] = useState([])
 	const [book, setBook] = useState(false)
 	const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(null);
-  const [roomID, setRoomID] = useState("")
+    const [endDate, setEndDate] = useState(null);
+    const [roomID, setRoomID] = useState("")
   
   useEffect(() => {
 
@@ -48,7 +48,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
             setRoomBookedDates([...roomBookedDates, ...userBookDates])
             const response = updateRoom(roomID, roomNumber, roomPrice, roomBedAmount, roomTags, roomBookedDates, userBookDates)
                 .then(() => {
-                    const newBooking = ({ room_ID: roomID, hotel_ID: hotelID, date_booked: userBookDates })
+                    const newBooking = ({ room_ID: roomID, hotel_ID: hotelID, dates_booked: userBookDates })
                     console.log(newBooking)
                     updateUser(user, newBooking, props)
                 })
@@ -62,7 +62,8 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 
 
 
-    }, [book]);
+        }, [book]);
+
 	const onChange = dates => {
         const [start, end] = dates;
 		setStartDate(start);
@@ -122,7 +123,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 
                 <div>
                     <label>Book range</label>
-                    <DatePicker selected={startDate} onChange={onChange} startDate={startDate} endDate={endDate} minDate={new Date()} excludeDates={[...roomBookedDates]} selectsRange inline />
+                    <DatePicker  onChange={onChange} startDate={startDate} endDate={endDate} minDate={new Date()} excludeDates={[...roomBookedDates]} selectsRange inline />
                    
 
                 </div>
