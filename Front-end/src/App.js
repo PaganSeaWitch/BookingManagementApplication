@@ -919,7 +919,7 @@ const App = () => {
             />
             <Route path="/create" render={(props) => (
                 <>
-                    {<CreateUser onCreateUser={createUser} onCreateManager={createManager} props={props} />}
+                    {<CreateUser onCreateUser={createUser} onGoogleLogin={googleLogin} onCreateManager={createManager} props={props} />}
                 </>
             )}
             />

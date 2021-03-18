@@ -1,9 +1,10 @@
 import Button from '@material-ui/core/Button';
 import { useState, useEffect, useRef } from "react";
+import GoogleSocialAuth from "./google-auth.component";
 import axios from "axios";
 require('dotenv').config()
 
-const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
+const CreateUser = ({ onCreateManager, onCreateUser, onGoogleLogin, props }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -139,7 +140,7 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
     return (
         <div className= {"login-background"}>
             <div className={"login-header"}>
-<header className = {"bold"}> New {userType}
+                <header className = {"bold"}> New {userType}
                     <div className={"bottom-right-corner"}>
                         <Button variant={userButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setCreateUser(true); setUserType("User"); setUserButtonType("contained"); setManagerButtonType("outlined"); }}> User </Button>
                         <Button variant={managerButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setCreateUser(false); setUserType("Manager");setUserButtonType("outlined"); setManagerButtonType("contained"); }}> Manager </Button>
@@ -148,6 +149,7 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
             </div>
             <form className={"login-form"}>
 
+                {createUser ? <GoogleSocialAuth loginUser={onGoogleLogin} props={props} /> : <div> </div>}
 
                 <div>
                     <span className={"move-middle-span"}></span>
