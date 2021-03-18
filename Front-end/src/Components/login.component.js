@@ -39,45 +39,45 @@ const Login = ({ onUserLogin, onManagerLogin, props, onGoogleLogin }) => {
             <form className={"login-form"}>
 
                 {loginAsUser ? <GoogleSocialAuth loginUser={onGoogleLogin} props={props} /> : <div> </div>}
-                <div>
-                    <span></span>
+                <div> 
+                    <span className={"move-middle-span"}></span>
                     <label>Username</label>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                 </div>
                 
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                     <input className={"rounded-login"}
                         type='text'
                         value={username}
                         onChange={(e) => {setUsername(e.target.value); }
                         } />
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                 </div>
                 
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <label>Password</label>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                 </div>
 
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <input className={"rounded-login"}
                         type={'password'}
                         value={password}
                         onChange={(e) => {  setPassword(e.target.value); }
                         } />
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                 </div>
                 <br></br>
                 <div>
                     
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setLogin(true); }}> LogIn </button>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                 </div>
                 <br></br>

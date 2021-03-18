@@ -11,6 +11,9 @@ const Booking = ({ user, getRoom, getHotel}) => {
     const [roomNumber, setRoomNumber] = useState(0)
     const [roomPrice, setRoomPrice] = useState(0)
     const [roomBedAmount, setRoomBedAmount] = useState(0)
+    const [smoking, setSmoking] = useState(false);
+    const [handicap, setHandicap] = useState(false);
+    const [suite, setSuite] = useState(false);
     const [hotelLocation, setHotelLocation] = useState({
         streetAddress1: "",
         streetAddress2: "",
@@ -70,6 +73,9 @@ const Booking = ({ user, getRoom, getHotel}) => {
                 setRoomNumber(response.roomNumber);
                 setRoomPrice(response.price);
                 setRoomBedAmount(response.beds);
+                setHandicap(response.tags.handicap);
+                setSmoking(response.tags.smoking);
+                setSuite(response.tags.suite);
             })
 
             console.log(dates)
@@ -99,7 +105,12 @@ const Booking = ({ user, getRoom, getHotel}) => {
                 <label>Price : {roomPrice} </label>
                 <br></br>
                 <label>Beds : {roomBedAmount} </label>
-
+                <br></br>
+                <label>smoking permitted : {smoking ? "yes" : "no"} </label>
+                <br></br>
+                <label>handicap accessible : {handicap ? "yes" : "no"} </label>
+                <br></br>
+                <label>suite : {suite ? "yes" : "no"} </label>
                 <div>
                     <label>Booked Dates</label>
                     <DatePicker selected={userBookDates[0]} startDate={userBookDates[0]} endDate={userBookDates[userBookDates.length - 1]} minDate={userBookDates[0] } maxDate={userBookDates[userBookDates.length - 1]} selectsRange inline />

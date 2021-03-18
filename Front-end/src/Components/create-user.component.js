@@ -150,195 +150,195 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
 
 
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <label>Username</label>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                 </div>
 
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                     <input className={"rounded-login"}
                         type='text'
                         value={username}
                         onChange={(e) => { setUsername(e.target.value); }
                         } />
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                 </div>
                
                 
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <label>Password</label>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                 </div>
 
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <input className={"rounded-login"}
                         type={'password'}
                         value={password}
                         onChange={(e) => { setPassword(e.target.value); }
                         } />
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                 </div>
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <label>Email</label>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                 </div>
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                     <input className={"rounded-login"}
                         type='text'
                         value={email}
                         onChange={(e) => { setEmail(e.target.value); }
                         } />
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                 </div>
                 {createUser
                     ? <div ref={refToUserForms}>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                             <label>First Name</label>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
 
                             <input className={"rounded-login"}
                                 type='text'
                                 value={firstName}
                                 onChange={(e) => { setFirstName(e.target.value); }
                                 } />
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
 
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                             <label>Last Name</label>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
 
                             <input className={"rounded-login"}
                                 type='text'
                                 value={lastName}
                                 onChange={(e) => { setLastName(e.target.value); }
                                 } />
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
 
                         </div>
                     </div>
                     : <div ref={refToManagerForms} >
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                             <label>Hotel Name</label>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
 
                             <input className={"rounded-login"}
                                 type='text'
                                 value={hotelName}
                                 onChange={(e) => { setHotelName(e.target.value); }
                                 } />
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                             <label>Street Address 1</label>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
 
                             <input className={"rounded-login"}
                                 type='text'
                                 value={hotelStreetAddress1}
                                 onChange={(e) => { setHotelStreetAddress1(e.target.value); }
                                 } />
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                             <label>Street Address 2</label>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
 
                             <input className={"rounded-login"}
                                 type='text'
                                 value={hotelStreetAddress2}
                                 onChange={(e) => { setHotelStreetAddress2(e.target.value); }
                                 } />
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                             <label>City</label>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
 
                             <input className={"rounded-login"}
                                 type='text'
                                 value={hotelCity}
                                 onChange={(e) => { setHotelCity(e.target.value); }
                                 } />
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                             <label>State/Province</label>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
 
                             <input className={"rounded-login"}
                                 type='text'
                                 value={hotelState}
                                 onChange={(e) => { setHotelState(e.target.value); }
                                 } />
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                             <label>Country</label>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
 
                             <input className={"rounded-login"}
                                 type='text'
                                 value={hotelCountry}
                                 onChange={(e) => { setHotelCountry(e.target.value); }
                                 } />
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                             <label>Postal Code</label>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                         <div>
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
 
                             <input className={"rounded-login"}
                                 type='text'
                                 value={hotelPostalCode}
                                 onChange={(e) => { setHotelPostalCode(e.target.value); }
                                 } />
-                            <span></span>
+                            <span className={"move-middle-span"}></span>
                         </div>
                     </div>
                 }
@@ -346,9 +346,9 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
                 <br></br>
                 <div>
 
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setCreate(true); }}> Create Account </button>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                 </div>
                 <br></br>

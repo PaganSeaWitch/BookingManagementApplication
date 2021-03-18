@@ -1,10 +1,12 @@
-// JavaScript source code
-// JavaScript source code
 import { useState, useEffect } from "react";
+import Checkbox from '@material-ui/core/CheckBox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import axios from "axios";
 require('dotenv').config()
 const uri = process.env.REACT_APP_BACK_END_SERVER_URI
 const frontURI = process.env.REACT_APP_FRONT_END_SERVER_URI
+
+
 
 const checkRoomNumber = (hotelID, roomNumber, props) => {
     axios.get(uri + "/hotel/getHotelByID/" + hotelID)
@@ -38,8 +40,19 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
     const [tags, setTags] = useState([])
     const [editRoom, setEditRoom] = useState(false)
     const [roomNumber, setRoomNumber] = useState(100);
-    const [tagString, setTagString] = useState("")
     const [roomID, setRoomID] = useState("")
+    const [smoking, setSmoking] = useState(false);
+    const [handicap, setHandicap] = useState(false);
+    const [suite, setSuite] = useState(false);
+    const handleSmoker = (event) => {
+        setSmoking(event.target.checked);
+    };
+    const handleSuite = (event) => {
+        setSuite(event.target.checked)
+    }
+    const handleHandicap = (event) => {
+        setHandicap(event.target.checked)
+    }
     useEffect(() => {
 
         if (manager._id == "") {
@@ -53,7 +66,7 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
             id = page.substring(frontURI.length + currentPageType1.length)
             console.log(page)
             setRoomID(id)
-            getRoom(id, setRoomNumber, setRoomPrice, setAmountOfBeds, setTagString, props);
+            getRoom(id, setRoomNumber, setRoomPrice, setAmountOfBeds, setSuite, setHandicap, setSmoking, props);
         }
         axios.get(uri + "/hotel/getHotelByID/" + manager.hotel_ID)
             .then(response => {
@@ -92,20 +105,9 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
                 return;
 
             }
-            let tempString = ""
-            for (let i = 0; i < tagString.length; i++) {
-                if (tagString.charAt(i) == ',') {
-                    setTags([...tags, tempString])
-                    tempString = ""
-                }
-                else {
-                    tempString = tempString + tagString.charAt(i)
-                }
-            }
-            if (tempString != "") {
-                setTags([...tags, tempString])
-            }
+            
             if (checkRoomNumber(hotelID, roomNumber, props) == false) {
+                const tags = ({ smoking, handicap, suite })
                 onRoomUpdate(roomID, roomNumber, amountOfBeds, roomPrice, tags, props)
 
             }
@@ -127,12 +129,12 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
             <form className={"login-form"}>
 
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <label>Room Number</label>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                 </div>
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                     <input className={"rounded-login"}
                         type='number'
@@ -140,16 +142,16 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
                         value={roomNumber}
                         onChange={(e) => { setRoomNumber(e.target.value); }
                         } />
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                 </div>
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <label>Price per Night</label>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                 </div>
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                     <input className={"rounded-login"}
                         type='number'
@@ -157,16 +159,16 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
                         value={roomPrice}
                         onChange={(e) => { setRoomPrice(e.target.value); }
                         } />
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                 </div>
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <label>Amount of Beds</label>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                 </div>
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                     <input className={"rounded-login"}
                         type='number'
@@ -175,33 +177,54 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
                         value={amountOfBeds}
                         onChange={(e) => { setAmountOfBeds(e.target.value); }
                         } />
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                 </div>
 
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <label>Tags (seperate by commas)</label>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                 </div>
-                <div>
-                    <span></span>
+                <div className={"checkbox"}>
 
-                    <input className={"rounded-login"}
-                        type='text'
-                        value={tagString}
-                        onChange={(e) => { setTagString(e.target.value); }
-                        } />
-                    <span></span>
+                    <FormControlLabel control={<Checkbox
+                        name="smoking permitted"
+                        checked={smoking}
+                        onChange={handleSmoker}
+                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />} label="smoking permitted" labelPlacement="end" />
+
+
+                </div>
+                <div className={"checkbox"}>
+
+                    <FormControlLabel control={<Checkbox
+                        name="smoking permitted"
+                        checked={suite}
+                        onChange={handleSuite}
+                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />} label="suite" labelPlacement="end" />
+
+                </div>
+                <div className={"checkbox"}>
+
+                    <FormControlLabel control={<Checkbox
+                        name="smoking permitted"
+                        checked={handicap}
+                        onChange={handleHandicap}
+                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />} label="handicap accessable" labelPlacement="end" />
+
 
                 </div>
                 <br></br>
 
                 <div>
 
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setEditRoom(true); }}> Update Room </button>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                 </div>
                 <br></br>
