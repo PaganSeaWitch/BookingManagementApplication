@@ -20,8 +20,21 @@ const roomSchema = new Schema
 	},
 	tags:
 	{
-		type: [String],
-		required : false,
+		smoking:
+		{
+			type: Boolean,
+			required: true
+		},
+		handicap:
+		{
+			type: Boolean,
+			required: true
+		},
+		suite:
+		{
+			type: Boolean,
+			required: true
+		}
 	},
 	booked_dates:
 	{

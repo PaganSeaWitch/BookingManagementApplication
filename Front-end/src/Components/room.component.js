@@ -9,12 +9,14 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 	const [roomNumber, setRoomNumber] = useState("")
 	const [roomPrice, setRoomPrice] = useState(0)
 	const [roomBedAmount, setRoomBedAmount] = useState(0)
-	const [roomTags, setRoomTags] = useState([])
-	const [roomBookedDates, setRoomBookedDates] = useState([])
+    const [smoking, setSmoking] = useState(false);
+    const [handicap, setHandicap] = useState(false);
+    const [suite, setSuite] = useState(false);
+    const [roomBookedDates, setRoomBookedDates] = useState([])
 	
 	const [userBookDates, setUserBookedDates] = useState([])
 	const [book, setBook] = useState(false)
-	const [startDate, setStartDate] = useState(new Date());
+	const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [roomID, setRoomID] = useState("")
   
@@ -29,7 +31,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
         const currentPageType1 = "/room/"
         if (page != uri + currentPageType1 && hotelName == "") {
             id = page.substring(uri.length + currentPageType1.length)
-            getRoom(id, setRoomNumber, setRoomPrice, setRoomBedAmount, setRoomTags, setRoomBookedDates, setHotelID, setHotelName, props);
+            getRoom(id, setRoomNumber, setRoomPrice, setRoomBedAmount, setSuite, setHandicap, setSmoking, setRoomBookedDates, setHotelID, setHotelName, props);
             setRoomID(id);
         }
 
@@ -46,7 +48,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
                 return;
             }
             setRoomBookedDates([...roomBookedDates, ...userBookDates])
-            const response = updateRoom(roomID, roomNumber, roomPrice, roomBedAmount, roomTags, roomBookedDates, userBookDates)
+            const response = updateRoom(roomID, roomNumber, roomPrice, roomBedAmount, suite, handicap, smoking, roomBookedDates, userBookDates)
                 .then(() => {
                     const newBooking = ({ room_ID: roomID, hotel_ID: hotelID, dates_booked: userBookDates })
                     console.log(newBooking)
@@ -120,7 +122,13 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
                 <label>Price : {roomPrice} </label>
                 <br></br>
                 <label>Beds : {roomBedAmount} </label>
-
+                <br></br>
+                <label>smoking permitted : {smoking ? "yes" : "no"} </label>
+                <br></br>
+                <label>handicap accessible : {handicap ? "yes" : "no"} </label>
+                <br></br>
+                <label>suite : {suite ? "yes" : "no"} </label>
+                <br></br>
                 <div>
                     <label>Book range</label>
                     <DatePicker  onChange={onChange} startDate={startDate} endDate={endDate} minDate={new Date()} excludeDates={[...roomBookedDates]} selectsRange inline />

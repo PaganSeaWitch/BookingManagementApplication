@@ -5,13 +5,13 @@ import { Link } from "react-router-dom";
 const SplashPage = () => {
 	
 	return(
-			 <div class = 'splash-page'>
+			 <div className = 'splash-page'>
 				<center>	
-				<span class = 'splash'>
+				<span className = 'splash'>
 						Welcome to RendezView! 
                 </span> 
 				<br/><br/>
-				<span class = 'splash'> 
+				<span className = 'splash'> 
 					  <Link to={"/Dashboard"} >See our bookings!</Link>
 				</span>
 				</center>

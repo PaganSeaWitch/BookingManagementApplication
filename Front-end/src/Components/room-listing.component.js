@@ -20,9 +20,12 @@ const RoomListing = ({room, onClick,  props}) => {
 					<br></br>
 					<label>Beds : {room.beds} </label>
 					<br></br>
-					<label>Available? : {room.booked} </label>
+					<label>smoking permitted : {room.tags.smoking ? "yes" : "no"} </label>
 					<br></br>
-					
+					<label>handicap accessible : {room.tags.handicap ? "yes" : "no"} </label>
+					<br></br>
+					<label>suite : {room.tags.suite ? "yes" : "no"} </label>
+
 				</form>
             </div>
 			

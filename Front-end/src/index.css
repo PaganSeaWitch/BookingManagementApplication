@@ -54,13 +54,17 @@ code {
 	
 }
 
+.checkbox{
+	padding-left: 10px;
+}
+
 .login-background{
 
 	position: absolute;
 	background-size: cover;
 	background-image: url(images/dashboardStockPhoto.jpg);
 	background-position: center;
-    background-repeat: no-repeat;
+    	background-repeat: no-repeat;
 	width: 100%;
 	height: 100%;
 }
@@ -75,6 +79,8 @@ code {
 	border-radius: 5px;
 	background-color: #add8e6;
 }
+
+
 .help-links{
 	font-size: 0.875rem;
 	text-decoration: none;
@@ -98,10 +104,11 @@ code {
 	
 }
 
-.login-form Button{	
+
+.login-form button{
 	width: 80%;
-	
 }
+
 
 .rounded-login {
 	display: inline-block;
@@ -168,7 +175,7 @@ code {
 	border-color: #339933;
 }
 
-.login-form span{
+.move-middle-span{
 	display: inline-block;
 	width:10%;
 	

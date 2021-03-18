@@ -22,7 +22,7 @@ router.route("/addRoom").post((req, res) => {
     const tags = req.body.tags;
     const booked_dates = req.body.bookedDates;
     const newRoom = new Room({ roomNumber, price, beds, tags, booked_dates });
-
+    console.log(newRoom)
     newRoom.save()
         .then((room) => res.json(room))
         .catch(err => res.status(400).json("Error: " + err));
@@ -46,6 +46,7 @@ router.route("/updateRoom").post((req, res) => {
         })
         .catch(err => res.status(400).json("Error: " + err))
 })  
+
 //Delete room by roomID
 router.route("/deleteByRoomID/:roomID").delete((req, res) => {
     Room.findOneAndDelete({ _id: req.params.roomID })

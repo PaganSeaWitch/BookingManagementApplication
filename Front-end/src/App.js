@@ -50,8 +50,8 @@ const App = () => {
         resetManager();
         resetUser();
 
-
     }
+
     //this happpens at the start of the apps life cycle
     useEffect(() => {
         console.log("LOGGING IN ACCIYNT")
@@ -135,7 +135,7 @@ const App = () => {
             .catch(err => console.log(err))
     }
 
-    const getRoom = (room_id, setRoomNumber, setRoomPrice, setRoomBedAmount, setRoomTags, setRoomBookedDates, setHotelId, setHotelName, props) => {
+    const getRoom = (room_id, setRoomNumber, setRoomPrice, setRoomBedAmount, setSuite, setHandicap, setSmoking, setRoomBookedDates, setHotelId, setHotelName, props) => {
         console.log("Getting Room!")
         axios.get(uri + "/room/getRoomByID/" + room_id)
             .then(response => {
@@ -146,7 +146,9 @@ const App = () => {
                     setRoomNumber(response.data.roomNumber);
                     setRoomPrice(response.data.price);
                     setRoomBedAmount(response.data.beds);
-                    setRoomTags(response.data.tags);
+                    setSuite(response.data.tags.suite);
+                    setHandicap(response.data.tags.handicap);
+                    setSmoking(response.data.tags.smoking);
                     const tempDateList = []
                     response.data.booked_dates.forEach(booked => {
                         let tempDate = new Date(booked);
@@ -161,7 +163,7 @@ const App = () => {
             .catch(err => { console.log(err); props.history.push("/") })
     }
 
-    const getRoomForManger = (room_id, setRoomNumber, setRoomPrice, setRoomBedAmount, setRoomTags, props) => {
+    const getRoomForManger = (room_id, setRoomNumber, setRoomPrice, setRoomBedAmount, setSuite, setHandicap, setSmoking, props) => {
         axios.get(uri + "/room/getRoomByID/" + room_id)
             .then(response => {
                 if (response == null) {
@@ -171,7 +173,9 @@ const App = () => {
                     setRoomNumber(response.data.roomNumber);
                     setRoomPrice(response.data.price);
                     setRoomBedAmount(response.data.beds);
-                    setRoomTags(response.data.tags);
+                    setSuite(response.data.tags.suite);
+                    setHandicap(response.data.tags.handicap);
+                    setSmoking(response.data.tags.smoking);
                 }
             })
             .catch(err => { console.log(err); props.history.push("/") })
@@ -296,16 +300,31 @@ const App = () => {
     }
 
     const setUserStateWithoutPassword = (response) => {
-        setUser({
-            ...user,
-            _id: response._id,
-            username: response.username,
-            password: response.password,
-            firstName: response.firstName,
-            lastName: response.lastName,
-            email: response.email,
-            bookings: response.bookings
-        });
+        if (response.password != undefined) {
+            setUser({
+                ...user,
+                _id: response._id,
+                username: response.username,
+                password: response.password,
+                firstName: response.firstName,
+                lastName: response.lastName,
+                email: response.email,
+                bookings: response.bookings
+            });
+        }
+        else {
+            setUser({
+                ...user,
+                _id: response._id,
+                username: response.username,
+                password: "",
+                firstName: response.firstName,
+                lastName: response.lastName,
+                email: response.email,
+                bookings: response.bookings
+            });
+        }
+        
         
         console.log(response);
     }
@@ -562,7 +581,7 @@ const App = () => {
                     axios.get(uri + "/user/getById/" + google_id)
                         .then(response => {
                             setUserStateWithoutPassword(response.data);
-                            props.push("/user")
+                            props.history.push("/user")
                         })
                         .catch(err => { console.log(err); alert("google Login error!") });
 
@@ -900,7 +919,7 @@ const App = () => {
             />
             <Route path="/create" render={(props) => (
                 <>
-                    {<CreateUser onCreateUser={createUser} onCreateManager={createManager} props={props} />}
+                    {<CreateUser onCreateUser={createUser} onGoogleLogin={googleLogin} onCreateManager={createManager} props={props} />}
                 </>
             )}
             />
