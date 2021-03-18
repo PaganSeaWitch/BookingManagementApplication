@@ -76,7 +76,7 @@ const SimpleMap = ({ location, name }) => {
                 bootstrapURLKeys={{ key: process.env.REACT_APP_GOOOGLE_API_KEY }}
                 defaultCenter={{ lat: 32.978479, lng: -97.429889 }}
                 center={{ lat, lng }}
-                defaultZoom={11}
+                defaultZoom={10}
             >
                 <AnyReactComponent
                     lat={lat}
