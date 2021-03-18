@@ -679,7 +679,9 @@ const App = () => {
                                 const hotel = { name: hotelName, location: hotelLocation, rooms: [] }
                                 axios.post(uri + "/hotel/addHotel", hotel)
                                     .then(hotelResponse => {
-                                        const newManager = {  username, password, email, hotel_ID: hotelResponse.data }
+                                        setHotels([...hotels, hotelResponse.data])
+                                        console.log(hotelResponse.data)
+                                        const newManager = {  username, password, email, hotel_ID: hotelResponse.data._id }
                                         axios.post(uri + "/manager/add", newManager)
                                             .then(response => { setManagerState(response, password); alert("manager created!"); props.history.push("/manager"); })
                                             .catch(err => alert("Coudln't create account!"));

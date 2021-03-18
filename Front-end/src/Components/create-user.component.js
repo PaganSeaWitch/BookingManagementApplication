@@ -1,5 +1,7 @@
 import Button from '@material-ui/core/Button';
 import { useState, useEffect, useRef } from "react";
+import axios from "axios";
+require('dotenv').config()
 
 const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
     const [username, setUsername] = useState("");
@@ -21,7 +23,8 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
     const [hotelPostalCode, setHotelPostalCode] = useState("");
     const refToUserForms = useRef(null);
     const refToManagerForms = useRef(null);
-
+    const geocodeAPIBegining = "https://maps.googleapis.com/maps/api/geocode/json?address="
+    const geocodeAPIEnding = "&key=" + process.env.REACT_APP_GOOOGLE_API_KEY
 
 
     useEffect(() =>
@@ -66,9 +69,67 @@ const CreateUser = ({ onCreateManager, onCreateUser, props }) => {
                     alert("please enter your hotel's postal code!")
                     return;
                 }
-                const hotelLocation = { streetAddress1: hotelStreetAddress1, streetAddress2: hotelStreetAddress2, city : hotelCity,stateOrProvince: hotelState, country: hotelCountry, postalCode : hotelPostalCode };
-                console.log(hotelLocation);
-                onCreateManager(username, password, email, hotelName, hotelLocation, props);
+                let addressString = ""
+                if (hotelStreetAddress1 != "" && hotelStreetAddress1 != undefined && hotelStreetAddress1 != null) {
+                    for (let i = 0; i < hotelStreetAddress1.length; i++) {
+                        let character = hotelStreetAddress1.charAt(i);
+                        if (character == " ") {
+                            addressString = addressString + "+"
+                        }
+                        else {
+                            addressString = addressString + character
+                        }
+                    }
+                }
+                if (hotelStreetAddress2 != "" && hotelStreetAddress2 != undefined && hotelStreetAddress2 != null) {
+                    for (let i = 0; i < hotelStreetAddress2.length; i++) {
+                        let character = hotelStreetAddress2.charAt(i);
+                        if (character == " ") {
+                            addressString = addressString + "+"
+                        }
+                        else {
+                            addressString = addressString + character
+                        }
+                    }
+                }
+                if (hotelCity != "") {
+                    addressString = addressString + "+" + hotelCity
+
+                }
+                if (hotelState != "") {
+                    addressString = addressString + "+" + hotelState
+
+                }
+                if (hotelCountry != "") {
+                    addressString = addressString + "+" + hotelCountry
+
+                }
+                if (hotelPostalCode != "") {
+                    addressString = addressString + "+" + hotelPostalCode
+
+                }
+                if (addressString.length > 5) {
+                    axios.get(geocodeAPIBegining + addressString + geocodeAPIEnding)
+                        .then(response => {
+                            if (response.data != null) {
+                                console.log(response)
+                                console.log(response.data)
+                                if (response.data.results.length != 0) {
+                                    const hotelLocation = { streetAddress1: hotelStreetAddress1, streetAddress2: hotelStreetAddress2, city: hotelCity, stateOrProvince: hotelState, country: hotelCountry, postalCode: hotelPostalCode };
+                                    console.log(hotelLocation);
+                                    onCreateManager(username, password, email, hotelName, hotelLocation, props);
+                                }
+                                else {
+                                    alert("please input a real address!")
+                                }
+                            }
+                            else {
+                                alert("please input a real address!")
+                            }
+                        })
+                        .catch(err => { alert("geocoder Error: cant get location!"); console.log(err) })
+                }
+                
                 
             }
         }
