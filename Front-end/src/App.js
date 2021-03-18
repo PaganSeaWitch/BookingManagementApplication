@@ -300,16 +300,31 @@ const App = () => {
     }
 
     const setUserStateWithoutPassword = (response) => {
-        setUser({
-            ...user,
-            _id: response._id,
-            username: response.username,
-            password: response.password,
-            firstName: response.firstName,
-            lastName: response.lastName,
-            email: response.email,
-            bookings: response.bookings
-        });
+        if (response.password != undefined) {
+            setUser({
+                ...user,
+                _id: response._id,
+                username: response.username,
+                password: response.password,
+                firstName: response.firstName,
+                lastName: response.lastName,
+                email: response.email,
+                bookings: response.bookings
+            });
+        }
+        else {
+            setUser({
+                ...user,
+                _id: response._id,
+                username: response.username,
+                password: "",
+                firstName: response.firstName,
+                lastName: response.lastName,
+                email: response.email,
+                bookings: response.bookings
+            });
+        }
+        
         
         console.log(response);
     }
@@ -566,7 +581,7 @@ const App = () => {
                     axios.get(uri + "/user/getById/" + google_id)
                         .then(response => {
                             setUserStateWithoutPassword(response.data);
-                            props.push("/user")
+                            props.history.push("/user")
                         })
                         .catch(err => { console.log(err); alert("google Login error!") });
 
