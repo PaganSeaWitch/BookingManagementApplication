@@ -6,31 +6,37 @@ const locationSchema = new Schema
         streetAddress1:
         {
             type: String,
+            trim: true,
             required: true
         },
         streetAddress2:
         {
             type: String,
+            trim: true,
             required: false
         },
         city:
         {
             type: String,
+            trim: true,
             required: true
         },
         stateOrProvince:
         {
             type: String,
+            trim: true,
             required: true
         },
         country:
         {
             type: String,
+            trim: true,
             required: true
         },
         postalCode:
         {
             type: String,
+            trim: true,
             required :false
         }
     }

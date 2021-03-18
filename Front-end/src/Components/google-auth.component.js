@@ -8,13 +8,14 @@ require('dotenv').config()
 const GoogleSocialAuth = ({ loginUser, props }) =>{
 
     const googleResponse = (response) => {
-            
-        console.log(response.profileObj)
-        const google_id = response.profileObj.googleId;
-        const firstName = response.profileObj.givenName;
-        const lastName = response.profileObj.familyName;
-        const email = response.profileObj.email;
+        
+        
         if (response.profileObj != undefined) {
+            console.log(response.profileObj)
+            const google_id = response.profileObj.googleId;
+            const firstName = response.profileObj.givenName;
+            const lastName = response.profileObj.familyName;
+            const email = response.profileObj.email;
             loginUser(google_id, firstName, lastName, email, props);
         }
     };

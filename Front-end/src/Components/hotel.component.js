@@ -1,6 +1,6 @@
 import { useState, useEffect} from "react";
 import RoomListing from "./room-listing.component";
-
+import SimpleMap from "./google-map.component"
 
 // JavaScript source code
 const Hotel = ({ getHotel, onRoomClick, props}) => {
@@ -48,7 +48,7 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
                 <label>City : {hotelLocation.city} </label>
                 <br></br>
                 <label>State : {hotelLocation.stateOrProvince} </label>
-
+                <SimpleMap location={hotelLocation} name={hotelName}/>
 
 
 

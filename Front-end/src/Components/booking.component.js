@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from 'react-datepicker/dist/react-datepicker';
+import SimpleMap from "./google-map.component"
+
 require('dotenv').config()
 
 
@@ -9,7 +11,14 @@ const Booking = ({ user, getRoom, getHotel}) => {
     const [roomNumber, setRoomNumber] = useState(0)
     const [roomPrice, setRoomPrice] = useState(0)
     const [roomBedAmount, setRoomBedAmount] = useState(0)
-
+    const [hotelLocation, setHotelLocation] = useState({
+        streetAddress1: "",
+        streetAddress2: "",
+        city: "",
+        stateOrProvince: "",
+        country: "",
+        postalCode: "",
+    });
     const [userBookDates, setUserBookedDates] = useState([])
 
     useEffect(() => {
@@ -46,6 +55,15 @@ const Booking = ({ user, getRoom, getHotel}) => {
             })
             getHotel(hotelID).then(response => {
                 setHotelName(response.name)
+                setHotelLocation({
+                    ...hotelLocation,
+                    streetAddress1: response.location.streetAddress1,
+                    streetAddress2: response.location.streetAddress2,
+                    city: response.location.city,
+                    stateOrProvince: response.location.stateOrProvince,
+                    country: response.location.country,
+                    postalCode: response.location.postalCode
+                })
             })
                 .catch(err => console.log(err))
             getRoom(roomID).then(response => {
@@ -88,7 +106,7 @@ const Booking = ({ user, getRoom, getHotel}) => {
 
 
                 </div>
-
+                <SimpleMap location={hotelLocation} name={hotelName}/>
                 <label> Total Price : {userBookDates.length == 0 ? roomPrice : roomPrice * userBookDates.length} </label>
                 
 

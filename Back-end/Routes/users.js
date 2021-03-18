@@ -100,10 +100,16 @@ router.route("/deleteById/:id").delete((req, res) => {
 
 router.route("/updateBookings/").post((req, res) => {
     console.log("UPDATING BOOKINGS")
-    console.log(req.body.booking)
-    User.findByIdAndUpdate({ _id: req.body.id })
+    User.findByIdAndUpdate( req.body.id )
         .then((user) => {
-            user.bookings.push(req.body.booking);
+            if (user.bookings == null) {
+                const bookings = [];
+                bookings.push(req.body.booking);
+                user.bookings = bookings
+            }
+            else {
+                user.bookings.push(req.body.booking);
+            }
             user.save()
                 .then((newUser) => { res.json(newUser); console.log(newUser.bookings); console.log(user.bookings) })
                 .catch(err => res.status(400).json("Error: " + err));
