@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import DatePicker from 'react-datepicker/dist/react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import Paypal from './paypal-react.component';
-import { Link } from "react-router-dom";
-
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 	const [hotelID, setHotelID] = useState("")
@@ -22,6 +20,16 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
     const [endDate, setEndDate] = useState(null);
     const [roomID, setRoomID] = useState("")
 	
+	const [amount, setAmount] = useState(2);
+	const [orderID, setOrderID] = useState(false);
+	const initialOptions = {
+    "client-id": "Ab5MP34Strn8xQq7h-Fgt0mLAbacBJVtiYhIGtIEbf738lE2LnKvJ7QLKYnCaCSaDj1f_LsNpmyrcNw_",
+    currency: "USD",
+    intent: "capture",
+    "data-client-token": "abc123xyz==",
+		};
+		
+		
 	 
   useEffect(() => {
 
@@ -102,7 +110,29 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
         }
 
         setUserBookedDates([...datesList]);
+		setAmount(roomPrice * userBookDates.length);
+		setOrderID(false);
 	};
+	
+	const createOrder = function(data, actions) {
+        return actions.order
+            .create({
+                purchase_units: [
+                    {
+                        amount: {
+                            value: amount,
+                        },
+                    },
+                ],
+            })
+            .then((orderID) => {
+                setOrderID(orderID);
+                return orderID;
+            });
+    };
+	
+	
+	
 	
 
     
@@ -142,15 +172,19 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 
                 <label> Total Price : {userBookDates.length == 0 ? roomPrice : roomPrice * userBookDates.length} </label>
 				
-				
-                <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setBook(true); props.history.push("/checkout/"); }}> Book Room </button>
-				
+				<br></br>
+                <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setBook(true); }}> Book Room </button>
+				<br></br>
 			
 
 
             </form>
-            
+           <PayPalScriptProvider options={initialOptions}>
+				<PayPalButtons style={{ layout: "horizontal"}} createOrder ={createOrder} forceReRender={amount} onApprove={(e) => {e.preventDefault(); setBook(true); }}   />
+			</PayPalScriptProvider>
+			
         </div>
+		
 		</div>
     )
 }

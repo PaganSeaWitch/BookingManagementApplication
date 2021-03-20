@@ -18,7 +18,7 @@ import EditRooms from "./Components/edit-rooms.component";
 import EditRoom from "./Components/edit-room.component";
 import Bookings from "./Components/bookings.component";
 import Booking from "./Components/booking.component";
-import Checkout from "./Components/booking.component";
+
 const rug = require('random-username-generator');
 require('dotenv').config()
 
@@ -906,13 +906,6 @@ const App = () => {
             )}
             />
 			
-			<Route path="/checkout" render={(props) => (
-                <>
-                    {/* we pass a function*/}
-                    {<Checkout props = {props} />}
-                </>
-            )}
-            />
            
             <Route path="/user" render={(props) => (
                 <>
