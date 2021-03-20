@@ -190,7 +190,7 @@ const App = () => {
         axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
             .then(response => {
                 if (response == null) {
-                    props.history.push("/")
+                    props.history.push("/dashboard")
                 }
                 else {
                     setHotelName(response.data.name);
