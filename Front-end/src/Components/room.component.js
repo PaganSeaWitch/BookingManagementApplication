@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import DatePicker from 'react-datepicker/dist/react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import Paypal from './paypal-react.component';
+import { Link } from "react-router-dom";
 
 
 const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
@@ -21,8 +22,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
     const [endDate, setEndDate] = useState(null);
     const [roomID, setRoomID] = useState("")
 	
-	 const [checkout, setCheckout] = useState(false);
-  
+	 
   useEffect(() => {
 
         
@@ -41,7 +41,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 
     }, []);
 		useEffect(() => {
-
+		console.log("This is being used");
         if (book == true) {
             
             console.log("beggining booking")
@@ -61,10 +61,10 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
                 
             
                 
-            
+           
         }
 
-
+		
 
 
         }, [book]);
@@ -142,20 +142,10 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 
                 <label> Total Price : {userBookDates.length == 0 ? roomPrice : roomPrice * userBookDates.length} </label>
 				
-				<header>
-							{(checkout === true) 
-								? <div className="payment-div">
-								 <Paypal />
-								 </div> 
-
-								:<div>
-								<h1>React-PayPal</h1>
-								<button onClick={() => {setCheckout(true)}} className="checkout-button">Checkout</button>
-					  </div>
-					}
-				</header>
 				
-                <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setBook(true); }}> Book Room </button>
+                <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setBook(true); props.history.push("/checkout/"); }}> Book Room </button>
+				
+			
 
 
             </form>

@@ -13,11 +13,12 @@ import ForgotPassword from "./Components/forgot-password.component";
 import ResetPassword from "./Components/reset-password.component";
 import Hotel from "./Components/hotel.component";
 import Room from "./Components/room.component";
-import CreateRoom from "./Components/create-room.component"
-import EditRooms from "./Components/edit-rooms.component"
-import EditRoom from "./Components/edit-room.component"
-import Bookings from "./Components/bookings.component"
-import Booking from "./Components/booking.component"
+import CreateRoom from "./Components/create-room.component";
+import EditRooms from "./Components/edit-rooms.component";
+import EditRoom from "./Components/edit-room.component";
+import Bookings from "./Components/bookings.component";
+import Booking from "./Components/booking.component";
+import Checkout from "./Components/booking.component";
 const rug = require('random-username-generator');
 require('dotenv').config()
 
@@ -107,6 +108,8 @@ const App = () => {
     const onBookingClick = (id, props) => {
         props.history.push("/booking/" + id)
     }
+	
+	
     const addRoom = (hotel_id, roomNumber, roomPrice, roomBedAmount, roomTags, props) => {
         const newRoom = ({ roomNumber, price: roomPrice, beds: roomBedAmount, tags:roomTags, bookedDates:[] })
         axios.post(uri + "/room/addRoom", newRoom)
@@ -899,6 +902,14 @@ const App = () => {
                 <>
                     {<Room user={user} getRoom={getRoom} updateUser={updateUserBookings} updateRoom={updateRoomBookings} props={props} />}
 
+                </>
+            )}
+            />
+			
+			<Route path="/checkout" render={(props) => (
+                <>
+                    {/* we pass a function*/}
+                    {<Checkout props = {props} />}
                 </>
             )}
             />
