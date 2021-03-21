@@ -180,7 +180,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 
             </form>
            <PayPalScriptProvider options={initialOptions}>
-				<PayPalButtons style={{ layout: "horizontal"}} createOrder ={createOrder} forceReRender={amount} onApprove={(e) => {e.preventDefault(); setBook(true); }}   />
+				<PayPalButtons style={{ layout: "horizontal"}} createOrder ={createOrder}  onApprove={(e) => {e.preventDefault(); setBook(true); forceReRender={amount} }}   />
 			</PayPalScriptProvider>
 			
         </div>
