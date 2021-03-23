@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Checkbox from '@material-ui/core/CheckBox';
+import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import axios from "axios";
 require('dotenv').config()

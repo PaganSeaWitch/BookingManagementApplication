@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Checkbox from '@material-ui/core/CheckBox';
+import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 require('dotenv').config()
 const uri = process.env.REACT_APP_BACK_END_SERVER_URI
