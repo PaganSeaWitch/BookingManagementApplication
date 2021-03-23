@@ -47,7 +47,6 @@ const App = () => {
     const [hotels, setHotels] = useState([])
     const uri = process.env.REACT_APP_BACK_END_SERVER_URI
     console.log(uri)
-    console.log(process.env)
     const logOut = () => {
         resetManager();
         resetUser();
@@ -63,6 +62,7 @@ const App = () => {
             setUserStateWithoutPassword(userJSON);
             console.log(userJSON);
         }
+
         const loggedInManager = localStorage.getItem('LoggedInManager');
         if (loggedInManager && manager.username == "") {
             const managerJSON = JSON.parse(loggedInManager);
@@ -76,6 +76,7 @@ const App = () => {
     }, [])
 
     const getHotels = () => {
+        console.log(uri)
         axios.get(uri + "/hotel/allHotels")
             .then(response => {
                 setHotels(response.data)
