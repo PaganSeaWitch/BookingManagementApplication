@@ -7,6 +7,8 @@ const emailRouter = require("./Routes/emails")
 const hotelRouter = require("./Routes/hotels")
 const roomRouter = require("./Routes/rooms")
 const messageRouter = require("./Routes/messages")
+const fs = require('fs')
+const https = require('https')
 require('dotenv').config();
 
 
@@ -21,8 +23,8 @@ const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+env = process.env.NODE_ENV || 'development';
 
-//get uri for database
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
 
@@ -40,6 +42,10 @@ app.use("/hotel", hotelRouter)
 app.use("/room", roomRouter)
 app.use("/message", messageRouter)
 //start the server
-app.listen(port, () => {
-    console.log(`server is running on port: ${port}`);
-});
+https.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app)
+    .listen(port, function () {
+        console.log('Example app listening on port 5000! Go to https://localhost:3000/')
+    })

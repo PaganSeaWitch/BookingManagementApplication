@@ -123,6 +123,7 @@ const App = () => {
                     .catch(err => { console.log(err); return })
                 
             })
+            
     }
 
     const getHotelForRoom =(room_id, setHotelId, setHotelName, props) => {
