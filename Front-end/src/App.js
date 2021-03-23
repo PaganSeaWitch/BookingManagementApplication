@@ -46,7 +46,8 @@ const App = () => {
 	
     const [hotels, setHotels] = useState([])
     const uri = process.env.REACT_APP_BACK_END_SERVER_URI
-
+    console.log(uri)
+    console.log(process.env)
     const logOut = () => {
         resetManager();
         resetUser();
