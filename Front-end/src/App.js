@@ -79,7 +79,8 @@ const App = () => {
             .then(response => {
                 setHotels(response.data)
             })
-    }
+            .catch(err => console.log(err))
+        }
 
     const getRooms = (roomIDList, setRooms, rooms) => {
         roomIDList.forEach(roomID => {
