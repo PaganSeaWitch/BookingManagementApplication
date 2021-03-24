@@ -7,8 +7,9 @@ const emailRouter = require("./Routes/emails")
 const hotelRouter = require("./Routes/hotels")
 const roomRouter = require("./Routes/rooms")
 const messageRouter = require("./Routes/messages")
-const fs = require("fs");
-const https = require("https");
+const fs = require('fs')
+const https = require('https')
+
 require('dotenv').config();
 
 
@@ -24,9 +25,8 @@ console.log(port);
 
 app.use(cors());
 app.use(express.json());
+env = process.env.NODE_ENV || 'development';
 
-
-//get uri for database
 const uri = process.env.ATLAS_URI;
 console.log(uri);
 mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
@@ -38,7 +38,7 @@ app.use("/manager", managerRouter)
 app.use("/email", emailRouter)
 app.use("/hotel", hotelRouter)
 app.use("/room", roomRouter)
-app.use("message", messageRouter)
+app.use("/message", messageRouter)
 
 //connect to database
 connection.once("open", () => {
@@ -47,11 +47,13 @@ connection.once("open", () => {
 
 
 
+
+//start the server
 https.createServer({
-	key: fs.readFileSync("server.key"),
-	cert: fs.readFileSync("server.cert")
-},app)
-	.listen(port, function(){
-		console.log("listeing on port 5000!")
-	})
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app)
+    .listen(port, function () {
+        console.log('Example app listening on port 5000! Go to https://localhost:3000/')
+    })
 
