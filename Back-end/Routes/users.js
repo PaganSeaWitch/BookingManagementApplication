@@ -16,7 +16,7 @@ router.route("/add").post((req, res) => {
 	const email = req.body.email;
 	const bookings = req.body.bookings;
     const newUser = new User({ username, password, firstName, lastName, email, bookings});
-
+    console.log(req.body)
     newUser.save()
         .then(() => res.json(newUser))
         .catch(err => res.status(400).json("Error: " + err));
