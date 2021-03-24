@@ -48,12 +48,9 @@ connection.once("open", () => {
 
 
 
-//start the server
-https.createServer({
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert')
-}, app)
-    .listen(port, function () {
+
+
+app.listen(port, function () {
         console.log('Example app listening on port 5000! Go to https://localhost:3000/')
     })
 
