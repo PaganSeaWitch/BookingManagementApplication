@@ -42,10 +42,7 @@ app.use("/hotel", hotelRouter)
 app.use("/room", roomRouter)
 app.use("/message", messageRouter)
 //start the server
-https.createServer({
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert')
-}, app)
-    .listen(port, function () {
-        console.log('Example app listening on port 5000! Go to https://localhost:3000/')
-    })
+
+app.listen(port, function () {
+    console.log('Example app listening on port 5000! Go to https://localhost:3000/')
+})
