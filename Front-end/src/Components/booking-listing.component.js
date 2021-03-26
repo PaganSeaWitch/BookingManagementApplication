@@ -23,7 +23,7 @@ const BookingListing = ({ bookingID, hotel, room, onClick, props }) => {
 			.catch(err => console.log(err))
 	},[]);
 	return (
-		<div style={{ marginBottom: '50px' }} >
+		<div className = 'hotel-page' style={{ marginBottom: '50px' }} >
 
 			<h1> Hotel:{hotelName} Room: {hotelNumber}
 				<BiArrowBack

@@ -22,6 +22,8 @@ const CreateUser = ({ onCreateManager, onCreateUser, onGoogleLogin, props }) => 
     const [hotelState, setHotelState] = useState("");
     const [hotelCountry, setHotelCountry] = useState("");
     const [hotelPostalCode, setHotelPostalCode] = useState("");
+	const [hotelImage, setHotelImage] = useState("");
+	
     const refToUserForms = useRef(null);
     const refToManagerForms = useRef(null);
     const geocodeAPIBegining = "https://maps.googleapis.com/maps/api/geocode/json?address="
@@ -118,7 +120,7 @@ const CreateUser = ({ onCreateManager, onCreateUser, onGoogleLogin, props }) => 
                                 if (response.data.results.length != 0) {
                                     const hotelLocation = { streetAddress1: hotelStreetAddress1, streetAddress2: hotelStreetAddress2, city: hotelCity, stateOrProvince: hotelState, country: hotelCountry, postalCode: hotelPostalCode };
                                     console.log(hotelLocation);
-                                    onCreateManager(username, password, email, hotelName, hotelLocation, props);
+                                    onCreateManager(username, password, email, hotelName, hotelLocation, hotelImage, props);
                                 }
                                 else {
                                     alert("please input a real address!")
@@ -342,6 +344,23 @@ const CreateUser = ({ onCreateManager, onCreateUser, onGoogleLogin, props }) => 
                                 } />
                             <span className={"move-middle-span"}></span>
                         </div>
+						
+						<div>
+                            <span className={"move-middle-span"}></span>
+                            <label>Image URL</label>
+                            <span className={"move-middle-span"}></span>
+                        </div>
+                        <div>
+                            <span className={"move-middle-span"}></span>
+
+                            <input className={"rounded-login"}
+                                type='text'
+                                value={hotelImage}
+                                onChange={(e) => { setHotelImage(e.target.value); }
+                                } />
+                            <span className={"move-middle-span"}></span>
+                        </div>
+						
                     </div>
                 }
                 

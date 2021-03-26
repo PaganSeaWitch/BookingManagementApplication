@@ -7,10 +7,6 @@ const SplashPage = () => {
 	return(
 			 <div className = 'splash-page'>
 				<center>	
-				<span className = 'splash'>
-						Welcome to RendezView! 
-                </span> 
-				<br/><br/>
 				<span className = 'splash'> 
 					  <Link to={"/Dashboard"} >See our bookings!</Link>
 				</span>

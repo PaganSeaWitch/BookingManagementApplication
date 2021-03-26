@@ -22,7 +22,7 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props }) => {
 				</div>
 				: <div className = 'dashboard'> 
 					<div>							
-							<ul style = {{listStyleType: "none"}}>
+							<ul>
 							{hotels.map((hotel, index) => <HotelListing hotel={hotel} key={index}onClick={onHotelClick} props={props} />)}
 							</ul>
 					</div> 

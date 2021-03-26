@@ -9,7 +9,7 @@ const Bookings = ({ user, getHotel, getRoom, onBookingClick, props }) => {
 
 
     return (
-        <div>
+        <div className = 'hotel-page'>
 
             <header>
                 Current Bookings for {user.username} {user.bookings.length}

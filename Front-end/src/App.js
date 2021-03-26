@@ -687,7 +687,7 @@ const App = () => {
         localStorage.setItem('LoggedInManager', jsonManager);
     }
 
-    const createManager = (username, password, email, hotelName, hotelLocation, props) =>
+    const createManager = (username, password, email, hotelName, hotelLocation, imageURL, props) =>
     {
         axios.get(uri + "/email/checkEmail/" + email)
             .then(response => {
@@ -707,7 +707,7 @@ const App = () => {
                                     .then(hotelResponse => {
                                         setHotels([...hotels, hotelResponse.data])
                                         console.log(hotelResponse.data)
-                                        const newManager = {  username, password, email, hotel_ID: hotelResponse.data._id }
+                                        const newManager = {  username, password, email, hotel_ID: hotelResponse.data._id, imageURL }
                                         axios.post(uri + "/manager/add", newManager)
                                             .then(response => { setManagerState(response, password); alert("manager created!"); props.history.push("/manager"); })
                                             .catch(err => alert("Coudln't create account!"));

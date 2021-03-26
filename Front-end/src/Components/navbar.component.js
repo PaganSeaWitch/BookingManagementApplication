@@ -8,7 +8,7 @@ const NavBar = ({  user, manager }) => {
 	
     <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
             {/* This navbar based off the bootstrap navbar */}
-        <Link to="" className="navbar-brand">RendezView</Link>
+        <Link to="" className="navbar-brand"><img className = "logo" src = './RendezView_Logo.png' /></Link>
             <div className="collapse navbar-collapse" >
                 {(user._id == "" && manager._id == "") //if true, display first div
                     ? <div>

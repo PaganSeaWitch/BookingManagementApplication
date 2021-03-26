@@ -141,7 +141,8 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 
     return (
 		<div className = 'login-background'>
-        <div className = 'hotel-listing'>
+		<center>
+        <div className = 'hotel-page'>
 
             <h1>
                 {hotelName}{' '}
@@ -184,7 +185,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 			</PayPalScriptProvider>
 			
         </div>
-		
+		</center>
 		</div>
     )
 }
