@@ -114,7 +114,7 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
         <div className = 'login-background'>
             
             <div className={"login-header"}>
-                <header className='bold'>Create New Room for {hotelName} </header>
+                <header className='bold-center'>Create New Room for {hotelName} </header>
                 
             </div>
             

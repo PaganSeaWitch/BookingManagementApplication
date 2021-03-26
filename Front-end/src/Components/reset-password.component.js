@@ -47,28 +47,28 @@ const ResetPassword = ({ onResetPassword, props, checkResetID }) => {
             {(page != uri + currentPageType1 && page != uri + currentPageType2)
                 ? <div>
                     <form className={"login-form"}>
-                            <div>
-                                <span></span>
+                            <div >
+                            <span className={"move-middle-span"}></span>
                                 <label>Enter a new password</label>
-                                <span></span>
+                            <span className={"move-middle-span"}></span>
                             </div>
 
                             <div>
-                                <span></span>
+                            <span className={"move-middle-span"}></span>
 
                                 <input className={"rounded-login"}
                                     type='text'
                                     value={password}
                                     onChange={(e) => { setPassword(e.target.value); }
                                     } />
-                                <span></span>
+                            <span className={"move-middle-span"}></span>
 
                             </div>
                             <div>
 
-                                <span></span>
+                            <span className={"move-middle-span"}></span>
                                 <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setReset(true); }}> Recover Account </button>
-                                <span></span>
+                            <span className={"move-middle-span"}></span>
                     
                             </div>
                         <br></br>
@@ -76,9 +76,9 @@ const ResetPassword = ({ onResetPassword, props, checkResetID }) => {
                     </div>
                 : <div>
                     <div className={"recover-stub"}>
-                            <span></span>
+                        <span className={"move-middle-span"}></span>
                             <label className={"recover-stub"}>Please check your email to recover password</label>
-                            <span></span>
+                        <span className={"move-middle-span"}></span>
                         </div>
                     </div>}
                 

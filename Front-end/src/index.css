@@ -248,9 +248,20 @@ code {
 	position:absolute;
 	right:0;
 }
-
-.bold{
- font-weight: bold;	
+.bold-left{
+	font-size: 20px;
+ 	font-weight: bold;
+	color:	 #FFFFFF;
+	-webkit-text-stroke-width: .7px;
+	-webkit-text-stroke-color: #000000;
+}
+.bold-center{
+	text-align: center;
+	font-size: 20px;
+ 	font-weight: bold;
+	color:	 #FFFFFF;
+	-webkit-text-stroke-width: .7px;
+	-webkit-text-stroke-color: #000000;
 }
 .user-information{
 	background-color: #add8e6;

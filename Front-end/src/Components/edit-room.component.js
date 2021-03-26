@@ -123,7 +123,7 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
         <div className = 'login-background'>
 
             <div className={"login-header"}>
-                <header className = 'bold'>Edit existing room for {hotelName} </header>
+                <header className = 'bold-center'>Edit existing room for {hotelName} </header>
             </div>
 
             <form className={"login-form"}>
