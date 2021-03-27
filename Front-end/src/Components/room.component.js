@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import DatePicker from 'react-datepicker/dist/react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { MdLocalHotel } from 'react-icons/md'
+import { FaWheelchair } from 'react-icons/fa'
+import { FaSmoking } from 'react-icons/fa'
+import { MdRoomService } from 'react-icons/md'
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import Tooltip from '@material-ui/core/Tooltip';
 
 const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 	const [hotelID, setHotelID] = useState("")
@@ -31,7 +36,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 		
 		
 	 
-  useEffect(() => {
+    useEffect(() => {
 
         
         let id = ""
@@ -40,15 +45,18 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
         const uri = process.env.REACT_APP_FRONT_END_SERVER_URI
         console.log(page)
         const currentPageType1 = "/room/"
-        if (page != uri + currentPageType1 && hotelName == "") {
+        if (page != uri + currentPageType1) {
             id = page.substring(uri.length + currentPageType1.length)
             getRoom(id, setRoomNumber, setRoomPrice, setRoomBedAmount, setSuite, setHandicap, setSmoking, setRoomBookedDates, setHotelID, setHotelName, props);
             setRoomID(id);
         }
+        else {
+            props.history.push("/Dashboard")
+        }
 
 
     }, []);
-		useEffect(() => {
+	useEffect(() => {
 		console.log("This is being used");
         if (book == true) {
             
@@ -75,7 +83,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 		
 
 
-        }, [book]);
+    }, [book]);
 
 	const onChange = dates => {
         const [start, end] = dates;
@@ -140,52 +148,58 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
    
 
     return (
-		<div className = 'login-background'>
-		<center>
-        <div className = 'hotel-page'>
+        <div className='login-background'>
+        <div className={"margin-50"}>
+                <header className={"bold-center"}>{hotelName} {"Room: "}{roomNumber} </header>
+        </div>
+        <div className = 'room-page'>
 
-            <h1>
-                {hotelName}{' '}
-
-            </h1>
+                
+           
 
             <form>
 
-                <h3>Room : {roomNumber} </h3>
-
-                <label>Price : {roomPrice} </label>
-                <br></br>
-                <label>Beds : {roomBedAmount} </label>
-                <br></br>
-                <label>smoking permitted : {smoking ? "yes" : "no"} </label>
-                <br></br>
-                <label>handicap accessible : {handicap ? "yes" : "no"} </label>
-                <br></br>
-                <label>suite : {suite ? "yes" : "no"} </label>
-                <br></br>
-                <div>
-                    <label>Book range</label>
+                
+                    <div className={"label-center"}>
+                        <label className={"important-label"}>Price : {roomPrice}$ </label>{"   "}
+                        <label className={"important-label"}>Beds : {roomBedAmount} </label>
+                    </div>
+                    
+                    <div className={"label-center"}>
+                        <label className={"underlined"}>Book Range</label>
                     <DatePicker  onChange={onChange} startDate={startDate} endDate={endDate} minDate={new Date()} excludeDates={[...roomBookedDates]} selectsRange inline />
                    
 
-                </div>
+                    </div>
+                    <Tooltip title={suite ? "is a suite" : "is not a suite"} placement="right" arrow>
+                        <label className={"room-page-icon"}>suite : {suite ? <MdRoomService style={{ color: 'green' }} /> : <MdRoomService style={{ color: 'red' }} />} </label>
+                    </Tooltip>
+                    <br></br>
+                    <Tooltip title={suite ? "smoking is permitted" : "smoking is not permitted"} placement="right" arrow>
+                        <label className={"room-page-icon"}>smoking permitted : {smoking ? <FaSmoking className={"icon"} style={{ color: 'green', hover: "no" }} /> : <FaSmoking className={"icon"} style={{ color: 'red' }} />} </label>
+                    </Tooltip>
+  
+                        <br></br>
+                    <Tooltip title={"is handicap accessible"} placement="right" arrow>
+                        <label className={"room-page-icon"}>handicap accessible : {handicap ? <FaWheelchair className={"icon"} style={{ color: 'green' }} /> :  <FaWheelchair className={"icon"} style={{ color: 'red' }} />} </label>
+                    </Tooltip>
+                    <br></br>
+                    <div className={"label-center"}>
+                        <label className={"price"}> Total Price : {userBookDates.length == 0 ? roomPrice : roomPrice * userBookDates.length} </label>
+                        <br></br>
 
+                        <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setBook(true); }}> Book Room </button>
+				    </div>
+                
+                    <br></br>
 
-                <label> Total Price : {userBookDates.length == 0 ? roomPrice : roomPrice * userBookDates.length} </label>
-				
-				<br></br>
-                <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setBook(true); }}> Book Room </button>
-				<br></br>
-			
 
 
             </form>
-           <PayPalScriptProvider options={initialOptions}>
-				<PayPalButtons style={{ layout: "horizontal"}} createOrder ={createOrder}  onApprove={(e) => {e.preventDefault(); setBook(true) }}   />
-			</PayPalScriptProvider>
+           
 			
         </div>
-		</center>
+		
 		</div>
     )
 }

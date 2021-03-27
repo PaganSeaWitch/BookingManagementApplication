@@ -144,7 +144,7 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
 
     return (
 
-        <div class='manager'>
+        <div className='manager'>
             <div className={"margin-50"}>
                 <header className={"bold-center"}>Manager Account Information </header>
             </div>

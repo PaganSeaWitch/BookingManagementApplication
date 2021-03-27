@@ -1,7 +1,8 @@
 import { useState, useEffect} from "react";
 import RoomListing from "./room-listing.component";
 import SimpleMap from "./google-map.component"
-
+import ListRooms from "./list-rooms.component"
+import { SearchBar } from 'react-native-elements';
 // JavaScript source code
 const Hotel = ({ getHotel, onRoomClick, props}) => {
     const [hotelName, setHotelName] = useState("");
@@ -25,12 +26,13 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
         let id = ""
         if (page != uri + currentPageType1 && hotelName == "") {
             id = page.substring(uri.length + currentPageType1.length)
-            getHotel(id, setHotelLocation, setHotelName, setHotelRooms,rooms, props);
+            getHotel(id, setHotelLocation, setHotelName, setHotelRooms, props);
         }
-
+        
+        
 
     },[]);
-
+   
     
     return (
 		<div className = 'login-background'>
@@ -41,26 +43,32 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
             
                 
 
-                <form>
+                <div>
 
                     <h3>Address </h3>
                     <div>
-                        <label> {hotelLocation.streetAddress1}{", "} {hotelLocation.streetAddress2.length == 0 ? "" : hotelLocation.streetAddress2 + ", "} {hotelLocation.city} {", "}{hotelLocation.stateOrProvince} {", "}{hotelLocation.country}{", "}{hotelLocation.postalCode} </label>
+                        <label> {hotelLocation.streetAddress1}{", "}{hotelLocation.streetAddress2.length == 0 ? "" : hotelLocation.streetAddress2 + ", "}{hotelLocation.city}{", "}{hotelLocation.stateOrProvince}{", "}{hotelLocation.country}{", "}{hotelLocation.postalCode} </label>
 
                     </div>
                     <SimpleMap location={hotelLocation} name={hotelName}/>
 
 
 
-                </form>
+                </div>
                 <h3> Available Rooms </h3>
 
             </form>
+            <div className={"room-search"}>
+                <header>
+                    <input className={"search-bar"}
+                        type='text'
+                        value={username}
+                        onChange={(e) => { setUsername(e.target.value); }
+                        } />
 
-			<div>
-                {rooms.map((room, index) => <RoomListing key={index} room={room} onClick={onRoomClick} props={props} />)}
-			</div>
-   
+                </header>
+                {<ListRooms rooms={rooms} onRoomClick={onRoomClick} props={props} />}
+            </div>
 		</div>
     )
 }

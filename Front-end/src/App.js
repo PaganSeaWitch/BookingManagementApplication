@@ -84,18 +84,22 @@ const App = () => {
             .catch(err => console.log(err))
         }
 
-    const getRooms = (roomIDList, setRooms, rooms) => {
-        roomIDList.forEach(roomID => {
+    const getRooms = (roomIDList, setRooms) => {
+        let roomTemp = []
+         roomIDList.forEach(roomID => {
             console.log(roomID)
             axios.get(uri + "/room/getRoomByID/" + roomID)
                 .then(response => {
                     if (response.data != null) {
-                        console.log(response.data)
-                        setRooms([...rooms, response.data])
+                        roomTemp.push(response.data)
+                        setRooms([...roomTemp])
                     }
                 })
                 .catch(err => console.log(err))
         })
+        console.log(roomTemp)
+        setRooms(roomTemp);
+        setRooms([...roomTemp])
 
     }
 
@@ -189,7 +193,7 @@ const App = () => {
     }
 
 
-    const getHotel =  (hotel_id, setHotelLocation, setHotelName, setHotelRooms, rooms, props) => {
+    const getHotel =  (hotel_id, setHotelLocation, setHotelName, setHotelRooms, props) => {
         console.log("Getting hotel!")
         axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
             .then(response => {
@@ -206,7 +210,8 @@ const App = () => {
                         country: response.data.location.country,
                         postalCode: response.data.location.postalCode
                     });
-                    getRooms(response.data.room_IDs, setHotelRooms, rooms)
+                    getRooms(response.data.room_IDs, setHotelRooms)
+                        
                 }
             })
             .catch(err => { console.log(err);props.history.push("/") })

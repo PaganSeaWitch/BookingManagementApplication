@@ -4,14 +4,13 @@ import { FaSmoking } from 'react-icons/fa'
 import { MdRoomService} from 'react-icons/md'
 const RoomListing = ({room, onClick,  props}) => {
 	
-	console.log(room)
 	return (
 		<form className={"room-listing"} onClick={() => onClick(room._id, props)} >
 			<h1><MdLocalHotel className={"icon"} style={{ color: 'black',}}/> {" "}
 				Room: {room.roomNumber} 
 				
 			</h1>
-			<form>
+			<div>
 
 				<h3>Information </h3>
 				<div>
@@ -24,8 +23,8 @@ const RoomListing = ({room, onClick,  props}) => {
 				<label>smoking permitted : {room.tags.smoking ? <FaSmoking className={"icon"} style={{ color: 'green' }} /> : <FaSmoking className={"icon"}style={{ color: 'red' }} /> } </label>
 				<br></br>
 				<label>handicap accessible : {room.tags.handicap ? <FaWheelchair className={"icon"} style={{ color: 'green' }} /> : <FaWheelchair className={"icon"}style={{ color: 'red' }} />} </label>
-
-			</form>
+				
+			</div>
 		</form>
 			
 		
