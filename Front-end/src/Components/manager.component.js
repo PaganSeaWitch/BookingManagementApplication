@@ -144,11 +144,13 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
 
     return (
 
-        <div class = 'manager'>
-
+        <div className='manager'>
+            <div className={"margin-50"}>
+                <header className={"bold-center"}>Manager Account Information </header>
+            </div>
             <form className={"user-information"}>
                 {/* we wrap this function call in a lambda to prevent render infi loop*/}
-                <header className={"main-header"}>Manager Information <Button id={"logOutButton"} ref={refToLogout} > log out</Button></header>
+                <header className={"main-header"}> <Button id={"logOutButton"} ref={refToLogout} > log out</Button></header>
 
                 <div>
                     <label>Username:</label>

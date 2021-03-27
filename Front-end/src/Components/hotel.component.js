@@ -1,7 +1,13 @@
 import { useState, useEffect} from "react";
 import RoomListing from "./room-listing.component";
 import SimpleMap from "./google-map.component"
-
+import ListRooms from "./list-rooms.component"
+import Button from '@material-ui/core/Button';
+import NativeSelect from '@material-ui/core/NativeSelect'; 
+import InputLabel from '@material-ui/core/InputLabel';
+import InputBase from '@material-ui/core/InputBase';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
 // JavaScript source code
 const Hotel = ({ getHotel, onRoomClick, props}) => {
     const [hotelName, setHotelName] = useState("");
@@ -13,9 +19,11 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
         country: "",
         postalCode: "",
     });
-
+    const [filter, setFilter] = useState("")
+    const [filterOn, setFilterOn] = useState(false)
     const [rooms, setHotelRooms] = useState([])
-
+    const [filteredRooms, setFilteredRooms] = useState([])
+    const [search, setSearch] = useState("")
     useEffect(() => {
 
         const page = window.location.href;
@@ -25,42 +33,129 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
         let id = ""
         if (page != uri + currentPageType1 && hotelName == "") {
             id = page.substring(uri.length + currentPageType1.length)
-            getHotel(id, setHotelLocation, setHotelName, setHotelRooms,rooms, props);
+            getHotel(id, setHotelLocation, setHotelName, setHotelRooms, props);
+        }
+        
+        
+
+    },[]);
+    useEffect(() => {
+
+        if (search.length == 0) {
+            setFilterOn(false)
         }
 
 
-    },[]);
+    }, [search]);
+    const filterList = (event) => {
 
+        setFilter(event.target.value)
+        setFilterOn(true)
+        if (event.target.value == "handicap") {
+            setFilteredRooms([...rooms.filter(function (room) {
+                return room.tags.handicap == true
+            })])
+        }
+        if (event.target.value == "suite") {
+            setFilteredRooms([...rooms.filter(function (room) {
+                return room.tags.suite == true
+            })])
+        }
+        if (event.target.value == "smoking") {
+            setFilteredRooms([...rooms.filter(function (room) {
+                return room.tags.smoking == true
+            })])
+        }
+        if (event.target.value == "") {
+            setFilterOn(false);
+
+        }
+    }
+    const BootstrapInput = withStyles((theme) => ({
+        root: {
+            margin: "0px 0px -200px 0px"
+        },
+        input: {
+            borderRadius: 4,
+            
+            backgroundColor: theme.palette.background.paper,
+            border: '1px solid #ced4da',
+            fontSize: 16,
+            padding: '10px 26px 10px 12px',
+            
+            
+        },
+    }))(InputBase);
+
+    const startSearch = () => {
+        if (filterOn == true) {
+            setFilteredRooms([...filteredRooms.filter(function (room) {
+                let roomName = room.roomNumber.toString();
+                return roomName.includes(search);
+            })])
+        }
+        else {
+            setFilterOn(true)
+            setFilteredRooms([...rooms.filter(function (room) {
+                let roomName = room.roomNumber.toString();
+                return roomName.includes(search);
+            })])
+
+        }
+    }
+        
     
+
     return (
 		<div className = 'login-background'>
-		<center>
-        <div className = 'hotel-page'>
+            <div className={"margin-50"}>
+                <h1 className='bold-center'>{hotelName}</h1>
+            </div>
+            <form className = 'hotel-page'>
             
-            <header className = 'bold'>
-                {hotelName}{' '}
                 
-            </header>
 
-            <form>
+                <div>
 
-                <h3>Address </h3>
+                    <h3>Address </h3>
+                    <div>
+                        <label> {hotelLocation.streetAddress1}{", "}{hotelLocation.streetAddress2.length == 0 ? "" : hotelLocation.streetAddress2 + ", "}{hotelLocation.city}{", "}{hotelLocation.stateOrProvince}{", "}{hotelLocation.country}{", "}{hotelLocation.postalCode} </label>
 
-                <label>City : {hotelLocation.city} </label>
-                <br></br>
-                <label>State : {hotelLocation.stateOrProvince} </label>
-                <SimpleMap location={hotelLocation} name={hotelName}/>
+                    </div>
+                    <SimpleMap location={hotelLocation} name={hotelName}/>
 
 
+
+                </div>
+                <h3> Available Rooms </h3>
 
             </form>
-            <h3> Available Rooms </h3>
-            
-			<ul style = {{listStyleType: "none"}}>
-                {rooms.map((room, index) => <RoomListing key={index} room={room} onClick={onRoomClick} props={props} />)}
-			</ul>
-        </div>
-		</center>
+            <header className={"room-search"}>
+                <InputLabel id="demo-customized-select-label">Filter</InputLabel>
+                <NativeSelect
+                    labelId="demo-customized-select-label"
+                    id="demo-customized-select"
+                    value={filter}
+                    onChange={filterList}
+                    input={<BootstrapInput />}
+                >
+                    <option value={""}>filter for</option>
+                    <option value={"smoking"}>smoking permitted</option>
+                    <option value={"handicap"}>handicap accessible</option>
+                    <option value={"suite"}>is a suite</option>
+                </NativeSelect>
+                <input className={"search-bar"}
+                    type='text'
+                    value={search}
+                    placeholder="search by room number"
+                    onChange={(e) => { setSearch(e.target.value); }
+                    } />
+                
+                <Button size="large" variant="contained" color="primary" onClick={(e) => { e.preventDefault(); startSearch(); }}>Search </Button>
+                
+            </header>
+            {filterOn ? <ListRooms rooms={filteredRooms} onRoomClick={onRoomClick} props={props} /> : <ListRooms rooms={rooms} onRoomClick={onRoomClick} props={props} />}
+           
 		</div>
     )
 }

@@ -141,11 +141,11 @@ const CreateUser = ({ onCreateManager, onCreateUser, onGoogleLogin, props }) => 
 
     return (
         <div className= {"login-background"}>
-            <div className={"login-header"}>
-                <header className = {"bold"}> New {userType}
+            <div className={"margin-50"}>
+                <header className={"bold-left"}> New {userType}
                     <div className={"bottom-right-corner"}>
-                        <Button variant={userButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setCreateUser(true); setUserType("User"); setUserButtonType("contained"); setManagerButtonType("outlined"); }}> User </Button>
-                        <Button variant={managerButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setCreateUser(false); setUserType("Manager");setUserButtonType("outlined"); setManagerButtonType("contained"); }}> Manager </Button>
+                        <Button variant={userButtonType} className={"switch-button"} color="primary" size="medium" onClick={() => { setCreateUser(true); setUserType("User"); setUserButtonType("contained"); setManagerButtonType("outlined"); }}> User </Button>
+                        <Button variant={managerButtonType} className={"switch-button"} color="primary" size="medium" onClick={() => { setCreateUser(false); setUserType("Manager");setUserButtonType("outlined"); setManagerButtonType("contained"); }}> Manager </Button>
                     </div>
                 </header>
             </div>
@@ -310,6 +310,7 @@ const CreateUser = ({ onCreateManager, onCreateUser, onGoogleLogin, props }) => 
                             <input className={"rounded-login"}
                                 type='text'
                                 value={hotelState}
+                                maxlength="2"
                                 onChange={(e) => { setHotelState(e.target.value); }
                                 } />
                             <span className={"move-middle-span"}></span>

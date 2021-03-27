@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import axios from "axios";
 import { useState, useEffect } from 'react'
+import { FaHotel } from 'react-icons/fa'
 require('dotenv').config()
 
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const AnyReactComponent = () => <div><FaHotel style={{ color: 'black' }} /></div>;
 const geocodeAPIBegining = "https://maps.googleapis.com/maps/api/geocode/json?address="
 const geocodeAPIEnding = "&key=" + process.env.REACT_APP_GOOOGLE_API_KEY
 
@@ -71,7 +72,7 @@ const SimpleMap = ({ location, name }) => {
 
     return (
         // Important! Always set the container height explicitly
-        <div style={{ height: '300px', width: '100%' }}>
+        <div className={"google-map"}>
             <GoogleMapReact
                 bootstrapURLKeys={{ key: process.env.REACT_APP_GOOOGLE_API_KEY }}
                 defaultCenter={{ lat: 32.978479, lng: -97.429889 }}
