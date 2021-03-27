@@ -31,7 +31,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
     "client-id": "Ab5MP34Strn8xQq7h-Fgt0mLAbacBJVtiYhIGtIEbf738lE2LnKvJ7QLKYnCaCSaDj1f_LsNpmyrcNw_",
     currency: "USD",
     intent: "capture",
-    "data-client-token": "abc123xyz==",
+    
 		};
 		
 		
@@ -188,7 +188,10 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
                         <label className={"price"}> Total Price : {userBookDates.length == 0 ? roomPrice : roomPrice * userBookDates.length} </label>
                         <br></br>
 
-                        <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setBook(true); }}> Book Room </button>
+                        
+						<PayPalScriptProvider options={initialOptions} options={{ components: 'marks,messages,buttons'}}>
+							<PayPalButtons onClick= {()=>{alert("Please log in to make a booking");}} style={{ layout: "horizontal"}} createOrder ={createOrder} forceReRender={amount} onApprove={(e) => {e.preventDefault(); setBook(true); }} onError={() => {console.log("error");}}   />
+						</PayPalScriptProvider>
 				    </div>
                 
                     <br></br>
