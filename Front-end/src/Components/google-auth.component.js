@@ -21,13 +21,14 @@ const GoogleSocialAuth = ({ loginUser, props }) =>{
     };
     return (
         <div>
-
+            <span className={"move-middle-span"}></span>
             <GoogleLogin
                 clientId={process.env.REACT_APP_GOOGLE_AUTH}
                 buttonText="Sign-in"
                 onSuccess={googleResponse}
                 onFailure={googleResponse}
             />
+            <span className={"move-middle-span"}></span>
         </div>
     );
     

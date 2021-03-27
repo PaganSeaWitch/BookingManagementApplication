@@ -122,8 +122,8 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
     return (
         <div className = 'login-background'>
 
-            <div className={"login-header"}>
-                <header className = 'bold'>Edit existing room for {hotelName} </header>
+            <div className={"margin-50"}>
+                <header className = 'bold-center'>Edit existing room for {hotelName} </header>
             </div>
 
             <form className={"login-form"}>
@@ -147,7 +147,7 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
                 </div>
                 <div>
                     <span className={"move-middle-span"}></span>
-                    <label>Price per Night</label>
+                    <label>Price per Night in Dollars</label>
                     <span className={"move-middle-span"}></span>
                 </div>
                 <div>

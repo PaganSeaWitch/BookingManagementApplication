@@ -28,11 +28,11 @@ const Login = ({ onUserLogin, onManagerLogin, props, onGoogleLogin }) => {
 
     return (
         <div className = {"login-background"}>
-            <div className={"login-header"}>
-                <header className = {"bold"}> {loginType} Login
+            <div className={"margin-50"}>
+                <header className={"bold-left"}> {loginType} Login
                     <div className={"bottom-right-corner"}>
-                        <Button variant={userButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setLoginAsUser(true); setLoginType("User"); setUserButtonType("contained"); setManagerButtonType("outlined");}}> User </Button>
-                        <Button variant={managerButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setLoginAsUser(false); setLoginType("Manager");setUserButtonType("outlined"); setManagerButtonType("contained");}}> Manager </Button>
+                        <Button variant={userButtonType} color="primary" size="medium" onClick={() => { setLoginAsUser(true); setLoginType("User"); setUserButtonType("contained"); setManagerButtonType("outlined");}}> User </Button>
+                        <Button variant={managerButtonType} color="primary" size="medium" onClick={() => { setLoginAsUser(false); setLoginType("Manager");setUserButtonType("outlined"); setManagerButtonType("contained");}}> Manager </Button>
                     </div>
                 </header>
             </div>
@@ -51,6 +51,7 @@ const Login = ({ onUserLogin, onManagerLogin, props, onGoogleLogin }) => {
                     <input className={"rounded-login"}
                         type='text'
                         value={username}
+                        
                         onChange={(e) => {setUsername(e.target.value); }
                         } />
                     <span className={"move-middle-span"}></span>

@@ -138,12 +138,14 @@ const User = ({ user, onDelete, logOut, props, onUpdate }) => {
  
     return (
 
-        <div className= {"user-background"}>
-            
+        <div className={"user-background"}>
+            <div className={"margin-50"}>
+                <header className={"bold-center"}>User Account Information </header>
+            </div>
             <form className={"user-information"}>
                 {/* we wrap this function call in a lambda to prevent render infi loop*/}
-                <header className={"main-header"}>User Information <Button  id={"logOutButton"} ref={refToLogout } > log out</Button></header>
-                    
+                <header className={"main-header"}><Button id={"logOutButton"} ref={refToLogout} > log out</Button></header>
+
                 <div>
                     <label>Username:</label>
                     <input

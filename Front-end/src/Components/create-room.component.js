@@ -111,13 +111,11 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
     },[createRoom])
 
     return (
+            
         <div className = 'login-background'>
-            
-            <div className={"login-header"}>
-                <header className='bold'>Create New Room for {hotelName} </header>
-                
+            <div className={"margin-50"}>
+                <header className='bold-center'>{hotelName}: Create New Room</header>
             </div>
-            
             <form className={"login-form"}>
                 
                 <div>
@@ -139,7 +137,7 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
                 </div>
                 <div>
                     <span className={"move-middle-span"}></span>
-                    <label>Price per Night</label>
+                    <label>Price per Night in Dollars</label>
                     <span className={"move-middle-span"}></span>
                 </div>
                 <div>

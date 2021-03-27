@@ -30,27 +30,27 @@ const ForgotPassword = ({ onEmailSubmit, props}) => {
 
 
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <label>Enter the email for your account</label>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                 </div>
 
                 <div>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                     <input className={"rounded-login"}
                         type='text'
                         value={email}
                         onChange={(e) => { setEmail(e.target.value); }
                         } />
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                 </div>
                 <div>
 
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
                     <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setRecover(true); }}> Recover Account </button>
-                    <span></span>
+                    <span className={"move-middle-span"}></span>
 
                 </div>
                 
