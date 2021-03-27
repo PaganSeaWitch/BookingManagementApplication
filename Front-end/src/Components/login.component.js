@@ -51,6 +51,7 @@ const Login = ({ onUserLogin, onManagerLogin, props, onGoogleLogin }) => {
                     <input className={"rounded-login"}
                         type='text'
                         value={username}
+                        
                         onChange={(e) => {setUsername(e.target.value); }
                         } />
                     <span className={"move-middle-span"}></span>
