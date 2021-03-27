@@ -56,8 +56,7 @@ const EditRooms = ({ manager, onRoomClick, props }) => {
 
      }, [])
 
-
-
+    
     return (
         <div className='login-background'>
             <div className={"margin-50"}>

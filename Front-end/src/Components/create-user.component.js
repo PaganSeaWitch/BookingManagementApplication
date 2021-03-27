@@ -310,6 +310,7 @@ const CreateUser = ({ onCreateManager, onCreateUser, onGoogleLogin, props }) => 
                             <input className={"rounded-login"}
                                 type='text'
                                 value={hotelState}
+                                maxlength="2"
                                 onChange={(e) => { setHotelState(e.target.value); }
                                 } />
                             <span className={"move-middle-span"}></span>

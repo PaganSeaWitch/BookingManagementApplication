@@ -239,6 +239,15 @@ code {
 	-webkit-text-stroke-width: .7px;
 	-webkit-text-stroke-color: #000000;
 }
+.hotel-search{
+	text-align: center;
+	margin-bottom:10px;
+	font-size: 20px;
+ 	font-weight: bold;
+	color:	 #FFFFFF;
+	-webkit-text-stroke-width: .7px;
+	-webkit-text-stroke-color: #000000;
+}
 
 .underlined{
 	text-decoration:underline;
