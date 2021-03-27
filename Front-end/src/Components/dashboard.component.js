@@ -114,7 +114,7 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props }) => {
 						<input className={"search-bar"}
 							type='text'
 							value={search}
-							placeholder="search by room number"
+							placeholder="type something"
 							onChange={(e) => { setSearch(e.target.value); }
 							} />
 
