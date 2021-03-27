@@ -179,8 +179,8 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
                         <label className={"room-page-icon"}>smoking permitted : {smoking ? <FaSmoking className={"icon"} style={{ color: 'green', hover: "no" }} /> : <FaSmoking className={"icon"} style={{ color: 'red' }} />} </label>
                     </Tooltip>
   
-                        <br></br>
-                    <Tooltip title={"is handicap accessible"} placement="right" arrow>
+                    <br></br>
+                    <Tooltip title={handicap ? "is handicap accessible" : "is not handicap accessible"} placement="right" arrow>
                         <label className={"room-page-icon"}>handicap accessible : {handicap ? <FaWheelchair className={"icon"} style={{ color: 'green' }} /> :  <FaWheelchair className={"icon"} style={{ color: 'red' }} />} </label>
                     </Tooltip>
                     <br></br>

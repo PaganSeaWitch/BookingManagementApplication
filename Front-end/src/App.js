@@ -113,6 +113,7 @@ const App = () => {
     }
 
     const onBookingClick = (id, props) => {
+        console.log(id)
         props.history.push("/booking/" + id)
     }
 	

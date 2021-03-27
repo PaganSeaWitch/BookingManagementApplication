@@ -2,6 +2,11 @@ import { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from 'react-datepicker/dist/react-datepicker';
 import SimpleMap from "./google-map.component"
+import { MdLocalHotel } from 'react-icons/md'
+import { FaWheelchair } from 'react-icons/fa'
+import { FaSmoking } from 'react-icons/fa'
+import { MdRoomService } from 'react-icons/md'
+import Tooltip from '@material-ui/core/Tooltip';
 
 require('dotenv').config()
 
@@ -42,8 +47,9 @@ const Booking = ({ user, getRoom, getHotel}) => {
             const tempDateList = [];
 
             user.bookings.filter((booking) => {
-
-                if (booking._id == id) {
+                console.log("gottend id:" + id)
+                console.log("booking iD:"+ booking._id)
+                if (booking._id.normalize() === id.normalize()) {
                     console.log("Booking :" +booking);
                     roomID = booking.room_ID;
                     hotelID = booking.hotel_ID;
@@ -70,6 +76,7 @@ const Booking = ({ user, getRoom, getHotel}) => {
             })
                 .catch(err => console.log(err))
             getRoom(roomID).then(response => {
+                console.log(response)
                 setRoomNumber(response.roomNumber);
                 setRoomPrice(response.price);
                 setRoomBedAmount(response.beds);
@@ -91,37 +98,48 @@ const Booking = ({ user, getRoom, getHotel}) => {
 
 
     return (
-        <div>
+        <div className='login-background'>
 
-            <h1>
-                {hotelName}{' '}
+                <div className={"margin-50"}>
+                    <header className={"bold-center"}>{hotelName} {"Room: "}{roomNumber} </header>
+                </div>
+            
 
-            </h1>
+            <div className='room-page'>
 
-            <form>
 
-                <h3>Room : {roomNumber} </h3>
-
-                <label>Price : {roomPrice}$ </label>
-                <br></br>
-                <label>Beds : {roomBedAmount} </label>
-                <br></br>
-                <label>smoking permitted : {smoking ? "yes" : "no"} </label>
-                <br></br>
-                <label>handicap accessible : {handicap ? "yes" : "no"} </label>
-                <br></br>
-                <label>suite : {suite ? "yes" : "no"} </label>
-                <div>
-                    <label>Booked Dates</label>
+                <div className={"label-center"}>
+                    <label className={"important-label"}>Price : {roomPrice}$ </label>{"   "}
+                    <label className={"important-label"}>Beds : {roomBedAmount} </label>
+                </div>
+                
+                <div className={"label-center"}>
+                    <label className={"underlined"}>Booked Dates</label>
                     <DatePicker selected={userBookDates[0]} startDate={userBookDates[0]} endDate={userBookDates[userBookDates.length - 1]} minDate={userBookDates[0] } maxDate={userBookDates[userBookDates.length - 1]} selectsRange inline />
 
 
                 </div>
-                <SimpleMap location={hotelLocation} name={hotelName}/>
-                <label> Total Price : {userBookDates.length == 0 ? roomPrice : roomPrice * userBookDates.length}$ </label>
+                <SimpleMap location={hotelLocation} name={hotelName} />
+                <Tooltip title={suite ? "is a suite" : "is not a suite"} placement="right" arrow>
+                    <label className={"room-page-icon"}>suite : {suite ? <MdRoomService style={{ color: 'green' }} /> : <MdRoomService style={{ color: 'red' }} />} </label>
+                </Tooltip>
+                <br></br>
+                <Tooltip title={suite ? "smoking is permitted" : "smoking is not permitted"} placement="right" arrow>
+                    <label className={"room-page-icon"}>smoking permitted : {smoking ? <FaSmoking className={"icon"} style={{ color: 'green', hover: "no" }} /> : <FaSmoking className={"icon"} style={{ color: 'red' }} />} </label>
+                </Tooltip>
+
+                <br></br>
+                <Tooltip title={handicap ? "is handicap accessible" : "is not handicap accessible"} placement="right" arrow>
+                    <label className={"room-page-icon"}>handicap accessible : {handicap ? <FaWheelchair className={"icon"} style={{ color: 'green' }} /> : <FaWheelchair className={"icon"} style={{ color: 'red' }} />} </label>
+                </Tooltip>
+                <div className={"label-center"}>
+                    <label className={"price"}> Total Price : {userBookDates.length == 0 ? roomPrice : roomPrice * userBookDates.length} </label>
+                    <br></br>
+
+                </div>
                 
 
-            </form>
+            </div>
 
         </div>
     )
