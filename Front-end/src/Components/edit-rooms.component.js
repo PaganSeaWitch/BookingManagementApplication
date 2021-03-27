@@ -44,21 +44,17 @@ const EditRooms = ({ manager, onRoomClick, props }) => {
 
 
     return (
-		<div className = 'login-background'>
-        <div className = 'hotel-listing'>
+        <div className='login-background'>
+            <div className={"margin-50"}>
+                <header className={"bold-center"}>{hotelName}: Edit Existing Rooms</header>
+            </div>
+            <div className = 'hotel-listing'>
 
-            <header>
-                {hotelName}{' '}
 
-            </header>
-
-            
-            <h3> Edit Existing Rooms </h3>
-
-            <ul style={{ listStyleType: "none" }}>
-                {rooms.map((room, index) => <RoomListing key={index} room={room} onClick={onRoomClick} props={props} />)}
-            </ul>
-        </div>
+                <ul style={{ listStyleType: "none" }}>
+                    {rooms.map((room, index) => <RoomListing key={index} room={room} onClick={onRoomClick} props={props} />)}
+                </ul>
+            </div>
 		</div>
     )
 }

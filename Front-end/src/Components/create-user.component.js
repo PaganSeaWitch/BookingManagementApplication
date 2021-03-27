@@ -141,7 +141,7 @@ const CreateUser = ({ onCreateManager, onCreateUser, onGoogleLogin, props }) => 
 
     return (
         <div className= {"login-background"}>
-            <div className={"login-header"}>
+            <div className={"margin-50"}>
                 <header className={"bold-left"}> New {userType}
                     <div className={"bottom-right-corner"}>
                         <Button variant={userButtonType} className={"switch-button"} color="primary" size="small" onClick={() => { setCreateUser(true); setUserType("User"); setUserButtonType("contained"); setManagerButtonType("outlined"); }}> User </Button>

@@ -37,7 +37,7 @@ const ResetPassword = ({ onResetPassword, props, checkResetID }) => {
 
     return (
         <div>
-            <div className={"login-header"}>
+            <div className={"margin-50"}>
                 <header> Password Reset
                 
                 </header>

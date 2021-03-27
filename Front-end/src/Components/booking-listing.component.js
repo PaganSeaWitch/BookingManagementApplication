@@ -23,7 +23,7 @@ const BookingListing = ({ bookingID, hotel, room, onClick, props }) => {
 			.catch(err => console.log(err))
 	},[]);
 	return (
-		<div className = 'hotel-page' style={{ marginBottom: '50px' }} >
+		<div className = 'hotel-page'>
 
 			<h1> Hotel:{hotelName} Room: {hotelNumber}
 				<BiArrowBack
@@ -35,11 +35,10 @@ const BookingListing = ({ bookingID, hotel, room, onClick, props }) => {
 			<form>
 
 				<h3>Information </h3>
-
-				<label>Price : {hotelPrice} </label>
-				<br></br>
-				<label>Beds : {hotelBeds} </label>
-				<br></br>
+				<div>
+					<label>Price : {hotelPrice}$ </label>
+					<label>Beds : {hotelBeds} </label>
+				</div>
 
 
 			</form>

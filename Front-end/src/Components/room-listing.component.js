@@ -1,33 +1,32 @@
-import { BiArrowBack } from 'react-icons/bi'
-
+import { MdLocalHotel } from 'react-icons/md'
+import { FaWheelchair } from 'react-icons/fa'
+import { FaSmoking } from 'react-icons/fa'
+import { MdRoomService} from 'react-icons/md'
 const RoomListing = ({room, onClick,  props}) => {
 	
 	console.log(room)
-	return(
-			<div style= {{marginBottom: '50px'}} >
-			<h1> Room: {room.roomNumber} 
-				   <BiArrowBack
-						style={{ color: 'green', cursor: 'pointer' }}
-						onClick={() => onClick(room._id, props)}
+	return (
+		<form className={"room-listing"} onClick={() => onClick(room._id, props)} >
+			<h1><MdLocalHotel className={"icon"} style={{ color: 'black',}}/> {" "}
+				Room: {room.roomNumber} 
+				
+			</h1>
+			<form>
 
-				/>
-				</h1>
-				 <form>
-
-					<h3>Information </h3>
-
-					<label>Price : {room.price} </label>
-					<br></br>
+				<h3>Information </h3>
+				<div>
+					<label>Price : {room.price}$</label>{" "}
 					<label>Beds : {room.beds} </label>
-					<br></br>
-					<label>smoking permitted : {room.tags.smoking ? "yes" : "no"} </label>
-					<br></br>
-					<label>handicap accessible : {room.tags.handicap ? "yes" : "no"} </label>
-					<br></br>
-					<label>suite : {room.tags.suite ? "yes" : "no"} </label>
+				</div>
 
-				</form>
-            </div>
+				<label>suite : {room.tags.suite ? <MdRoomService  style={{ color: 'green' }} /> : <MdRoomService  style={{ color: 'red' }} />} </label>
+				<br></br>
+				<label>smoking permitted : {room.tags.smoking ? <FaSmoking className={"icon"} style={{ color: 'green' }} /> : <FaSmoking className={"icon"}style={{ color: 'red' }} /> } </label>
+				<br></br>
+				<label>handicap accessible : {room.tags.handicap ? <FaWheelchair className={"icon"} style={{ color: 'green' }} /> : <FaWheelchair className={"icon"}style={{ color: 'red' }} />} </label>
+
+			</form>
+		</form>
 			
 		
 )};

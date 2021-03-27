@@ -102,7 +102,7 @@ const Booking = ({ user, getRoom, getHotel}) => {
 
                 <h3>Room : {roomNumber} </h3>
 
-                <label>Price : {roomPrice} </label>
+                <label>Price : {roomPrice}$ </label>
                 <br></br>
                 <label>Beds : {roomBedAmount} </label>
                 <br></br>
@@ -118,7 +118,7 @@ const Booking = ({ user, getRoom, getHotel}) => {
 
                 </div>
                 <SimpleMap location={hotelLocation} name={hotelName}/>
-                <label> Total Price : {userBookDates.length == 0 ? roomPrice : roomPrice * userBookDates.length} </label>
+                <label> Total Price : {userBookDates.length == 0 ? roomPrice : roomPrice * userBookDates.length}$ </label>
                 
 
             </form>

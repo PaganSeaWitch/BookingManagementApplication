@@ -34,33 +34,33 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
     
     return (
 		<div className = 'login-background'>
-		<center>
-        <div className = 'hotel-page'>
+            <div className={"margin-50"}>
+                <h1 className='bold-center'>{hotelName}</h1>
+            </div>
+            <form className = 'hotel-page'>
             
-            <header className = 'bold'>
-                {hotelName}{' '}
                 
-            </header>
 
-            <form>
+                <form>
 
-                <h3>Address </h3>
+                    <h3>Address </h3>
+                    <div>
+                        <label> {hotelLocation.streetAddress1}{", "} {hotelLocation.streetAddress2.length == 0 ? "" : hotelLocation.streetAddress2 + ", "} {hotelLocation.city} {", "}{hotelLocation.stateOrProvince} {", "}{hotelLocation.country}{", "}{hotelLocation.postalCode} </label>
 
-                <label>City : {hotelLocation.city} </label>
-                <br></br>
-                <label>State : {hotelLocation.stateOrProvince} </label>
-                <SimpleMap location={hotelLocation} name={hotelName}/>
+                    </div>
+                    <SimpleMap location={hotelLocation} name={hotelName}/>
 
 
+
+                </form>
+                <h3> Available Rooms </h3>
 
             </form>
-            <h3> Available Rooms </h3>
-            
-			<ul style = {{listStyleType: "none"}}>
+
+			<div>
                 {rooms.map((room, index) => <RoomListing key={index} room={room} onClick={onRoomClick} props={props} />)}
-			</ul>
-        </div>
-		</center>
+			</div>
+   
 		</div>
     )
 }

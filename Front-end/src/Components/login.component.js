@@ -28,7 +28,7 @@ const Login = ({ onUserLogin, onManagerLogin, props, onGoogleLogin }) => {
 
     return (
         <div className = {"login-background"}>
-            <div className={"login-header"}>
+            <div className={"margin-50"}>
                 <header className={"bold-left"}> {loginType} Login
                     <div className={"bottom-right-corner"}>
                         <Button variant={userButtonType} color="primary" size="medium" onClick={() => { setLoginAsUser(true); setLoginType("User"); setUserButtonType("contained"); setManagerButtonType("outlined");}}> User </Button>

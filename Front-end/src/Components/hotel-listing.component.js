@@ -5,10 +5,7 @@ const HotelListing = ({ hotel, onClick, props }) => {
         <div className={'hotel-listing'} onClick={() => onClick(hotel._id, props)} >
 			
             <heading >
-                <h2 className={"hotel-header"}><FaHotel
-                    style={{ color: 'black'}}
-                    onClick={() => onClick(hotel._id, props)}
-                />{" "}{hotel.name}{' '}
+                <h2 className={"hotel-header"}><FaHotel className={"icon"}style={{ color: 'black'}}/>{" "}{hotel.name}
                 {/* creates a x icon */}
                     
                         
