@@ -16,22 +16,22 @@ const RoomListing = ({room, onClick,  props}) => {
 
 				<h3>Information </h3>
 				<div>
-					<label>Price : {room.price}$</label>{" "}
-					<label>Beds : {room.beds} </label>
+					<label>Price: ${room.price}</label>{" "}
+					<label>Beds: {room.beds} </label>
 				</div>
 				<Tooltip title={room.tags.suite ? "is a suite" : "is not a suite"} placement="right" arrow>
 
-					<label>suite : {room.tags.suite ? <MdRoomService style={{ color: 'green' }} /> : <MdRoomService style={{ color: 'red' }} />} </label>
+					<label>Suite: {room.tags.suite ? <MdRoomService style={{ color: 'green' }} /> : <MdRoomService style={{ color: 'red' }} />} </label>
 				</Tooltip>
 				<br></br>
 				<Tooltip title={room.tags.smoking ? "smoking is permitted" : "smoking is not permitted"} placement="right" arrow>
 
-					<label>smoking permitted : {room.tags.smoking ? <FaSmoking className={"icon"} style={{ color: 'green' }} /> : <FaSmoking className={"icon"} style={{ color: 'red' }} />} </label>
+					<label>Smoking permitted: {room.tags.smoking ? <FaSmoking className={"icon"} style={{ color: 'green' }} /> : <FaSmoking className={"icon"} style={{ color: 'red' }} />} </label>
 				</Tooltip>
 				<br></br>
 				<Tooltip title={room.tags.handicap ? "is handicap accessible" : "is not handicap accessible"} placement="right" arrow>
 
-					<label>handicap accessible : {room.tags.handicap ? <FaWheelchair className={"icon"} style={{ color: 'green' }} /> : <FaWheelchair className={"icon"} style={{ color: 'red' }} />} </label>
+					<label>Handicap accessible: {room.tags.handicap ? <FaWheelchair className={"icon"} style={{ color: 'green' }} /> : <FaWheelchair className={"icon"} style={{ color: 'red' }} />} </label>
 				</Tooltip>
 			</div>
 		</form>

@@ -73,10 +73,15 @@ code {
 .form-inline{
 	position:absolute;
 	bottom:0;
-	right: 0px;
+	top: 15px;
+	right: 50px;
 	margin: auto;
-
 }
+
+.bold-navbar{
+	font-weight: bold;
+}
+
 .form-inline label{
 	color: white;
 	
@@ -90,21 +95,21 @@ code {
 
 	position: absolute;
 	background-size: cover;
-	background-image: url(images/dashboardStockPhoto.jpg);
+	background-image: url(images/pexels-quintin-gellar-313782.jpg);
 	background-position: center;
-    	background-repeat: no-repeat;
+    background-repeat: no-repeat;
 	width: 100%;
-	height: 100%;
+	height: 150%;
 }
 .login-form{
 	margin : auto;
-	max-width: 320px;
+	max-width: 400px;
 	border:1px #000 solid;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
-	background-color: #f8f8ff;
+	background-color: #f5f5f5;
 }
 
 
@@ -114,9 +119,34 @@ code {
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
-	margin-left : 38px;
+	margin-left : 110px;
+	margin-bottom: 25px;
+	position: center;
 
 }	
+
+.create-links{
+	font-size: 0.975rem;
+	margin-left : 60px;
+	margin-bottom: 25px;
+	margin-top: 15px;
+	position: relative;
+	bottom: 12px;
+}
+
+.remembered-links{
+	font-size: 0.975rem;
+	margin-left : 40px;
+	margin-bottom: 25px;
+}
+
+.forgot-links{
+	font-size: 0.975rem;
+	margin-left : 45px;
+	margin-bottom: 25px;
+	position: relative;
+	bottom: 12px;
+}
 
 .login-form label{
 	margin-top : 15px;
@@ -125,12 +155,11 @@ code {
 }
 .login-form input{
 	display: inline-block;
-	padding: 5px;
+	padding: 10px;
 	width: 80%;
 	margin-bottom : 5px;
 	
 }
-
 
 .login-form button{
 	width: 80%;
@@ -140,12 +169,13 @@ code {
 .rounded-login {
 	display: inline-block;
 	padding: 5px;
-	width: 30%;
+	width: 50%;
 	border: 2px solid #000;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
 	outline: 0;
+	height: 45px;
 	
 
 }
@@ -250,10 +280,12 @@ code {
 .hotel-search{
 	text-align: center;
 	margin-bottom:10px;
+	padding-bottom: 20px;
+	padding-top: 20px;
 	font-size: 20px;
  	font-weight: bold;
 	color:	 #FFFFFF;
-	-webkit-text-stroke-width: .7px;
+	-webkit-text-stroke-width: .5px;
 	-webkit-text-stroke-color: #000000;
 }
 
@@ -275,16 +307,16 @@ code {
 }
 
 .splash-page{ 
-    	position: absolute;
+    position: absolute;
 	background-size: cover;
-	background-image: url(images/hotelStockPhoto.jpg);
+	background-image: url(images/pexels-eberhard-grossgasteiger-1287145.jpg);
 	background-position: center;
-    	background-repeat: no-repeat;
+    background-repeat: no-repeat;
 	width: 100%;
 	height: 100%;
 }
 .dashboard{
-	background-image: url(images/dashboardStockPhoto.jpg);
+	background-image: url(images/pexels-francesco-ungaro-998653.jpg);
 	background-position: center;
 	width: 100%;
 	height: 100%;
@@ -300,10 +332,11 @@ code {
 }
 
 .rounded-login:focus {
-	border-color: #339933;
+	border-color: #FFFFFF;
 }
 
 .move-middle-span{
+	padding-top: 15px;
 	display: inline-block;
 	width:10%;
 	
@@ -312,7 +345,7 @@ code {
 	background-size: cover;
 	background-image: url(images/dashboardStockPhoto.jpg);
 	background-position: center;
-    	background-repeat: no-repeat;
+    background-repeat: no-repeat;
 	position: absolute;
 	width:100%;
 	height:100%;
@@ -322,7 +355,7 @@ code {
 	background-size: cover;
 	background-image: url(images/userStockPhoto.jfif);
 	background-position: center;
-    	background-repeat: no-repeat;
+    background-repeat: no-repeat;
 	width:100%;
 	height:100%;
 	position: absolute;
@@ -387,6 +420,8 @@ code {
 	position:absolute;
 	bottom:0px;
 	right: 0px;
+	background-color: #95ee95;
+	color: black;
 	
 }
 .icon{
@@ -429,4 +464,7 @@ code {
 .room-listing-container{
 	max-width : 60%;
 	margin : auto;
+}
+.google-signin{
+	padding-top: 20px;
 }

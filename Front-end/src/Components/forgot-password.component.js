@@ -22,8 +22,10 @@ const ForgotPassword = ({ onEmailSubmit, props}) => {
     return (
 <div className = {"login-background"}>
             <div className={"login-header"}>
-                <header> Password Recovery
-                    
+                <header> 
+                    <center>
+                    Password Recovery
+                    </center>
                 </header>
             </div>
             <form className={"login-form"}>
@@ -57,8 +59,8 @@ const ForgotPassword = ({ onEmailSubmit, props}) => {
                 <br></br>
                 <div>
 
-                    <a href="/create" className="help-links" target="_blank">Create Account</a>
-                    <a href="/login" className="help-links" target="_blank">Remembered password?</a>
+                    <a href="/create" className="create-links" target="_blank">Create Account</a>
+                    <a href="/login" className="remembered-links" target="_blank">Remembered password?</a>
 
                 </div>
             </form>

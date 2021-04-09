@@ -77,15 +77,15 @@ const Login = ({ onUserLogin, onManagerLogin, props, onGoogleLogin }) => {
                 <div>
                     
                     <span className={"move-middle-span"}></span>
-                    <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setLogin(true); }}> LogIn </button>
+                    <button className="btn btn-success" onClick={(e) => { e.preventDefault(); setLogin(true); }}> Login </button>
                     <span className={"move-middle-span"}></span>
 
                 </div>
                 <br></br>
                 <div>
                     
-                    <a href="/create" className="help-links" target="_blank">Create Account</a>
-                    <a href="/forgotPassword" className="help-links" target="_blank">Forgot password?</a>
+                    <a href="/create" className="create-links" target="_blank">Create Account</a>
+                    <a href="/forgotPassword" className="forgot-links" target="_blank">Forgot password?</a>
                    
                 </div>
                 

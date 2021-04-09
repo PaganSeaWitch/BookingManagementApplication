@@ -620,7 +620,7 @@ const App = () => {
                         }
                         console.log(randomUsername)
                     })
-                    .catch(err => { console.log(err); alert("google Login error!") });
+                    .catch(err => { console.log(err); alert("Google login error!") });
                 randomUsername = rug.generate();
             }
            await axios.get(uri + "/user/checkIfEmailExits/" + email)

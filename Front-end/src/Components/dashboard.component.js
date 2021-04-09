@@ -5,7 +5,6 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import InputLabel from '@material-ui/core/InputLabel';
 import { useState, useEffect } from "react";
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-
 import InputBase from '@material-ui/core/InputBase';
 
 
@@ -71,14 +70,14 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props }) => {
 						onChange={changeCategory}
 						input={<BootstrapInput />}
 						>
-							<option value={"name"}>search by name</option>
-							<option value={"city"}>search by city</option>
-							<option value={"state"}>search by state</option>
+							<option value={"name"}>Search by name</option>
+							<option value={"city"}>Search by city</option>
+							<option value={"state"}>Search by state</option>
 						</NativeSelect>
 						<input className={"search-bar"}
 							type='text'
 							value={search}
-							placeholder="search by room number"
+							placeholder="Search by room number"
 							onChange={(e) => { setSearch(e.target.value); }
 						} />
 
@@ -107,9 +106,9 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props }) => {
 							onChange={changeCategory}
 							input={<BootstrapInput />}
 						>
-							<option value={"name"}>search by name</option>
-							<option value={"city"}>search by city</option>
-							<option value={"state"}>search by state</option>
+							<option value={"name"}>Search by name</option>
+							<option value={"city"}>Search by city</option>
+							<option value={"state"}>Search by state</option>
 						</NativeSelect>
 						<input className={"search-bar"}
 							type='text'
