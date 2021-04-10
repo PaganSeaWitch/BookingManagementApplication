@@ -430,3 +430,18 @@ code {
 	max-width : 60%;
 	margin : auto;
 }
+
+.message-listing{
+	display: inline-block;
+	margin-bottom:50px;
+	margin-top :auto;
+	margin-right : 25px;
+	margin-left: 25px;
+	max-width : 100%;
+	cursor:pointer;
+	text-align : center;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 5px;
+	background-color: #f8f8ff;
+}

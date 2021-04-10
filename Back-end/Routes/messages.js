@@ -3,16 +3,23 @@ const router = require('express').Router();
 let Message = require("../Models/message.model");
 
 //Returns all messages
-router.route("/all").get((req, res) => {
+router.route("/all/").get((req, res) => {
     Message.find()
-        .then(message => res.json(message))
+        .then(messages => res.json(messages))
         .catch(err => res.status(400).json("Error: " + err))
 })
 
 //Returns all nonviewed messages
-router.route("/allNonViewed").get((req, res) => {
+router.route("/allNonViewed/").get((req, res) => {
     Message.find({ viewed: false, recipient_id : req.body.recipient_id})
-        .then(message => res.json(message))
+        .then(messages => res.json(messages))
+        .catch(err => res.status(400).json("Error: " + err))
+})
+
+//Returns all messages for Id
+router.route("/allMessagesForId/:id").get((req, res) => {
+    Message.find({ recipient_id: req.params.id })
+        .then(messages => res.json(messages))
         .catch(err => res.status(400).json("Error: " + err))
 })
 
@@ -33,7 +40,7 @@ router.route("/add").post((req, res) => {
     const sender_id = req.body.sender_id;
     const viewed = false;
     const newMessage = new Message({ subject, body, recipient, sender, recipient_id, sender_id, viewed });
-
+    console.log(newMessage)
     newMessage.save()
         .then(() => res.json(newMessage))
         .catch(err => res.status(400).json("Error: " + err));
