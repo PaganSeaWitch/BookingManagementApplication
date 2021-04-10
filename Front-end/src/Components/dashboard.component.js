@@ -75,7 +75,7 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props, filter}) => {
 			? <div className='dashboard'>
 					<header className={"hotel-search"}>
 						<NativeSelect
-						labelId="demo-customized-select-label"
+						labelid="demo-customized-select-label"
 						id="demo-customized-select"
 						value={category}
 						onChange={changeCategory}

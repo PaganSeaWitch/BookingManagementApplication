@@ -19,6 +19,7 @@ import EditRoom from "./Components/edit-room.component";
 import Bookings from "./Components/bookings.component";
 import Booking from "./Components/booking.component";
 import Messages from "./Components/messages.component";
+import Test from "./Components/test-phaser.component";
 const rug = require('random-username-generator');
 require('dotenv').config()
 
@@ -1006,7 +1007,15 @@ const App = () => {
                     {<Manager manager={manager} onDelete={deleteManager} logOut={logOut} props={props} getHotel={getHotelForManager} onUpdate={updateManager} />}
                 </>
             )}
-            />    
+            />
+
+            <Route path="/test" render={(props) => (
+                <>
+                    {/* we pass a function*/}
+                    {<Test/>}
+                </>
+            )}
+            />
             <Route path="/bookings" render={(props) => (
                 <>
                     {/* we pass a function*/}
