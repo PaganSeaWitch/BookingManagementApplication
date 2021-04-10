@@ -45,6 +45,8 @@ const App = () => {
 	
 	
     const [hotels, setHotels] = useState([])
+	const [cities, setCities] = useState([])
+	//const [roomPrices, setRoomPrices] = useState([])
     const uri = process.env.REACT_APP_BACK_END_SERVER_URI
     console.log(uri)
     const logOut = () => {
@@ -70,19 +72,108 @@ const App = () => {
             console.log(managerJSON);
         }
         if (hotels.length == 0) {
-            getHotels()
+            getHotels();
         }
+		
 
     }, [])
 
+
+	
+	
+	const calculateCities = (hotelList) => {
+		var inArray = false;
+		var numLocations = 0;
+		var cityName = "";
+		var totalPrice = 0;
+		var numRooms = 0;
+		var tempCities = [];
+			
+			hotelList.forEach(hotel =>{
+				//console.log("Entered hotel loop");
+	
+				tempCities.forEach(city => {
+					if(city.localeCompare(hotel.location.city) == 0){
+						console.log("City already added: " + hotel.location.city);
+						inArray=true;
+					}
+				})
+				
+				hotel.room_IDs.forEach(roomID => {
+					axios.get(uri + "/room/getRoomByID/" + roomID)
+					.then(response => {
+						if (response.data != null) {
+							
+							totalPrice = totalPrice + response.data.price;
+							numRooms = numRooms + 1;
+							console.log("New Total Price: " + totalPrice + "New numRooms: " + numRooms);
+							
+						}
+					})
+					.catch(err => console.log(err))
+				})
+				
+				if(inArray){
+						updateCity(hotel.location.city, 1, 0, numRooms, totalPrice);
+						console.log("Updating: " + hotel.location.city + " 1 " + "0 " + numRooms + " " + totalPrice);
+						
+				}
+				else{
+						addCity(hotel.location.city, 1, 0, numRooms, totalPrice);
+						tempCities.push(hotel.location.city);
+						console.log("City added: " + hotel.location.city);
+				}
+				
+				numLocations = 0;
+				totalPrice = 0; 
+				numRooms = 0;
+				inArray = false;
+				
+			})
+			
+		getCities();
+	}
+	
+	const addCity = (cityName, numLocations, avgPrice, numRooms, totalPrice) => {
+		 const city = ({ name: cityName, numLocations: numLocations, avgPrice:avgPrice, numRooms:numRooms, totalPrice:totalPrice})
+                                axios.post(uri + "/city/addCity", city)
+                                    .then(response => {
+                                        //setCities([...cities, cityResponse.data])
+                                        console.log("City Name: " + city.name + " " + city.avgPrice + " " + city.numRooms + " " + city.totalPrice);
+                                    
+                                    })
+                                    .catch(err => console.log("Error adding city client: " + err));
+	}
+	const updateCity = (cityName, numLocations, avgPrice, numRooms, totalPrice) => {
+        const updatedCity = ({ name: cityName, numLocations: numLocations, avgPrice:(totalPrice/numRooms), numRooms:numRooms, totalPrice:totalPrice})
+        axios.post(uri + "/city/updateCity", updatedCity)
+            .then(response => { console.log("City updated"); })
+            .catch(err => { console.log("Error at update city client: " + err);  });
+    }
+	
+	
+	
+	
     const getHotels = () => {
-        console.log(uri)
+        //console.log(uri)
         axios.get(uri + "/hotel/allHotels")
             .then(response => {
-                setHotels(response.data)
+                setHotels(response.data);
+				calculateCities(response.data);
+				
             })
             .catch(err => console.log(err))
         }
+	
+	const getCities = () => {
+        axios.get(uri + "/city/allCities")
+            .then(response => {
+                setCities(response.data)
+				console.log("Cities length: " + response.data.length);
+            })
+            .catch(err => console.log("Error at getting list of cities"))
+	
+	}
 
     const getRooms = (roomIDList, setRooms) => {
         let roomTemp = []
@@ -116,6 +207,11 @@ const App = () => {
         console.log(id)
         props.history.push("/booking/" + id)
     }
+	
+	const onCityClick = (id, props) => {
+		console.log(id) 
+		//props.history.push("/dashboard/" + id)
+	}
 	
 	
     const addRoom = (hotel_id, roomNumber, roomPrice, roomBedAmount, roomTags, props) => {
@@ -843,9 +939,9 @@ const App = () => {
                 * <Route path="/" exact component={<component>} /> works*/}
 			
 			
-            <Route path="/" exact render={(props) => (
+           <Route path="/" exact render={(props) => (
                 <>
-                    {<SplashPage />}
+                    {<SplashPage user ={user} manager = {manager} props = {props} cities={cities} onCityClick={onCityClick} props={props}/>}
                 </>
             )}
             />
