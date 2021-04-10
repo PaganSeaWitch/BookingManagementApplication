@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import City from "./city.component";
 
 	
-const SplashPage = () => {
+const SplashPage = ({user, manager, cities, onCityClick, props }) => {
 	
 	return(
 			 <div className = 'splash-page'>
@@ -11,6 +12,9 @@ const SplashPage = () => {
 					  <Link to={"/Dashboard"} >See our bookings!</Link>
 				</span>
 				</center>
+				<ul style={{ listStyleType: "none" }}>
+					{cities.map((city) => <City city={city} onClick={onCityClick} props={props} />)}
+				</ul> 
 			</div>
 	);
 	

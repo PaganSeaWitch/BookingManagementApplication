@@ -27,7 +27,7 @@ router.route("/getHotelByID/:id").get((req, res) => {
 
 //Adds a hotel
 router.route("/addHotel").post((req, res) => {
-    console.log("trying to add hotel")
+    //console.log("trying to add hotel")
     const hotelName = req.body.name;
     const streetAddress1 = req.body.location.streetAddress1;
     const streetAddress2 = req.body.location.streetAddress2;

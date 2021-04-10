@@ -7,6 +7,7 @@ const emailRouter = require("./Routes/emails")
 const hotelRouter = require("./Routes/hotels")
 const roomRouter = require("./Routes/rooms")
 const messageRouter = require("./Routes/messages")
+const cityRouter = require("./Routes/cities")
 const fs = require('fs')
 const https = require('https')
 
@@ -39,6 +40,7 @@ app.use("/email", emailRouter)
 app.use("/hotel", hotelRouter)
 app.use("/room", roomRouter)
 app.use("/message", messageRouter)
+app.use("/city", cityRouter)
 
 //connect to database
 connection.once("open", () => {

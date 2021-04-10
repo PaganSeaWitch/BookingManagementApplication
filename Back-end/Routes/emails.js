@@ -55,7 +55,7 @@ router.route("/AccountRecovery/DeleteAllByEmail/:email").delete((req, res) => {
 router.route("/AccountRecovery/SendEmailRecoveryRequest/:id").post((req, res) => {
     AccountRecovery.findById(req.params.id)
         .then((accountRecovery) => {
-            const string = "Please Click on the following link to recover email : " + "http://localhost:3000/resetPassword/" + accountRecovery._id
+            const string = "Please Click on the following link to recover email : " + "https://www.rendezview.site/resetPassword/" + accountRecovery._id
             transporter.sendMail({
                 from: "AcountRecovery@rendeview.com", // sender address
                 to: accountRecovery.email, // list of receivers
