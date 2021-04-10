@@ -10,6 +10,9 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import SendMessageDialogue from "./send-message-dialogue.component";
 import { MdEmail } from 'react-icons/md'
+import axios from "axios";
+require('dotenv').config()
+const backURI = process.env.REACT_APP_BACK_END_SERVER_URI
 
 // JavaScript source code
 const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
@@ -28,6 +31,7 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
     const [filteredRooms, setFilteredRooms] = useState([])
     const [search, setSearch] = useState("")
     const [sendMessage, setSendMessage] = useState(false)
+    const [userNames, setUsernames] = useState("")
     useEffect(() => {
 
         const page = window.location.href;
@@ -38,9 +42,14 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
         if (page != uri + currentPageType1 && hotelName == "") {
             id = page.substring(uri.length + currentPageType1.length)
             getHotel(id, setHotelLocation, setHotelName, setHotelRooms, props);
+            axios.get(backURI + "/manager/getUsernameByHotel/" + id)
+                .then(response => {
+                    setUsernames(response.data)
+                })
+                .catch(err => { console.log(err) })
         }
         
-        
+        console.log(user)
 
     },[]);
     useEffect(() => {
@@ -161,8 +170,9 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
             <SendMessageDialogue
                 open={sendMessage}
                 setOpen={setSendMessage}
-                listOfUsernames={[]}
+                listOfUsernames={[userNames]}
                 title="send a message"
+                recipient={userNames}
                 senderID={user._id + manager._id}
                 sender={user.username + manager.username}>
             </SendMessageDialogue>

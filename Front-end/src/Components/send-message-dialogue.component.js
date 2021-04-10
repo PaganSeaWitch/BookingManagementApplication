@@ -57,6 +57,10 @@ const SendMessageDialogue = ({ title, subject, listOfUsernames, sender, recipien
             alert("Please specify a recipient!");
             return;
         }
+        if (sender == "" || senderID =="") {
+            alert("You must be logged in to send messages!")
+            return;
+        }
         axios.get(uri + "/user/getIdByUsername/" + messageRecipient)
             .then(response => {
                 if (response.data != null) {

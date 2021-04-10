@@ -89,6 +89,14 @@ router.route("/getByEmail/:email").get((req, res) => {
 
 });
 
+router.route("/getUsernameByHotel/:id").get((req, res) => {
+    Manager.findOne({ hotel_ID: req.params.id })
+        .then(manager => {
+            res.json(manager.username);
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+})
+
 //delete by username
 router.route("/deleteByUsername/:username").delete((req, res) => {
     Manager.findOneAndDelete({ username: req.params.username })
