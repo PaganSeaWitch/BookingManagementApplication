@@ -18,31 +18,30 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props, filter}) => {
 			console.log("Filtering from city click");
 			setCategory("city");
 			setSearch(filter);
-			startSearch();
-			setFilterOn(true);
 			console.log("Search finished: category: " + category + " filterOn: " + filterOn + " search: " + search); 
 			filter = null;
 		}
 		/*if (search.length == 0) {
 			setFilterOn(false)
 		}*/
-
+		
 
 	}, [search]);
+
 	const startSearch = () => {
 		console.log("Start search happened");
 		setFilterOn(true)
-		if (category == "name") {
+		if (category === "name") {
 			setFilteredHotels([...hotels.filter(function (hotel) {
 				return hotel.name.includes(search)
 			})])
 		}
-		if (category == "city") {
+		if (category === "city") {
 			setFilteredHotels([...hotels.filter(function (hotel) {
-				return hotel.location.city.includes(search)
+				return hotel.location.city.includes(search) || hotel.location.city === search;
 			})])
 		}
-		if (category == "state") {
+		if (category === "state") {
 			setFilteredHotels([...hotels.filter(function (hotel) {
 				console.log(hotel.location.stateOrProvince)
 				return hotel.location.stateOrProvince.includes(search)
@@ -97,7 +96,7 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props, filter}) => {
 					<ul style={{ listStyleType: "none" }}>
 						{filterOn ? filteredHotels.map((hotel, index) => <HotelListing hotel={hotel} key={index} onClick={onHotelClick} props={props} />) : hotels.map((hotel, index) => <HotelListing hotel={hotel} key={index} onClick={onHotelClick} props={props} />)}
 							</ul>
-					</div> 
+					</div>
 
 			</div>
 			: <div className = 'dashboard'>{(manager._id != "") 

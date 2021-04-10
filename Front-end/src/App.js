@@ -94,11 +94,12 @@ const App = () => {
 			hotelList.forEach(hotel =>{
 				//console.log("Entered hotel loop");
 	
-				tempCities.forEach(city => {
-					if(city.localeCompare(hotel.location.city) == 0){
-					//	console.log("City already added: " + hotel.location.city);
+                tempCities.forEach(city => {
+                    if (city === hotel.location.city) {
+                        console.log("this city: " + city + " is same as that city: " + hotel.location.city)
 						inArray=true;
-					}
+                    }
+
 				})
 				
 				/*hotel.room_IDs.forEach(roomID => {
@@ -980,7 +981,7 @@ const App = () => {
                 </>
             )}
             />
-			<Route path="/dashboard" render={(props) => (
+			<Route  path="/dashboard" exact render={(props) => (
                 <>
                     {<Dashboard user={user} manager={manager} props={props} hotels={hotels} onHotelClick={onHotelClick} />}
                 </>
