@@ -13,7 +13,7 @@ const SplashPage = ({user, manager, cities, onCityClick, props }) => {
 				</span>
 				</center>
 				<ul style={{ listStyleType: "none" }}>
-					{cities.map((city) => <City city={city} onClick={onCityClick} props={props} />)}
+					{cities.map((newCity) => <City city={newCity} onClick={onCityClick} props={props} />)}
 				</ul> 
 			</div>
 	);

@@ -46,6 +46,7 @@ const App = () => {
 	
     const [hotels, setHotels] = useState([])
 	const [cities, setCities] = useState([])
+	const [filter, setFilter] = useState("")
 	//const [roomPrices, setRoomPrices] = useState([])
     const uri = process.env.REACT_APP_BACK_END_SERVER_URI
     console.log(uri)
@@ -83,43 +84,50 @@ const App = () => {
 	
 	const calculateCities = (hotelList) => {
 		var inArray = false;
-		var numLocations = 0;
+		var numLocations = 1;
 		var cityName = "";
 		var totalPrice = 0;
 		var numRooms = 0;
 		var tempCities = [];
+		var avgPrice = 0;
 			
 			hotelList.forEach(hotel =>{
 				//console.log("Entered hotel loop");
 	
 				tempCities.forEach(city => {
 					if(city.localeCompare(hotel.location.city) == 0){
-						console.log("City already added: " + hotel.location.city);
+					//	console.log("City already added: " + hotel.location.city);
 						inArray=true;
 					}
 				})
 				
-				hotel.room_IDs.forEach(roomID => {
-					axios.get(uri + "/room/getRoomByID/" + roomID)
-					.then(response => {
+				/*hotel.room_IDs.forEach(roomID => {
+					getRoomsData(roomID).then( response => {
 						if (response.data != null) {
-							
-							totalPrice = totalPrice + response.data.price;
-							numRooms = numRooms + 1;
-							console.log("New Total Price: " + totalPrice + "New numRooms: " + numRooms);
-							
+							totalPrice += response.data.price;
+							numRooms++;
 						}
 					})
-					.catch(err => console.log(err))
 				})
+				*/
+				/* for(const roomID of hotel.room_IDs){
+					 roomData(roomID).then( response => {
+						if (response.data != null) {
+							totalPrice += response.data.price;
+							numRooms++;
+						}
+					})
+				}
+				*/
+				console.log("New Total Price: " + totalPrice + " New numRooms: " + numRooms);
 				
 				if(inArray){
-						updateCity(hotel.location.city, 1, 0, numRooms, totalPrice);
+						updateCity(hotel.location.city, numLocations, avgPrice, numRooms, totalPrice);
 						console.log("Updating: " + hotel.location.city + " 1 " + "0 " + numRooms + " " + totalPrice);
 						
 				}
 				else{
-						addCity(hotel.location.city, 1, 0, numRooms, totalPrice);
+						addCity(hotel.location.city, numLocations, avgPrice, numRooms, totalPrice);
 						tempCities.push(hotel.location.city);
 						console.log("City added: " + hotel.location.city);
 				}
@@ -134,6 +142,17 @@ const App = () => {
 		getCities();
 	}
 	
+	async function roomData(roomID){
+		var price = await getRoomsData(roomID)
+	}
+	
+	const getRoomsData = (roomID) => {
+			return axios.get(uri + "/room/getRoomByID/" + roomID)
+					.then(response => {
+						return response;
+					})
+	}
+	
 	const addCity = (cityName, numLocations, avgPrice, numRooms, totalPrice) => {
 		 const city = ({ name: cityName, numLocations: numLocations, avgPrice:avgPrice, numRooms:numRooms, totalPrice:totalPrice})
                                 axios.post(uri + "/city/addCity", city)
@@ -144,8 +163,8 @@ const App = () => {
                                     })
                                     .catch(err => console.log("Error adding city client: " + err));
 	}
-	const updateCity = (cityName, numLocations, avgPrice, numRooms, totalPrice) => {
-        const updatedCity = ({ name: cityName, numLocations: numLocations, avgPrice:(totalPrice/numRooms), numRooms:numRooms, totalPrice:totalPrice})
+	const updateCity = (cityName, numLocs, avgPrice, numRoom, totalPri) => {
+        const updatedCity = ({ name: cityName, numLocations: numLocs, avgPrice:(totalPri/numRoom), numRooms:numRoom, totalPrice:totalPri})
         axios.post(uri + "/city/updateCity", updatedCity)
             .then(response => { console.log("City updated"); })
             .catch(err => { console.log("Error at update city client: " + err);  });
@@ -208,9 +227,11 @@ const App = () => {
         props.history.push("/booking/" + id)
     }
 	
-	const onCityClick = (id, props) => {
-		console.log(id) 
-		//props.history.push("/dashboard/" + id)
+	const onCityClick = (city, props) => {
+		//console.log(id) 
+		setFilter(city.name);
+		props.history.push("/dashboard/filtered");
+	
 	}
 	
 	
@@ -962,6 +983,13 @@ const App = () => {
 			<Route path="/dashboard" render={(props) => (
                 <>
                     {<Dashboard user={user} manager={manager} props={props} hotels={hotels} onHotelClick={onHotelClick}  props={props}/>}
+                </>
+            )}
+            />
+			
+			<Route path="/dashboard/filtered" render={(props) => (
+                <>
+                    {<Dashboard user={user} manager={manager} props={props} hotels={hotels} onHotelClick={onHotelClick}  props={props} filter={filter}/>}
                 </>
             )}
             />

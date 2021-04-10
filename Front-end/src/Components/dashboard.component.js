@@ -9,20 +9,29 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 
 
-const Dashboard = ({user, manager, hotels, onHotelClick, props }) => {
+const Dashboard = ({user, manager, hotels, onHotelClick, props, filter}) => {
 	const [category, setCategory] = useState("")
 	const [filterOn, setFilterOn] = useState(false)
 	const [filteredHotels, setFilteredHotels] = useState([])
 	const [search, setSearch] = useState("")
 	useEffect(() => {
-
-		if (search.length == 0) {
-			setFilterOn(false)
+		if(filter != null){
+			console.log("Filtering from city click");
+			setCategory("city");
+			setSearch(filter);
+			startSearch();
+			setFilterOn(true);
+			console.log("Search finished: category: " + category + " filterOn: " + filterOn + " search: " + search); 
+			filter = null;
 		}
+		/*if (search.length == 0) {
+			setFilterOn(false)
+		}*/
 
 
 	}, [search]);
 	const startSearch = () => {
+		console.log("Start search happened");
 		setFilterOn(true)
 		if (category == "name") {
 			setFilteredHotels([...hotels.filter(function (hotel) {
@@ -78,8 +87,8 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props }) => {
 						<input className={"search-bar"}
 							type='text'
 							value={search}
-							placeholder="search by room number"
-							onChange={(e) => { setSearch(e.target.value); }
+							placeholder={filter}
+							onChange={(e) => { setSearch(e.target.value);}
 						} />
 
 					<Button size="large" variant="contained" color="primary" onClick={(e) => { e.preventDefault(); startSearch(); }}>Search </Button>
