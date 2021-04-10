@@ -8,8 +8,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import InputBase from '@material-ui/core/InputBase';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
+import SendMessageDialogue from "./send-message-dialogue.component";
+import { MdEmail } from 'react-icons/md'
+
 // JavaScript source code
-const Hotel = ({ getHotel, onRoomClick, props}) => {
+const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
     const [hotelName, setHotelName] = useState("");
     const [hotelLocation, setHotelLocation] = useState({
         streetAddress1: "",
@@ -24,7 +27,7 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
     const [rooms, setHotelRooms] = useState([])
     const [filteredRooms, setFilteredRooms] = useState([])
     const [search, setSearch] = useState("")
-    
+    const [sendMessage, setSendMessage] = useState(false)
     useEffect(() => {
 
         const page = window.location.href;
@@ -113,8 +116,8 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
                 <h1 className='bold-center'>{hotelName}</h1>
             </div>
             <form className = 'hotel-page'>
-            
-                
+
+                <h1><MdEmail className={"message-icon"} style={{ color: 'black', }} onClick={() => { setSendMessage(true) }} /></h1>
 
                 <div>
 
@@ -155,7 +158,14 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
                 
             </header>
             {filterOn ? <ListRooms rooms={filteredRooms} onRoomClick={onRoomClick} props={props} /> : <ListRooms rooms={rooms} onRoomClick={onRoomClick} props={props} />}
-           
+            <SendMessageDialogue
+                open={sendMessage}
+                setOpen={setSendMessage}
+                listOfUsernames={[]}
+                title="send a message"
+                senderID={user._id + manager._id}
+                sender={user.username + manager.username}>
+            </SendMessageDialogue>
 		</div>
     )
 }

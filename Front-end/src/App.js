@@ -969,7 +969,7 @@ const App = () => {
 			
             <Route path="/hotel/:id" render={(props) => (
                 <>
-                    {<Hotel getHotel={getHotel} onRoomClick={onRoomClick} props={props}/>}
+                    {<Hotel user={user} manager={manager} getHotel={getHotel} onRoomClick={onRoomClick} props={props}/>}
                 </>
             )}
             />
