@@ -392,7 +392,8 @@ code {
 .user-information{
 	background-color: #f8f8ff;
 	margin: auto;
-	max-width: 650px;
+	max-width: 750px;
+	max-height:400px;
 	position: relative;
 	border:1px #000 solid;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
