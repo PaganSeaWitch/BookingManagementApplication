@@ -19,8 +19,6 @@ const Messages = ({ user, manager, props}) => {
         }
 
 
-        let id =   user._id + manager._id 
-        console.log(id)
         axios.get(uri + "/user/getAllUsernames")
             .then(userResponse => {
                 axios.get(uri + "/manager/getAllUsernames")
@@ -33,6 +31,13 @@ const Messages = ({ user, manager, props}) => {
 
             })
             .catch(err => console.log(err))
+        
+
+    }, [user, manager])
+
+    useEffect(() => {
+        let id = user._id + manager._id 
+
         axios.get(uri + "/message/allMessagesForId/" + id)
             .then(messageResponse => {
                 if (messageResponse != null) {
@@ -47,8 +52,18 @@ const Messages = ({ user, manager, props}) => {
                 }
             })
             .catch(err => { return "" })
+    }, [sendMessage])
 
-    }, [user, manager])
+    const deleteMessage = (message) => {
+        axios.delete(uri + "/message/deleteByID/" + message._id)
+            .then(response => {
+                setMessages([...messages.filter(function (thisMessage) {
+                    return thisMessage._id != message._id
+                })])
+            })
+            .catch(err => {console.log(err)})
+        
+    }
 
     return (
         <div className={"login-background"}>
@@ -56,12 +71,14 @@ const Messages = ({ user, manager, props}) => {
             <div className={"margin-50-booking"}>
                 <header className={"bold-center"}>
                     Current Messages for {user._id != "" ? user.username : manager.username}
-                    <Button variant="contained" color="primary" size="medium" onClick={() => setSendMessage(true) }> Send Message </Button>
+                    <div>
+                        <Button variant="contained" color="primary" size="large" onClick={() => setSendMessage(true)}> Send Message </Button>
+                    </div>
                 </header>
             </div>
             {haveMessages ? <div className='message-listing-container'>
                 <ul style={{ listStyleType: "none" }}>
-                    {messages.map((message, index) => <MessageListing key={index} listOfUsernames={listOfUsernames} message={message} />)}
+                    {messages.map((message, index) => <MessageListing key={index} listOfUsernames={listOfUsernames} message={message} onDeleteMessage={deleteMessage} />)}
                 </ul>
                 </div> :
                 <div >

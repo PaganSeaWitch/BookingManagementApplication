@@ -1,12 +1,16 @@
 import { MdEmail } from 'react-icons/md'
 import MessageDialogue from "./message-dialogue.component"
 import SendMessageDialogue from "./send-message-dialogue.component"
+import DeleteDialogue from "./deleteDialogue.component"
+import { BsX} from "react-icons/bs"
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Button from '@material-ui/core/Button';
+
 require('dotenv').config()
 const uri = process.env.REACT_APP_BACK_END_SERVER_URI
 
-const MessageListing = ({ listOfUsernames, message}) => {
+const MessageListing = ({ listOfUsernames, message, onDeleteMessage}) => {
 
 	const [subject, setSubject] = useState("");
 	const [sender, setSender] = useState("");
@@ -19,7 +23,7 @@ const MessageListing = ({ listOfUsernames, message}) => {
 	const [alreadyViewed, setAlreadyViewed] = useState(false)
 	const [viewMessage, setViewMessage] = useState(false)
 	const [reply, setReply] = useState(false)
-
+	const [safty, setSafty] = useState(false)
 	useEffect(() => {
 		
 		console.log(message)
@@ -58,19 +62,30 @@ const MessageListing = ({ listOfUsernames, message}) => {
 	const replyToMessage = () => {
 		setReply(true);
 	}
-	
+	useEffect(() => {
+		if (safty == true) {
+			if (viewMessage == true) {
+				setViewMessage(false)
+            }
+        }
+	}, [viewMessage])
+
+	const deleteMessage = () => {
+		onDeleteMessage(message);
+    }
+
 	return (
 		<div>
-			<div className={"message-listing"} onClick={() => { setViewMessage(true); setViewed(true); }} >
-			{viewed ? <h3 className={"non-viewed-email"}><MdEmail className={"icon"} style={{ color: 'black', }} /> {" "}
-					{"From: "}{sender}{" "}
-					{"Subject: "}{subject}
-
-			</h3> : <h3 className={"viewed-email"}><MdEmail className={"icon"} style={{ color: 'grey', }} /> {" "}
+			<div className={"message-listing"}>
+				{viewed ? <h2 className={"viewed-email"} onClick={() => { setViewMessage(true) }}><BsX className={"icon"} style={{ color: 'red', }} onClick={() => { setSafty(true); }} /><MdEmail className={"icon"} style={{ color: 'grey', }} /> {" "}
 						{"From: "}{sender}{"  "}
 						{"Subject: "}{subject}
+					
+					</h2>
 
-					</h3>}
+					: <h2 className={"non-viewed-email"} onClick={() => { setViewMessage(true); setViewed(true); }}><MdEmail className={"icon"} style={{ color: 'black', }} /> {" "}
+				{"From: "}{sender}{" "}
+						{"Subject: "}{subject}</h2> }
 			</div>
 			<MessageDialogue
 				subject={subject}
@@ -91,7 +106,12 @@ const MessageListing = ({ listOfUsernames, message}) => {
 				subject={subject}
 				sender={recipient}>
 			</SendMessageDialogue>
-
+			<DeleteDialogue
+				title="Delete Message?"
+				open={safty}
+				setOpen={setSafty}
+				onConfirm={deleteMessage}
+			> Are you sure you want to delete this message?</DeleteDialogue>
 		</div>
 
 	)

@@ -132,7 +132,6 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
 
             </form>
             <header className={"room-search"}>
-                <InputLabel id="demo-customized-select-label">Filter</InputLabel>
                 <NativeSelect
                     labelId="demo-customized-select-label"
                     id="demo-customized-select"

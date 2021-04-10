@@ -18,7 +18,7 @@ import EditRooms from "./Components/edit-rooms.component";
 import EditRoom from "./Components/edit-room.component";
 import Bookings from "./Components/bookings.component";
 import Booking from "./Components/booking.component";
-
+import Messages from "./Components/messages.component";
 const rug = require('random-username-generator');
 require('dotenv').config()
 
@@ -982,11 +982,16 @@ const App = () => {
             />
 			<Route path="/dashboard" render={(props) => (
                 <>
-                    {<Dashboard user={user} manager={manager} props={props} hotels={hotels} onHotelClick={onHotelClick}  props={props}/>}
+                    {<Dashboard user={user} manager={manager} props={props} hotels={hotels} onHotelClick={onHotelClick} />}
                 </>
             )}
             />
-			
+            <Route path="/messages" render={(props) => (
+                <>
+                    {<Messages user={user} manager={manager} props={props}  />}
+                </>
+            )}
+            />
 			<Route path="/dashboard/filtered" render={(props) => (
                 <>
                     {<Dashboard user={user} manager={manager} props={props} hotels={hotels} onHotelClick={onHotelClick}  props={props} filter={filter}/>}

@@ -485,3 +485,9 @@ code {
 	border-radius: 5px;
 	background-color: #f8f8ff;
 }
+.viewed-email{
+	color: grey;
+}
+.non-viewed-email{
+	color:black;
+}

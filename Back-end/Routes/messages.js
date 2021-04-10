@@ -62,6 +62,7 @@ router.route("/updateViewed/:message_id").post((req, res) => {
 
 //Delete message by ID
 router.route("/deleteByID/:message_id").delete((req, res) => {
+    console.log(req.params.message_id)
     Message.findOneAndDelete({ _id: req.params.message_id })
         .then(() => res.json("message deleted."))
         .catch(err => res.status(400).json("Error: " + err));
