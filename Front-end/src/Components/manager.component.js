@@ -247,7 +247,7 @@ const Manager = ({ manager, onDelete, logOut, getHotel, props, onUpdate }) => {
                     open={safty}
                     setOpen={setSafty}
                     onConfirm={deleteAccount}
-                > Are you sure you want to delete your account? this is Permanent </DeleteDialogue>
+                > Are you sure you want to delete your account? this is Permanent!</DeleteDialogue>
                 <Button
                     variant="contained"
                     color="secondary"

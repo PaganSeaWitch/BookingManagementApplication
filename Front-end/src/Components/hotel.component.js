@@ -24,6 +24,7 @@ const Hotel = ({ getHotel, onRoomClick, props}) => {
     const [rooms, setHotelRooms] = useState([])
     const [filteredRooms, setFilteredRooms] = useState([])
     const [search, setSearch] = useState("")
+    
     useEffect(() => {
 
         const page = window.location.href;
