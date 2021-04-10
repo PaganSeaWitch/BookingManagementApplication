@@ -72,9 +72,9 @@ const NavBar = ({  user, manager }) => {
                 <form className="form-inline">
                     {(user._id == "" && manager._id == "") //if true, display first div
                         ? <div>
-
-                            <label> Welcome to Rendeview!</label>
+                            <p>
                             <label> You are not logged in! </label>
+                            </p>
                         </div>
                         : <div>
 

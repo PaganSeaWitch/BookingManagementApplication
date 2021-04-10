@@ -376,7 +376,7 @@ const CreateUser = ({ onCreateManager, onCreateUser, onGoogleLogin, props }) => 
                 <br></br>
                 <div>
 
-                    <a href="/login" className="help-links">existing account?</a>
+                    <a href="/login" className="help-links">Already have an account?</a>
 
                 </div>
             </form>
