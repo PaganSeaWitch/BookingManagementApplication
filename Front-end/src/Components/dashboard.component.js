@@ -13,6 +13,7 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props, filter}) => {
 	const [filterOn, setFilterOn] = useState(false)
 	const [filteredHotels, setFilteredHotels] = useState([])
 	const [search, setSearch] = useState("")
+	const [numLoaded, setNumLoaded] = useState(0)
 	useEffect(() => {
 		if(filter != null){
 			console.log("Filtering from city click");
@@ -20,6 +21,7 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props, filter}) => {
 			setSearch(filter);
 			console.log("Search finished: category: " + category + " filterOn: " + filterOn + " search: " + search); 
 			filter = null;
+			startSearch();
 		}
 		/*if (search.length == 0) {
 			setFilterOn(false)
@@ -28,6 +30,7 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props, filter}) => {
 
 	}, [search]);
 
+	
 	const startSearch = () => {
 		console.log("Start search happened");
 		setFilterOn(true)
@@ -127,7 +130,7 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props, filter}) => {
 
 						<Button size="large" variant="contained" color="primary" onClick={(e) => { e.preventDefault(); startSearch(); }}>Search </Button>					
 						<ul>
-						{hotels.map((hotel, index) => <HotelListing hotel={hotel} key={index}onClick={onHotelClick} props={props} />)}
+							{hotels.map((hotel, index) => {< HotelListing hotel={hotel} key={index} onClick={onHotelClick} props={props} />; })}
 						</ul>
 					 </header>
 				 </div>}
