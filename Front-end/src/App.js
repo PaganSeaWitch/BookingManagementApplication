@@ -18,13 +18,13 @@ import EditRooms from "./Components/edit-rooms.component";
 import EditRoom from "./Components/edit-room.component";
 import Bookings from "./Components/bookings.component";
 import Booking from "./Components/booking.component";
-
+import Test from "./Components/test-phaser.component";
+import Messages from "./Components/messages.component";
 const rug = require('random-username-generator');
 require('dotenv').config()
 
 
 const App = () => {
-
     const [user, setUser] = useState({
         _id: "",
         username: "",
@@ -74,7 +74,6 @@ const App = () => {
         if (hotels.length == 0) {
             getHotels();
         }
-		
 
     }, [])
 
@@ -869,6 +868,26 @@ const App = () => {
         console.log("Deleted user!");
     }
 
+    const getMessage = async(id) => {
+        let message = ({})
+
+        await axios.get(uri + "/message/getMessageByID/" + id)
+            .then(response => {
+                console.log(response.data)
+                if (response == null) {
+
+                    message = ({ subject: "default", body: "default", recipient: "default", sender: "default", recipient_id: "default", sender_id: "default", viewed: true })
+                }
+                else {
+                    message = response.data;
+                }
+            })
+            .catch(err => {
+                console.log(err); message = ({ subject: "default", body: "default", recipient: "default", sender: "default", recipient_id: "default", sender_id: "default", viewed: true });
+            })
+        return message;
+    }
+
     // Delete Generic
     const deleteUser = (id) => {
         //delete generic from backend
@@ -945,7 +964,12 @@ const App = () => {
                 </>
             )}
             />
-			
+            <Route path="/test" exact render={(props) => (
+                <>
+                    {<Test />}
+                </>
+            )}
+            />
             <Route path="/hotel/:id" render={(props) => (
                 <>
                     {<Hotel getHotel={getHotel} onRoomClick={onRoomClick} props={props}/>}
@@ -965,11 +989,16 @@ const App = () => {
                 </>
             )}
             />
-			
+            <Route path="/messages" render={(props) => (
+                <>
+                    {<Messages user={user} manager={manager} getMessage={getMessage} props={props} />}
+                </>
+            )}
+            />
             <Route path="/manager" render={(props) => (
                 <>
                     {/* we pass a function*/}
-                    {<Manager manager={manager} onDelete={deleteManager} logOut={logOut} props={props} getHotel={getHotelForManager} onUpdate={updateManager} />}
+                    {<Manager manager={manager} onDelete={deleteManager} logOut={logOut} props={props} getHotel={getHotelForManager} onUpdate={updateManager} props={props} />}
                 </>
             )}
             />    

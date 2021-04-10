@@ -46,6 +46,9 @@ const NavBar = ({  user, manager }) => {
                                 <li className="navbar-item">
                                     <Link to="/editRooms" className="nav-link">Edit Rooms</Link>
                                 </li>
+                                <li className="navbar-item">
+                                    <Link to="/messages" className="nav-link">Messages</Link>
+                                </li>
                             </ul>
                             
                         </div>
@@ -59,6 +62,9 @@ const NavBar = ({  user, manager }) => {
                                 </li>
                                 <li className="navbar-item">
                                     <Link to="/bookings" className="nav-link">Bookings</Link>
+                                </li>
+                                <li className="navbar-item">
+                                    <Link to="/messages" className="nav-link">Messages</Link>
                                 </li>
                             </ul>
                             </div>}

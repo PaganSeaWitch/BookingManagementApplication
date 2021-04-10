@@ -53,6 +53,32 @@ router.route("/getByUsername/").get((req, res) => {
         .catch(err => res.status(400).json("Error: " + err));
 
 });
+router.route("/getIdByUsername/:username").get((req, res) => {
+    Manager.findOne({ username: req.params.username })
+        .then(manager => {
+            if (manager != null) {
+                res.json(manager._id);
+            }
+            else {
+                res.status(400).json("Error: manager did not exist")
+
+            }
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+});
+
+router.route("/getAllUsernames").get((req, res) => {
+    Manager.find()
+        .then(managers => {
+            const userNames = [];
+            managers.forEach(user => {
+                userNames.push(user.username)
+            })
+            res.json(userNames);
+
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+});
 
 router.route("/getByEmail/:email").get((req, res) => {
     Manager.findOne({ email: req.params.email })
