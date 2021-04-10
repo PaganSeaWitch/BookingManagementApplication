@@ -66,6 +66,33 @@ router.route("/getByUsername/").get((req, res) => {
 
 });
 
+router.route("/getIdByUsername/:username").get((req, res) => {
+    User.findOne({ username: req.params.username })
+        .then(user => {
+            if (user != null) {
+                res.json(user._id);
+            }
+            else {
+                res.status(400).json("Error: user did not exist")
+
+            }
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+});
+
+router.route("/getAllUsernames").get((req, res) => {
+    User.find()
+        .then(users => {
+            const userNames = [];
+            users.forEach(user => {
+                userNames.push(user.username)
+            })
+            res.json(userNames);
+
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+});
+
 router.route("/getByEmail/:email").get((req, res) => {
     console.log(req.params.email)
     User.findOne({ email: req.params.email })
@@ -75,6 +102,7 @@ router.route("/getByEmail/:email").get((req, res) => {
         .catch(err => res.status(400).json("Error: " + err));
 
 });
+
 
 router.route("/getById/:id").get((req, res) => {
     User.findById(req.params.id)
