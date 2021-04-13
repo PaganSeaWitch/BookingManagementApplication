@@ -180,28 +180,29 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
                 <div className={"checkbox"}>
 
                     <FormControlLabel control={<Checkbox
-                        name="Smoking permitted"
-                        checked={smoking}
-                        onChange={handleSmoker}
-                        inputProps={{ 'aria-label': 'primary checkbox' }}
-                    />} label="smoking permitted" labelPlacement="end" />
-                    
-                    
-                </div>
-                <div className={"checkbox"}>
-
-                    <FormControlLabel control={<Checkbox
-                        name="Smoking permitted"
+                        name="smoking permitted"
                         checked={suite}
                         onChange={handleSuite}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     />} label="suite" labelPlacement="end" />
 
                 </div>
+
                 <div className={"checkbox"}>
 
                     <FormControlLabel control={<Checkbox
-                        name="Smoking permitted"
+                        name="smoking permitted"
+                        checked={smoking}
+                        onChange={handleSmoker}
+                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />} label="smoking permitted" labelPlacement="end" />
+
+
+                </div>
+                <div className={"checkbox"}>
+
+                    <FormControlLabel control={<Checkbox
+                        name="smoking permitted"
                         checked={handicap}
                         onChange={handleHandicap}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
