@@ -32,6 +32,7 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
     const [search, setSearch] = useState("")
     const [sendMessage, setSendMessage] = useState(false)
     const [userNames, setUsernames] = useState("")
+    
     useEffect(() => {
 
         const page = window.location.href;
@@ -51,7 +52,8 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
         
         console.log(user)
 
-    },[]);
+    }, []);
+
     useEffect(() => {
 
         if (search.length == 0) {
@@ -60,6 +62,7 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
 
 
     }, [search]);
+
     const filterList = (event) => {
 
         setFilter(event.target.value)
@@ -84,6 +87,7 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
 
         }
     }
+
     const BootstrapInput = withStyles((theme) => ({
         root: {
             margin: "0px 0px -200px 0px"
