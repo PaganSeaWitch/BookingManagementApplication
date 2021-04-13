@@ -7,8 +7,13 @@ import { FaWheelchair } from 'react-icons/fa'
 import { FaSmoking } from 'react-icons/fa'
 import { MdRoomService } from 'react-icons/md'
 import Tooltip from '@material-ui/core/Tooltip';
+import { MdEmail } from 'react-icons/md'
+import SendMessageDialogue from "./send-message-dialogue.component";
 
+import axios from "axios";
 require('dotenv').config()
+const backURI = process.env.REACT_APP_BACK_END_SERVER_URI
+
 
 
 const Booking = ({ user, getRoom, getHotel}) => {
@@ -19,6 +24,9 @@ const Booking = ({ user, getRoom, getHotel}) => {
     const [smoking, setSmoking] = useState(false);
     const [handicap, setHandicap] = useState(false);
     const [suite, setSuite] = useState(false);
+    const [sendMessage, setSendMessage] = useState(false)
+    const [userNames, setUsernames] = useState("")
+
     const [hotelLocation, setHotelLocation] = useState({
         streetAddress1: "",
         streetAddress2: "",
@@ -73,6 +81,11 @@ const Booking = ({ user, getRoom, getHotel}) => {
                     country: response.location.country,
                     postalCode: response.location.postalCode
                 })
+                axios.get(backURI + "/manager/getUsernameByHotel/" + hotelID)
+                    .then(response => {
+                        setUsernames(response.data)
+                    })
+                    .catch(err => { console.log(err) })
             })
                 .catch(err => console.log(err))
             getRoom(roomID).then(response => {
@@ -101,7 +114,9 @@ const Booking = ({ user, getRoom, getHotel}) => {
         <div className='login-background'>
 
                 <div className={"margin-50"}>
-                    <header className={"bold-center"}>{hotelName} {"Room: "}{roomNumber} </header>
+                <header className={"bold-center"}>{hotelName} {"Room: "}{roomNumber} </header>
+
+
                 </div>
             
 
@@ -111,9 +126,12 @@ const Booking = ({ user, getRoom, getHotel}) => {
                 <div className={"label-center"}>
                     <label className={"important-label"}>Price : {roomPrice}$ </label>{"   "}
                     <label className={"important-label"}>Beds : {roomBedAmount} </label>
+                    <h1><MdEmail className={"booking-message-icon"} style={{ color: 'black', }} onClick={() => { setSendMessage(true) }} /></h1>
+
                 </div>
                 
                 <div className={"label-center"}>
+
                     <label className={"underlined"}>Booked Dates</label>
                     <DatePicker selected={userBookDates[0]} startDate={userBookDates[0]} endDate={userBookDates[userBookDates.length - 1]} minDate={userBookDates[0] } maxDate={userBookDates[userBookDates.length - 1]} selectsRange inline />
 
@@ -140,7 +158,15 @@ const Booking = ({ user, getRoom, getHotel}) => {
                 
 
             </div>
-
+            <SendMessageDialogue
+                open={sendMessage}
+                setOpen={setSendMessage}
+                listOfUsernames={[userNames]}
+                title="send a message"
+                recipient={userNames}
+                senderID={user._id}
+                sender={user.username}>
+            </SendMessageDialogue>
         </div>
     )
 }

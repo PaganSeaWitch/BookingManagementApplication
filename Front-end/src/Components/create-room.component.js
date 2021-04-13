@@ -5,29 +5,26 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 require('dotenv').config()
 const uri = process.env.REACT_APP_BACK_END_SERVER_URI
 
-const checkRoomNumber = (hotelID, roomNumber, props) => {
-    console.log("checking number")
-    axios.get(uri + "/hotel/getHotelByID/" + hotelID)
+const checkRoomNumber = async (hotelID, roomNumber, props) => {
+    return axios.get(uri + "/hotel/getHotelByID/" + hotelID)
         .then(response => {
             if (response != null) {
-                console.log(response)
                 const roomIDs = response.data.room_IDs;
                 if (roomIDs != 0) {
                     roomIDs.forEach(roomID => {
-                        console.log(roomID)
                         axios.get(uri + "/room/getRoomByID/" + roomID)
                             .then(roomResponse => {
-                                console.log(roomResponse.data.roomNumber)
-                                console.log(roomNumber)
+
                                 if (roomResponse.data.roomNumber == roomNumber) {
-                                    return true
+                                    return false
                                 }
                             })
-                            .catch(err => { return true })
+                            .catch(err => { return false })
                     })
+                    return true;
                 }
                 else {
-                    return false;
+                    return true;
                 }
             }
             else {
@@ -35,7 +32,6 @@ const checkRoomNumber = (hotelID, roomNumber, props) => {
             }
         })
         .catch(err => { return true })
-    return false;
 }
 
 const CreateRoom = ({ manager, onCreateRoom, props }) => {
@@ -77,7 +73,7 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
         setHandicap(event.target.checked)
     }
 
-    useEffect(() => {
+    useEffect(async() => {
 
         if (createRoom == true) {
             setCreateRoom(false)
@@ -95,17 +91,18 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
                 return;
 
             }
-            
-            if (checkRoomNumber(hotelID, roomNumber, props) == false) {
+            console.log(Number(roomPrice))
+            let checksum = await checkRoomNumber(hotelID, roomNumber, props)
+            if (checksum) {
                 const tags = ({ smoking, handicap, suite })
-                console.log(tags)
-                onCreateRoom(hotelID, roomNumber, amountOfBeds, roomPrice, tags, props)
+                
+                onCreateRoom(hotelID, roomNumber, roomPrice, amountOfBeds, tags, props)
 
             }
             else {
-                alert("Room number already exists!")
-                
+                alert("Room already exists in system!")
             }
+            
         }
 
     },[createRoom])
@@ -180,28 +177,29 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
                 <div className={"checkbox"}>
 
                     <FormControlLabel control={<Checkbox
-                        name="Smoking permitted"
-                        checked={smoking}
-                        onChange={handleSmoker}
-                        inputProps={{ 'aria-label': 'primary checkbox' }}
-                    />} label="smoking permitted" labelPlacement="end" />
-                    
-                    
-                </div>
-                <div className={"checkbox"}>
-
-                    <FormControlLabel control={<Checkbox
-                        name="Smoking permitted"
+                        name="smoking permitted"
                         checked={suite}
                         onChange={handleSuite}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     />} label="suite" labelPlacement="end" />
 
                 </div>
+
                 <div className={"checkbox"}>
 
                     <FormControlLabel control={<Checkbox
-                        name="Smoking permitted"
+                        name="smoking permitted"
+                        checked={smoking}
+                        onChange={handleSmoker}
+                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />} label="smoking permitted" labelPlacement="end" />
+
+
+                </div>
+                <div className={"checkbox"}>
+
+                    <FormControlLabel control={<Checkbox
+                        name="smoking permitted"
                         checked={handicap}
                         onChange={handleHandicap}
                         inputProps={{ 'aria-label': 'primary checkbox' }}

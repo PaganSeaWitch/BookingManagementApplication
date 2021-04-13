@@ -14,6 +14,12 @@ router.route("/getRoomByID/:id").get((req, res) => {
         .catch(err => res.status(400).json("Error: " + err))
 })
 
+router.route("/getRoomPriceByID/:id").get((req, res) => {
+    Room.findById(req.params.id)
+        .then(room => { res.json(room.price) })
+        .catch(err => res.status(400).json("Error: " + err))
+})
+
 //Adds a room
 router.route("/addRoom").post((req, res) => {
     const roomNumber = req.body.roomNumber;

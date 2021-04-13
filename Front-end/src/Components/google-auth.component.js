@@ -9,7 +9,7 @@ const GoogleSocialAuth = ({ loginUser, props }) =>{
 
     const googleResponse = (response) => {
         
-        
+        console.log(response)
         if (response.profileObj != undefined) {
             console.log(response.profileObj)
             const google_id = response.profileObj.googleId;

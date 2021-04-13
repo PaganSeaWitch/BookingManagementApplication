@@ -39,6 +39,7 @@ const locationSchema = new Schema
             trim: true,
             required :false
         }
+        
     }
 );
 
@@ -61,10 +62,10 @@ const hotelSchema = new Schema
             type: [String],
             required:false
         },
-        pictureLink:
+        avgRoomPrice:
         {
-            type: String,
-            required:false
+            type: Number,
+            required:true
         }
     },
     {

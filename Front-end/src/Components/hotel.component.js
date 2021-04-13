@@ -25,13 +25,21 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
         country: "",
         postalCode: "",
     });
-    const [filter, setFilter] = useState("")
+    const [tagFilter, setTagFilter] = useState("")
     const [filterOn, setFilterOn] = useState(false)
     const [rooms, setHotelRooms] = useState([])
     const [filteredRooms, setFilteredRooms] = useState([])
     const [search, setSearch] = useState("")
+    const [tagFilterOn, setTagFilterOn] = useState(false)
+    const [floorFilterOn, setFloorFilterOn] = useState(false)
+    const [searchFilterOn, setSearchFilterOn] = useState(false)
     const [sendMessage, setSendMessage] = useState(false)
     const [userNames, setUsernames] = useState("")
+    const [listOfFloors, setListOfFloors] = useState([["filter by floor", -1]])
+    const [floor, setFloor] = useState(0);
+    const [updated, setUpdated] = useState(true)
+    const [sort, setSort] = useState("");
+    const [sortOn, setSortOn] = useState(false)
     useEffect(() => {
 
         const page = window.location.href;
@@ -51,38 +59,226 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
         
         console.log(user)
 
-    },[]);
+    }, []);
+
+    useEffect(() => {
+        console.log(rooms)
+        rooms.forEach(room => {
+            let i = 0;
+            console.log(room.roomNumber)
+            while (room.roomNumber > i) {
+                i = i + 10;
+            }
+            console.log(i);
+            let number = Math.floor((i / 100));
+            let floor = ""
+            if (number == 0) {
+                 floor = "ground floor"
+            }
+            if (number == 1) {
+                floor = number + "st floor"
+            }
+            if (number == 2) {
+                floor = number + "nd floor"
+            }
+            if (number == 3) {
+                floor = number + "rd floor"
+            }
+            if (number > 3) {
+                floor = number + "st floor"
+            }
+            number = number * 100;
+            if (listOfFloors.find(floor => floor[1] == number) == undefined) {
+                setListOfFloors([...listOfFloors, [floor, number]])
+            }
+        })
+    }, [rooms])
+
+    
+
+
     useEffect(() => {
 
-        if (search.length == 0) {
+        if (floorFilterOn == true || tagFilterOn == true || searchFilterOn == true || sortOn == true) {
+            setFilterOn(true)
+            setUpdated(false)
+        }
+        else {
             setFilterOn(false)
         }
 
 
-    }, [search]);
-    const filterList = (event) => {
+    }, [floorFilterOn, tagFilterOn, searchFilterOn, sortOn]);
 
-        setFilter(event.target.value)
-        setFilterOn(true)
-        if (event.target.value == "handicap") {
-            setFilteredRooms([...rooms.filter(function (room) {
-                return room.tags.handicap == true
-            })])
+    useEffect(() => {
+        console.log("updating")
+        if (filterOn) {
+            let tempRooms = rooms;
+            if (floorFilterOn) {
+                tempRooms = filterListByFloor(tempRooms);
+            }
+            if (tagFilterOn) {
+                tempRooms = filterListByTags(tempRooms);
+            }
+            if (sortOn) {
+                tempRooms = sortList(tempRooms);
+            }
+            console.log(tempRooms)
+            setFilteredRooms([...tempRooms])
+            setUpdated(true)
         }
-        if (event.target.value == "suite") {
-            setFilteredRooms([...rooms.filter(function (room) {
-                return room.tags.suite == true
-            })])
-        }
-        if (event.target.value == "smoking") {
-            setFilteredRooms([...rooms.filter(function (room) {
-                return room.tags.smoking == true
-            })])
-        }
+    }, [updated])
+    
+    const onTagFilter = (event) => {
+        setTagFilter(event.target.value)
+        
         if (event.target.value == "") {
-            setFilterOn(false);
+            setTagFilterOn(false);
 
         }
+        else {
+            if (tagFilterOn) {
+                setUpdated(false)
+            }
+            else {
+                setTagFilterOn(true)
+
+            }
+            
+
+        }
+      
+    }
+    
+
+    const sortList = (tempRooms) => {
+        if (sort === 'RMA') {
+            return tempRooms.sort((room1, room2) => {
+                if (room1.roomNumber < room2.roomNumber) {
+                return -1;
+            }
+                if (room1.roomNumber > room2.roomNumber) {
+                return 1;
+            }
+            // a must be equal to b
+            return 0;
+            })
+        }
+        if (sort === 'RMD') {
+            return tempRooms.sort((room1, room2) => {
+                if (room1.roomNumber > room2.roomNumber) {
+                    return -1;
+                }
+                if (room1.roomNumber < room2.roomNumber) {
+                    return 1;
+                }
+                // a must be equal to b
+                return 0;
+            })
+        }
+        if (sort === 'PA') {
+            return tempRooms.sort((room1, room2) => {
+                if (room1.price < room2.price) {
+                    return -1;
+                }
+                if (room1.price > room2.price) {
+                    return 1;
+                }
+                // a must be equal to b
+                return 0;
+            })
+        }
+        if (sort === 'PD') {
+            return tempRooms.sort((room1, room2) => {
+                if (room1.price > room2.price) {
+                    return -1;
+                }
+                if (room1.price < room2.price) {
+                    return 1;
+                }
+                // a must be equal to b
+                return 0;
+            })
+        }
+    }
+    const filterListByTags = (tempRooms) => {
+
+        if (tagFilter == "handicap") {
+            return tempRooms.filter(function (room) {
+                console.log(room)
+                return room.tags.handicap == true
+            })
+        }
+        if (tagFilter == "suite") {
+            return tempRooms.filter(function (room) {
+                return room.tags.suite == true
+            })
+        }
+        if (tagFilter == "smoking") {
+            return tempRooms.filter(function (room) {
+                return room.tags.smoking == true
+            })
+
+        }
+           
+        return tempRooms;
+
+    }
+
+    const filterListByFloor = (tempRooms) => {
+
+        console.log("filtering by floor")
+        return tempRooms.filter(function (room) {
+                let number = floor
+                number = Number(number)
+                console.log(number + 100)
+                return room.roomNumber >= number && room.roomNumber < number + 100
+            })
+        
+   
+    }
+
+    const handleFloorChange = (event) => {
+        setFloor(event.target.value)
+        
+        console.log(event.target.value)
+        if (event.target.value >= 0) {
+            if (floorFilterOn) {
+                setUpdated(false)
+            }
+            else {
+                setFloorFilterOn(true)
+            }
+        }
+        else {
+            
+            
+            setFloorFilterOn(false)
+            
+        }
+    }
+    const onSort = (event) => {
+        setSort(event.target.value)
+
+        if (event.target.value == "") {
+            setSortOn(false);
+
+        }
+        else {
+            if (sortOn) {
+                setUpdated(false)
+            }
+            else {
+                setSortOn(true)
+
+            }
+
+
+        }
+
+
+
+
     }
     const BootstrapInput = withStyles((theme) => ({
         root: {
@@ -100,24 +296,9 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
         },
     }))(InputBase);
 
-    const startSearch = () => {
-        if (filterOn == true) {
-            setFilteredRooms([...filteredRooms.filter(function (room) {
-                let roomName = room.roomNumber.toString();
-                return roomName.includes(search);
-            })])
-        }
-        else {
-            setFilterOn(true)
-            setFilteredRooms([...rooms.filter(function (room) {
-                let roomName = room.roomNumber.toString();
-                return roomName.includes(search);
-            })])
-
-        }
-    }
         
-    
+
+
 
     return (
 		<div className = 'login-background'>
@@ -147,8 +328,36 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
                 <NativeSelect
                     labelId="demo-customized-select-label"
                     id="demo-customized-select"
-                    value={filter}
-                    onChange={filterList}
+                    value={sort}
+                    onChange={onSort}
+                    input={<BootstrapInput />}
+                >
+                    <option value={""}>Stort by</option>
+                    <option value={"RMA"}>RoomNumber Ascending</option>
+                    <option value={"RMD"}>RoomNumber Decending</option>
+                    <option value={"PA"}>Price Ascending</option>
+                    <option value={"PD"}>Price Decending</option>
+
+                </NativeSelect>
+                <NativeSelect
+                    labelId="usernames-label"
+                    id="multiple-usernames"
+                    value={floor}
+                    onChange={handleFloorChange}
+                    input={<BootstrapInput />}
+
+                >
+                    {listOfFloors.map((floor) => (
+                        <option key={floor} value={floor[1]} >
+                            {floor[0]}
+                        </option>
+                    ))}
+                </NativeSelect>
+                <NativeSelect
+                    labelId="demo-customized-select-label"
+                    id="demo-customized-select"
+                    value={tagFilter}
+                    onChange={onTagFilter}
                     input={<BootstrapInput />}
                 >
                     <option value={""}>filter for</option>
@@ -156,14 +365,8 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
                     <option value={"handicap"}>handicap accessible</option>
                     <option value={"suite"}>is a suite</option>
                 </NativeSelect>
-                <input className={"search-bar"}
-                    type='text'
-                    value={search}
-                    placeholder="search by room number"
-                    onChange={(e) => { setSearch(e.target.value); }
-                    } />
                 
-                <Button size="large" variant="contained" color="primary" onClick={(e) => { e.preventDefault(); startSearch(); }}>Search </Button>
+                
                 
             </header>
             {filterOn ? <ListRooms rooms={filteredRooms} onRoomClick={onRoomClick} props={props} /> : <ListRooms rooms={rooms} onRoomClick={onRoomClick} props={props} />}
