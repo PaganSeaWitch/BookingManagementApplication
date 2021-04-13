@@ -13,7 +13,7 @@ const Bookings = ({ user, getHotel, getRoom, onBookingClick, props }) => {
 
         <div className={"margin-50-booking"}>
                 <header className={"bold-center"}>
-                Current Bookings for {user.username} {user.bookings.length}
+                Current Bookings for {user.username}
                 </header>
         </div>
             <div className= 'room-listing-container'>
