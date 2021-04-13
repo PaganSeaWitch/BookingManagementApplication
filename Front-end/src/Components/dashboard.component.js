@@ -6,53 +6,106 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { useState, useEffect } from "react";
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
+import axios from "axios";
+require('dotenv').config()
+const backURI = process.env.REACT_APP_BACK_END_SERVER_URI
 
-
-const Dashboard = ({user, manager, hotels, onHotelClick, props, filter}) => {
-	const [category, setCategory] = useState("")
+const Dashboard = ({ user, manager, onHotelClick, props, filter }) => {
+	const [hotels, setHotels] = useState([])
+	const [category, setCategory] = useState("name")
 	const [filterOn, setFilterOn] = useState(false)
 	const [filteredHotels, setFilteredHotels] = useState([])
 	const [search, setSearch] = useState("")
-	const [numLoaded, setNumLoaded] = useState(0)
+	const [searchOn, setSearchOn] = useState(false)
+	const [updated, setUpdated] = useState(true)
+	const [categoryFilterOn, setCategoryFilterOn] = useState(true)
+
 	useEffect(() => {
-		if(filter != null){
-			console.log("Filtering from city click");
-			setCategory("city");
-			setSearch(filter);
-			console.log("Search finished: category: " + category + " filterOn: " + filterOn + " search: " + search); 
-			filter = null;
-			startSearch();
-		}
-		/*if (search.length == 0) {
-			setFilterOn(false)
-		}*/
 		
+			
+		axios.get(backURI + "/hotel/allHotels")
+			.then(response => {
+				setHotels(response.data);
+				setFilteredHotels(response.data);
+				if (filter != null) {
+					console.log("Filtering from city click");
+					setCategory("city");
+					setSearch(filter);
+					console.log("Search finished: category: " + category + " filterOn: " + filterOn + " search: " + search);
+					filter = null;
 
-	}, [search]);
+					setUpdated(false);
 
-	
-	const startSearch = () => {
-		console.log("Start search happened");
-		setFilterOn(true)
+				}
+			})
+			.catch(err => console.log(err))
+		
+	}, [])
+
+	useEffect(() => {
+
+		if (categoryFilterOn) {
+			setFilterOn(true)
+			
+		}
+		else {
+			setFilterOn(false)
+		}
+
+
+	}, [categoryFilterOn]);
+
+	useEffect(() => {
+		console.log("updating")
+		if (filterOn) {
+			let tempHotels = hotels;
+			
+			if (searchOn) {
+				tempHotels = searchByCategory(tempHotels);
+            }
+			setFilteredHotels([...tempHotels])
+			setUpdated(true)
+		}
+
+	}, [updated])
+
+	const searchByCategory = (tempHotels) => {
 		if (category === "name") {
-			setFilteredHotels([...hotels.filter(function (hotel) {
-				return hotel.name.includes(search)
-			})])
+			return tempHotels.filter(function (hotel) {
+				return hotel.name.includes(search) || hotel.name === search;
+			})
 		}
 		if (category === "city") {
-			setFilteredHotels([...hotels.filter(function (hotel) {
+			return tempHotels.filter(function (hotel) {
 				return hotel.location.city.includes(search) || hotel.location.city === search;
-			})])
+			})
 		}
 		if (category === "state") {
-			setFilteredHotels([...hotels.filter(function (hotel) {
-				console.log(hotel.location.stateOrProvince)
-				return hotel.location.stateOrProvince.includes(search)
-			})])
-        }
+			return tempHotels.filter(function (hotel) {
+				return hotel.location.stateOrProvince.includes(search) || hotel.location.stateOrProvince === search;
+			})
+		}
+		return tempHotels;
 	}
+
 	const changeCategory = (event) => {
 		setCategory(event.target.value)
+		if (event.target.value == "") {
+			setCategoryFilterOn(false);
+
+		}
+		else {
+			if (categoryFilterOn) {
+				setUpdated(false)
+				setSearchOn(false)
+			}
+			else {
+				setCategoryFilterOn(true)
+
+			}
+
+
+		}
     }
 	const BootstrapInput = withStyles((theme) => ({
 		root: {
@@ -92,7 +145,7 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props, filter}) => {
 							onChange={(e) => { setSearch(e.target.value);}
 						} />
 
-					<Button size="large" variant="contained" color="primary" onClick={(e) => { e.preventDefault(); startSearch(); }}>Search </Button>
+					<Button size="large" variant="contained" color="primary" onClick={(e) => { e.preventDefault(); setSearchOn(true);setUpdated(false); }}>Search </Button>
 
 				</header>
 					<div>							
@@ -128,7 +181,7 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props, filter}) => {
 							onChange={(e) => { setSearch(e.target.value); }
 							} />
 
-						<Button size="large" variant="contained" color="primary" onClick={(e) => { e.preventDefault(); startSearch(); }}>Search </Button>
+						<Button size="large" variant="contained" color="primary" onClick={(e) => { e.preventDefault(); setSearchOn(true);setUpdated(false); }}>Search </Button>
 
 					</header>
 					<div>

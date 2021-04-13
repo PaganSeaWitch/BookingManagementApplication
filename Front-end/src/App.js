@@ -984,7 +984,7 @@ const App = () => {
             />
 			<Route  path="/dashboard" exact render={(props) => (
                 <>
-                    {<Dashboard user={user} manager={manager} props={props} hotels={hotels} onHotelClick={onHotelClick} />}
+                    {<Dashboard user={user} manager={manager} props={props} onHotelClick={onHotelClick} />}
                 </>
             )}
             />

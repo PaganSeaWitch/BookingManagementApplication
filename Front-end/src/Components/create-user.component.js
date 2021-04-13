@@ -22,7 +22,7 @@ const CreateUser = ({ onCreateManager, onCreateUser, onGoogleLogin, props }) => 
     const [hotelState, setHotelState] = useState("");
     const [hotelCountry, setHotelCountry] = useState("");
     const [hotelPostalCode, setHotelPostalCode] = useState("");
-	
+    	
     const refToUserForms = useRef(null);
     const refToManagerForms = useRef(null);
     const geocodeAPIBegining = "https://maps.googleapis.com/maps/api/geocode/json?address="
