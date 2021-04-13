@@ -108,10 +108,10 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props, filter}) => {
 						{/* TODO, make manager dashboard*/}
 					</div> 
 				</div>
-				: <div className = 'dashboard'> 
+				: <div className='dashboard'>
 					<header className={"hotel-search"}>
 						<NativeSelect
-							labelId="demo-customized-select-label"
+							labelid="demo-customized-select-label"
 							id="demo-customized-select"
 							value={category}
 							onChange={changeCategory}
@@ -124,16 +124,20 @@ const Dashboard = ({user, manager, hotels, onHotelClick, props, filter}) => {
 						<input className={"search-bar"}
 							type='text'
 							value={search}
-							placeholder="type something"
+							placeholder={filter}
 							onChange={(e) => { setSearch(e.target.value); }
 							} />
 
-						<Button size="large" variant="contained" color="primary" onClick={(e) => { e.preventDefault(); startSearch(); }}>Search </Button>					
-						<ul>
-							{hotels.map((hotel, index) => {< HotelListing hotel={hotel} key={index} onClick={onHotelClick} props={props} />; })}
+						<Button size="large" variant="contained" color="primary" onClick={(e) => { e.preventDefault(); startSearch(); }}>Search </Button>
+
+					</header>
+					<div>
+						<ul style={{ listStyleType: "none" }}>
+							{filterOn ? filteredHotels.map((hotel, index) => <HotelListing hotel={hotel} key={index} onClick={onHotelClick} props={props} />) : hotels.map((hotel, index) => <HotelListing hotel={hotel} key={index} onClick={onHotelClick} props={props} />)}
 						</ul>
-					 </header>
-				 </div>}
+					</div>
+
+				</div>}
 			</div>
 	
 	
