@@ -24,6 +24,16 @@ router.route("/getHotelByID/:id").get((req, res) => {
         .catch(err => res.status(400).json("Error: " + err))
 })
 
+router.route("/updateAvgPriceForHotel").post((req, res) => {
+    Hotel.findById(req.body.id)
+        .then((hotel) => {
+            hotel.avgRoomPrice = req.body.avgRoomPrice;
+            hotel.save()
+                .then(() => res.json(hotel))
+                .catch(err => res.status(400).json("Error: " + err));
+        })
+        .catch(err => res.status(400).json("Error: " + err))
+})
 
 //Adds a hotel
 router.route("/addHotel").post((req, res) => {
@@ -36,8 +46,8 @@ router.route("/addHotel").post((req, res) => {
     const country = req.body.location.country;
     const postalCode = req.body.location.postalCode;
     const rooms = req.body.rooms;
-    
-    const newHotel = new Hotel({ name: hotelName, location: { streetAddress1, streetAddress2, city, stateOrProvince, country, postalCode } , rooms: rooms });
+    const avgRoomPrice = 0;
+    const newHotel = new Hotel({ name: hotelName, location: { streetAddress1, streetAddress2, city, stateOrProvince, country, postalCode }, rooms: rooms, avgRoomPrice: avgRoomPrice });
     newHotel.save()
         .then(() => res.json(newHotel))
         .catch(err => res.status(400).json("Error: " + err));
@@ -50,8 +60,8 @@ router.route("/updateRoomsForHotel").post((req, res) => {
     console.log(req.body)
     Hotel.findByIdAndUpdate(req.body.id)
         .then((hotel) => {
-
             const currentRooms = hotel.room_IDs;
+            hotel.avgRoomPrice = req.body.avgRoomPrice;
             currentRooms.push(req.body.roomId)
             hotel.room_IDs = currentRooms
             hotel.save()

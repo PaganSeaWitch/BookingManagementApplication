@@ -8,28 +8,32 @@ const frontURI = process.env.REACT_APP_FRONT_END_SERVER_URI
 
 
 
-const checkRoomNumber = (hotelID, roomNumber, props) => {
-    axios.get(uri + "/hotel/getHotelByID/" + hotelID)
+const checkRoomNumber = async (hotelID, roomNumber, props) => {
+    console.log("checking number")
+    return axios.get(uri + "/hotel/getHotelByID/" + hotelID)
         .then(response => {
             if (response != null) {
                 const roomIDs = response.data.room_IDs;
-                roomIDs.forEach(roomID => {
-                    axios.get(uri + "/room/getRoomByID/" + roomID)
-                        .then(response => {
-                            console.log(response.data.roomNumber)
-                            console.log(roomNumber)
-                            if (response.data.roomNumber == roomNumber) {
-                                return true
-                            }
-                        })
-                })
+                if (roomIDs != 0) {
+                    roomIDs.forEach(roomID => {
+                        axios.get(uri + "/room/getRoomByID/" + roomID)
+                            .then(roomResponse => {
+                                if (roomResponse.data.roomNumber == roomNumber) {
+                                    return false
+                                }
+                            })
+                            .catch(err => { return false })
+                    })
+                }
+                else {
+                    return true;
+                }
             }
             else {
-                props.push("/")
+                return true;
             }
         })
-        .catch(err => { return "" })
-    return false;
+        .catch(err => { return false })
 }
 
 const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
@@ -87,7 +91,7 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
     }, [])
 
 
-    useEffect(() => {
+    useEffect(async() => {
 
         if (editRoom == true) {
             setEditRoom(false)
@@ -106,9 +110,10 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
 
             }
             
-            if (checkRoomNumber(hotelID, roomNumber, props) == false) {
+            const checksum = await checkRoomNumber(hotelID, roomNumber, props)
+            if (checksum) {
                 const tags = ({ smoking, handicap, suite })
-                onRoomUpdate(roomID, roomNumber, amountOfBeds, roomPrice, tags, props)
+                onRoomUpdate(hotelID, roomNumber, amountOfBeds, roomPrice, tags, props)
 
             }
             else {

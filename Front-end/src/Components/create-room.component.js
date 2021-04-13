@@ -6,28 +6,25 @@ require('dotenv').config()
 const uri = process.env.REACT_APP_BACK_END_SERVER_URI
 
 const checkRoomNumber = async (hotelID, roomNumber, props) => {
-    console.log("checking number")
-    axios.get(uri + "/hotel/getHotelByID/" + hotelID)
+    return axios.get(uri + "/hotel/getHotelByID/" + hotelID)
         .then(response => {
             if (response != null) {
-                console.log(response)
                 const roomIDs = response.data.room_IDs;
                 if (roomIDs != 0) {
                     roomIDs.forEach(roomID => {
-                        console.log(roomID)
                         axios.get(uri + "/room/getRoomByID/" + roomID)
                             .then(roomResponse => {
-                                console.log(roomResponse.data.roomNumber)
-                                console.log(roomNumber)
+
                                 if (roomResponse.data.roomNumber == roomNumber) {
-                                    return true
+                                    return false
                                 }
                             })
-                            .catch(err => { return true })
+                            .catch(err => { return false })
                     })
+                    return true;
                 }
                 else {
-                    return false;
+                    return true;
                 }
             }
             else {
@@ -35,7 +32,6 @@ const checkRoomNumber = async (hotelID, roomNumber, props) => {
             }
         })
         .catch(err => { return true })
-    return false;
 }
 
 const CreateRoom = ({ manager, onCreateRoom, props }) => {
@@ -95,12 +91,12 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
                 return;
 
             }
-            
-            const checksum = await checkRoomNumber(hotelID, roomNumber, props)
+            console.log(Number(roomPrice))
+            let checksum = await checkRoomNumber(hotelID, roomNumber, props)
             if (checksum) {
                 const tags = ({ smoking, handicap, suite })
-                console.log(tags)
-                onCreateRoom(hotelID, roomNumber, amountOfBeds, roomPrice, tags, props)
+                
+                onCreateRoom(hotelID, roomNumber, roomPrice, amountOfBeds, tags, props)
 
             }
             else {
