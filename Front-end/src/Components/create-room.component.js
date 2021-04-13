@@ -5,7 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 require('dotenv').config()
 const uri = process.env.REACT_APP_BACK_END_SERVER_URI
 
-const checkRoomNumber = (hotelID, roomNumber, props) => {
+const checkRoomNumber = async (hotelID, roomNumber, props) => {
     console.log("checking number")
     axios.get(uri + "/hotel/getHotelByID/" + hotelID)
         .then(response => {
@@ -77,7 +77,7 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
         setHandicap(event.target.checked)
     }
 
-    useEffect(() => {
+    useEffect(async() => {
 
         if (createRoom == true) {
             setCreateRoom(false)
@@ -96,16 +96,17 @@ const CreateRoom = ({ manager, onCreateRoom, props }) => {
 
             }
             
-            if (checkRoomNumber(hotelID, roomNumber, props) == false) {
+            const checksum = await checkRoomNumber(hotelID, roomNumber, props)
+            if (checksum) {
                 const tags = ({ smoking, handicap, suite })
                 console.log(tags)
                 onCreateRoom(hotelID, roomNumber, amountOfBeds, roomPrice, tags, props)
 
             }
             else {
-                alert("Room number already exists!")
-                
+                alert("Room already exists in system!")
             }
+            
         }
 
     },[createRoom])
