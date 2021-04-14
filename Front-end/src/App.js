@@ -83,20 +83,15 @@ const App = () => {
 
 	
 	
-	const calculateCities = (hotelList) => {
+	const calculateCities = (hotelList, cityList) => {
 		var inArray = false;
-		var numLocations = 1;
-		var cityName = "";
-		var totalPrice = 0;
-		var numRooms = 0;
-		var tempCities = [];
-		var avgPrice = 0;
-			
+		var totalPrice = 0;	
+		console.log("Existing city list size: " +cityList.length);	
+		var numOperations = 0;
 			hotelList.forEach(hotel =>{
-				//console.log("Entered hotel loop");
-	
-                tempCities.forEach(city => {
-                    if (city === hotel.location.city) {
+				
+                cityList.forEach(city => {
+                    if (city == hotel.location.city) {
                         console.log("this city: " + city + " is same as that city: " + hotel.location.city)
 						inArray=true;
                     }
@@ -121,55 +116,56 @@ const App = () => {
 					})
 				}
 				*/
-				console.log("New Total Price: " + totalPrice + " New numRooms: " + numRooms);
+			
+				
+				//console.log("New Total Price: " + totalPrice + " New numRooms: " + numRooms);
+				if(hotel.avgRoomPrice > 0){
+				  totalPrice = hotel.avgRoomPrice;	
+				}
 				
 				if(inArray){
-						updateCity(hotel.location.city, numLocations, avgPrice, numRooms, totalPrice);
-						console.log("Updating: " + hotel.location.city + " 1 " + "0 " + numRooms + " " + totalPrice);
-						
+					console.log("Updating: " + hotel.location.city + "Total Price: " + totalPrice);	
+						updateCity(hotel.location.city, 1, 0, totalPrice);
+						numOperations++;
 				}
-				else{
-						addCity(hotel.location.city, numLocations, avgPrice, numRooms, totalPrice);
-						tempCities.push(hotel.location.city);
-						console.log("City added: " + hotel.location.city);
+				else if (!inArray){
+						addCity(hotel.location.city, 1, 0, totalPrice);
+						//tempCities.push(hotel.location.city);
+						cityList.push(hotel.location.city);
+						console.log("City added: " + totalPrice);
+						numOperations++;
 				}
 				
-				numLocations = 0;
-				totalPrice = 0; 
-				numRooms = 0;
 				inArray = false;
-				
+				totalPrice = 0;
 			})
-			
+		console.log("Operations completed: " + numOperations);
 		getCities();
 	}
 	
-	async function roomData(roomID){
-		var price = await getRoomsData(roomID)
+	const fillCities = (hotelList) => {
+			 axios.get(uri + "/city/allCities")
+            .then(response => {
+                calculateCities(hotelList, response.data);
+            })
+            .catch(err => console.log(err))
 	}
 	
-	const getRoomsData = (roomID) => {
-			return axios.get(uri + "/room/getRoomByID/" + roomID)
-					.then(response => {
-						return response;
-					})
-	}
-	
-	const addCity = (cityName, numLocations, avgPrice, numRooms, totalPrice) => {
-		 const city = ({ name: cityName, numLocations: numLocations, avgPrice:avgPrice, numRooms:numRooms, totalPrice:totalPrice})
+	const addCity = (cityName, numLocations, avgPrice, totalPrice) => {
+		 const city = ({ name: cityName, numLocations: numLocations, avgPrice:avgPrice, totalPrice:totalPrice})
                                 axios.post(uri + "/city/addCity", city)
                                     .then(response => {
                                         //setCities([...cities, cityResponse.data])
-                                        console.log("City Name: " + city.name + " " + city.avgPrice + " " + city.numRooms + " " + city.totalPrice);
+                                        console.log("City Name: " + city.name + " " + city.avgPrice + " " + city.totalPrice);
                                     
                                     })
                                     .catch(err => console.log("Error adding city client: " + err));
     }
 
 
-	const updateCity = (cityName, numLocs, avgPrice, numRoom, totalPri) => {
-        const updatedCity = ({ name: cityName, numLocations: numLocs, avgPrice:(totalPri/numRoom), numRooms:numRoom, totalPrice:totalPri})
-        axios.post(uri + "/city/updateCity", updatedCity)
+	const updateCity = (cityName, numLocations, avgPrice, totalPrice) => {
+         const city = ({ name: cityName, numLocations: numLocations, avgPrice:avgPrice, totalPrice:totalPrice})
+        axios.post(uri + "/city/updateCity", city)
             .then(response => { console.log("City updated"); })
             .catch(err => { console.log("Error at update city client: " + err);  });
     }
@@ -180,7 +176,13 @@ const App = () => {
         axios.get(uri + "/hotel/allHotels")
             .then(response => {
                 setHotels(response.data);
-				calculateCities(response.data);
+				if(cities.length == 0){
+					getCities();
+				}
+				else{
+					fillCities(response.data);
+				}
+				
 				
             })
             .catch(err => console.log(err))
@@ -876,6 +878,9 @@ const App = () => {
                                         axios.post(uri + "/manager/add", newManager)
                                             .then(response => { setManagerState(response, password); alert("manager created!"); props.history.push("/manager"); })
                                             .catch(err => alert("Coudln't create account!"));
+										
+										//This needs to also update the city that the hotel is added to.
+											
                                     })
                                     .catch(err => alert("Coudln't create account!"));
 
