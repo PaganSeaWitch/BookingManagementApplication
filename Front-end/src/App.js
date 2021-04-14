@@ -157,7 +157,7 @@ const App = () => {
                                     .then(response => {
                                         //setCities([...cities, cityResponse.data])
                                         console.log("City Name: " + city.name + " " + city.avgPrice + " " + city.totalPrice);
-                                    
+										setCities([...cities, response.data]);
                                     })
                                     .catch(err => console.log("Error adding city client: " + err));
     }
@@ -166,7 +166,8 @@ const App = () => {
 	const updateCity = (cityName, numLocations, avgPrice, totalPrice) => {
          const city = ({ name: cityName, numLocations: numLocations, avgPrice:avgPrice, totalPrice:totalPrice})
         axios.post(uri + "/city/updateCity", city)
-            .then(response => { console.log("City updated"); })
+            .then(response => { 
+			 setCities([...cities, response.data]); console.log("City updated"); })
             .catch(err => { console.log("Error at update city client: " + err);  });
     }
 	
@@ -285,7 +286,17 @@ const App = () => {
             .then(response => {
                 const hotelUpdate = ({ id: hotel_id, roomId: response.data._id, avgRoomPrice: avg })
                  axios.post(uri + "/hotel/updateRoomsForHotel", hotelUpdate)
-                        .then(() => { alert("Room has been created!"); props.history.push("/editRooms") })
+                        .then(response => { alert("Room has been created!"); 
+									  props.history.push("/editRooms");
+									
+										  if(avg > 0){
+											updateCity(response.data.location.city, 0, 0, avg);
+										  }
+										  else{
+											updateCity(response.data.location.city, 0, 0, 0);
+										  }
+										 
+									  })
                         .catch(err => { console.log(err); return })
             })
             .catch(err => { return "" })
@@ -880,9 +891,30 @@ const App = () => {
                                             .catch(err => alert("Coudln't create account!"));
 										
 										//This needs to also update the city that the hotel is added to.
+										if(cities.includes(hotel.location.city)){
+												console.log("Hotel created: attempting to update city");
+												if(hotel.avgPrice > 0){
+													updateCity(hotel.location.city, 1, 0, hotel.avgPrice);
+												}
+												else{
+													updateCity(hotel.location.city, 1, 0, 0);
+												}
+												console.log("City Updated");
+										}
+										else{
+												console.log("Hotel Created: attempting to add city");
+												if(hotel.avgPrice > 0){
+														addCity(hotel.location.city, 1, 0, hotel.avgPrice);
+												}
+												else{
+													addCity(hotel.location.city, 1, 0, 0);
+												}
+													
+												console.log("City added");
+										}
 											
                                     })
-                                    .catch(err => alert("Coudln't create account!"));
+                                    .catch(err => console.log(err));
 
                             }
                         }) 
