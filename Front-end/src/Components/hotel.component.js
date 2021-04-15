@@ -36,10 +36,14 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
     const [sendMessage, setSendMessage] = useState(false)
     const [userNames, setUsernames] = useState("")
     const [listOfFloors, setListOfFloors] = useState([["filter by floor", -1]])
-    const [floor, setFloor] = useState(0);
+    const [floor, setFloor] = useState(-1);
     const [updated, setUpdated] = useState(true)
-    const [sort, setSort] = useState("");
-    const [sortOn, setSortOn] = useState(false)
+    const [nameSort, setNameSort] = useState("");
+    const [priceSort, setPriceSort] = useState("");
+
+    const [nameSortOn, setNameSortOn] = useState(false)
+    const [priceSortOn, setPriceSortOn] = useState(false)
+
     useEffect(() => {
 
         const page = window.location.href;
@@ -67,7 +71,7 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
             let i = 0;
             console.log(room.roomNumber)
             while (room.roomNumber > i) {
-                i = i + 10;
+                i = i + 1;
             }
             console.log(i);
             let number = Math.floor((i / 100));
@@ -89,17 +93,34 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
             }
             number = number * 100;
             if (listOfFloors.find(floor => floor[1] == number) == undefined) {
-                setListOfFloors([...listOfFloors, [floor, number]])
+                let tempList = listOfFloors;
+                tempList.push([floor, number])
+                tempList.sort((floor1, floor2) => {
+                    console.log(floor1)
+                    if (floor1[1] > floor2[1]) {
+                        return 1
+                    }
+                    if (floor[1] < floor2[2]) {
+                        return -1;
+                    }
+                    else {
+                        return 0;
+                    }
+                })
+                setListOfFloors([...tempList])
             }
+            
         })
+        
     }, [rooms])
+
 
     
 
 
     useEffect(() => {
 
-        if (floorFilterOn == true || tagFilterOn == true || searchFilterOn == true || sortOn == true) {
+        if (floorFilterOn || tagFilterOn || searchFilterOn || priceSortOn || nameSortOn) {
             setFilterOn(true)
             setUpdated(false)
         }
@@ -108,7 +129,7 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
         }
 
 
-    }, [floorFilterOn, tagFilterOn, searchFilterOn, sortOn]);
+    }, [floorFilterOn, tagFilterOn, searchFilterOn, priceSortOn, nameSortOn]);
 
     useEffect(() => {
         console.log("updating")
@@ -120,7 +141,7 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
             if (tagFilterOn) {
                 tempRooms = filterListByTags(tempRooms);
             }
-            if (sortOn) {
+            if (priceSortOn || nameSortOn) {
                 tempRooms = sortList(tempRooms);
             }
             console.log(tempRooms)
@@ -152,54 +173,78 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
     
 
     const sortList = (tempRooms) => {
-        if (sort === 'RMA') {
-            return tempRooms.sort((room1, room2) => {
-                if (room1.roomNumber < room2.roomNumber) {
-                return -1;
+        return tempRooms.sort((room1, room2) => {
+            let room1Number = Number(room1.roomNumber);
+            let room2Number = Number(room2.roomNumber);
+            let room1Price = Number(room1.price);
+            let room2Price = Number(room2.price);
+            let room1Floor = Math.floor(Number(room1.roomNumber) /100);
+            let room2Floor = Math.floor(Number(room2.roomNumber)/100);
+            if (nameSort === 'RMA') {
+                if (priceSort != "") {
+                    if (room1Floor > room2Floor) {
+                        return -1;
+                    }
+                    if (room1Floor < room2Floor) {
+                        return 1;
+                    }
+                }
+                else {
+                    if (room1Number > room2Number) {
+                        return -1;
+                    }
+                    if (room1Number < room2Number) {
+                        return 1;
+                    }
+                    // a must be equal to b
+                    return 0;
+                }
             }
-                if (room1.roomNumber > room2.roomNumber) {
-                return 1;
+            if (nameSort === 'RMD') {
+                if (priceSort != "") {
+                    if (room2Floor > room1Floor) {
+                        return -1;
+                    }
+                    if (room2Floor < room1Floor) {
+                        return 1;
+                    }
+                }
+                else {
+                    if (room2Number > room1Number) {
+                        return -1;
+                    }
+                    if (room2Number < room1Number) {
+                        return 1;
+                    }
+                    // a must be equal to b
+                    return 0;
+                }
             }
-            // a must be equal to b
-            return 0;
-            })
-        }
-        if (sort === 'RMD') {
-            return tempRooms.sort((room1, room2) => {
-                if (room1.roomNumber > room2.roomNumber) {
+            if (priceSort === 'PA') {
+               
+                if (room1Price < room2Price) {
+                     return -1;
+                }
+                if (room1Price > room2Price) {
+                    return 1;
+                 }
+                    // a must be equal to b
+                return 0;
+               
+            }
+            if (priceSort === 'PD') {
+                
+                if (room1Price > room2Price) {
                     return -1;
                 }
-                if (room1.roomNumber < room2.roomNumber) {
+                if (room1Price < room2Price) {
                     return 1;
                 }
                 // a must be equal to b
                 return 0;
-            })
-        }
-        if (sort === 'PA') {
-            return tempRooms.sort((room1, room2) => {
-                if (room1.price < room2.price) {
-                    return -1;
-                }
-                if (room1.price > room2.price) {
-                    return 1;
-                }
-                // a must be equal to b
-                return 0;
-            })
-        }
-        if (sort === 'PD') {
-            return tempRooms.sort((room1, room2) => {
-                if (room1.price > room2.price) {
-                    return -1;
-                }
-                if (room1.price < room2.price) {
-                    return 1;
-                }
-                // a must be equal to b
-                return 0;
-            })
-        }
+                
+            }
+        })
     }
     const filterListByTags = (tempRooms) => {
 
@@ -257,29 +302,41 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
             
         }
     }
-    const onSort = (event) => {
-        setSort(event.target.value)
+    const onPriceSort = (event) => {
+        setPriceSort(event.target.value)
 
         if (event.target.value == "") {
-            setSortOn(false);
+            setPriceSortOn(false);
 
         }
         else {
-            if (sortOn) {
+            if (priceSortOn) {
                 setUpdated(false)
             }
             else {
-                setSortOn(true)
+                setPriceSortOn(true)
 
             }
+        }
+    }
+    const onNameSort = (event) => {
+        setNameSort(event.target.value)
 
+        if (event.target.value == "") {
+            setNameSortOn(false);
 
         }
+        else {
+            if (nameSortOn) {
+                setUpdated(false)
+            }
+            else {
+                setNameSortOn(true)
 
-
-
-
+            }
+        }
     }
+
     const BootstrapInput = withStyles((theme) => ({
         root: {
             margin: "0px 0px -200px 0px"
@@ -328,17 +385,26 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
                 <NativeSelect
                     labelId="demo-customized-select-label"
                     id="demo-customized-select"
-                    value={sort}
-                    onChange={onSort}
+                    value={nameSort}
+                    onChange={onNameSort}
                     input={<BootstrapInput />}
                 >
-                    <option value={""}>Stort by</option>
-                    <option value={"RMA"}>RoomNumber Ascending</option>
-                    <option value={"RMD"}>RoomNumber Decending</option>
+                    <option value={""}>Stort by Room Floor</option>
+                    <option value={"RMA"}>Room Floor Ascending</option>
+                    <option value={"RMD"}>Room Floor Decending</option>
+                </NativeSelect>
+                <NativeSelect
+                    labelId="demo-customized-select-label"
+                    id="demo-customized-select"
+                    value={priceSort}
+                    onChange={onPriceSort}
+                    input={<BootstrapInput />}
+                >
+                    <option value={""}>Stort by Price</option>
                     <option value={"PA"}>Price Ascending</option>
                     <option value={"PD"}>Price Decending</option>
-
                 </NativeSelect>
+                
                 <NativeSelect
                     labelId="usernames-label"
                     id="multiple-usernames"

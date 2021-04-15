@@ -19,7 +19,10 @@ const Dashboard = ({ user, manager, onHotelClick, props, filter }) => {
 	const [searchOn, setSearchOn] = useState(false)
 	const [updated, setUpdated] = useState(true)
 	const [categoryFilterOn, setCategoryFilterOn] = useState(true)
-
+	const [sortAlphabeticallyOn, setSortAlphabeticallyOn] = useState(false)
+	const [sortPriceOn, setSortPriceOn] = useState(false)
+	const [alphabetSort, setAlphabetSort] = useState("");
+	const [priceSort, setPriceSort] = useState("")
 	useEffect(() => {
 		
 			
@@ -44,7 +47,7 @@ const Dashboard = ({ user, manager, onHotelClick, props, filter }) => {
 
 	useEffect(() => {
 
-		if (categoryFilterOn) {
+		if (categoryFilterOn || sortAlphabeticallyOn || sortPriceOn) {
 			setFilterOn(true)
 			
 		}
@@ -53,16 +56,22 @@ const Dashboard = ({ user, manager, onHotelClick, props, filter }) => {
 		}
 
 
-	}, [categoryFilterOn]);
+	}, [categoryFilterOn, sortAlphabeticallyOn, sortPriceOn]);
 
 	useEffect(() => {
 		console.log("updating")
 		if (filterOn) {
 			let tempHotels = hotels;
-			
+
+
+			if (sortPriceOn || sortAlphabeticallyOn) {
+				tempHotels = sortList(tempHotels);
+            }
+
 			if (searchOn) {
 				tempHotels = searchByCategory(tempHotels);
-            }
+			}
+
 			setFilteredHotels([...tempHotels])
 			setUpdated(true)
 		}
@@ -88,6 +97,79 @@ const Dashboard = ({ user, manager, onHotelClick, props, filter }) => {
 		return tempHotels;
 	}
 
+
+
+
+	const sortList = (tempHotels) => {
+		return tempHotels.sort((hotel1, hotel2) => {
+			let hotel1Price = Number(hotel1.avgRoomPrice);
+			let hotel2Price = Number(hotel2.avgRoomPrice);
+			let hotel1Letter = hotel1.name.charAt(0)
+			let hotel2Letter = hotel2.name.charAt(0)
+			if (alphabetSort === 'NA') {
+				if (priceSort != "") {
+					if (hotel1Letter < hotel2Letter) {
+						return -1;
+					}
+					else if (hotel1Letter > hotel2Letter) {
+						return 1;
+					}
+				}
+				else {
+					if (hotel1.name < hotel2.name) {
+						return -1;
+					}
+					else if (hotel1.name > hotel2.name) {
+						return 1;
+					}
+					return 0;
+                }
+			}
+
+			if (alphabetSort === 'ND') {
+				if (priceSort != "") {
+					if (hotel2Letter < hotel1Letter) {
+						return -1;
+					}
+					if (hotel2Letter > hotel1Letter) {
+						return 1;
+					}
+				}
+				else {
+					if (hotel2.name < hotel1.name) {
+						return -1;
+					}
+					if (hotel2.name > hotel1.name) {
+						return 1;
+					}
+					return 0;
+				}
+
+			}
+			if (priceSort === 'PA') {
+				if (hotel1Price < hotel2Price) {
+					return -1;
+				}
+				if (hotel1Price > hotel2Price) {
+					return 1;
+				}
+				// a must be equal to b
+				return 0;
+			}
+			if (priceSort === 'PD') {
+				if (hotel1Price > hotel2Price) {
+					return -1;
+				}
+				if (hotel1Price < hotel2Price) {
+					return 1;
+				}
+				// a must be equal to b
+				return 0;
+			}
+
+		})
+	}
+
 	const changeCategory = (event) => {
 		setCategory(event.target.value)
 		if (event.target.value == "") {
@@ -106,7 +188,48 @@ const Dashboard = ({ user, manager, onHotelClick, props, filter }) => {
 
 
 		}
-    }
+	}
+	const onPriceSort = (event) => {
+		setPriceSort(event.target.value)
+
+		if (event.target.value == "") {
+			setSortPriceOn(false);
+
+		}
+		else {
+			if (sortPriceOn) {
+				setUpdated(false)
+			}
+			else {
+				setSortPriceOn(true)
+				setUpdated(false)
+
+			}
+
+
+		}
+
+	}
+	const onAlphabetSort = (event) => {
+		setAlphabetSort(event.target.value)
+		console.log(event.target.value)
+		if (event.target.value === "") {
+			setSortAlphabeticallyOn(false);
+
+		}
+		else {
+			if (sortAlphabeticallyOn) {
+				setUpdated(false)
+			}
+			else {
+				setSortAlphabeticallyOn(true)
+				setUpdated(false)
+			}
+
+
+		}
+
+	}
 	const BootstrapInput = withStyles((theme) => ({
 		root: {
 			margin: "0px 0px -200px 0px"
@@ -124,9 +247,31 @@ const Dashboard = ({ user, manager, onHotelClick, props, filter }) => {
 	}))(InputBase);
 
 	return(
-			(user._id == "" && manager._id == "") //if not logged in, adjust display
+			(manager._id == "") //if not logged in, adjust display
 			? <div className='dashboard'>
-					<header className={"hotel-search"}>
+				<header className={"hotel-search"}>
+						<NativeSelect
+						labelid="demo-customized-select-label"
+						id="demo-customized-select"
+						value={alphabetSort}
+						onChange={onAlphabetSort}
+						input={<BootstrapInput />}
+						>
+						<option value={""}>Sort by Name</option>
+						<option value={"NA"}>Name Ascending</option>
+						<option value={"ND"}>Name Descending</option>
+					</NativeSelect>
+						<NativeSelect
+						labelid="demo-customized-select-label"
+						id="demo-customized-select"
+						value={priceSort}
+						onChange={onPriceSort}
+						input={<BootstrapInput />}
+						>
+						<option value={""}>Sort by Price</option>
+						<option value={"PA"}>Price Ascending</option>
+						<option value={"PD"}>Price Descending</option>
+						</NativeSelect>
 						<NativeSelect
 						labelid="demo-customized-select-label"
 						id="demo-customized-select"
@@ -134,10 +279,12 @@ const Dashboard = ({ user, manager, onHotelClick, props, filter }) => {
 						onChange={changeCategory}
 						input={<BootstrapInput />}
 						>
-							<option value={"name"}>Search by name</option>
-							<option value={"city"}>Search by city</option>
-							<option value={"state"}>Search by state</option>
+						<option value={"name"}>Search by name</option>
+						<option value={"city"}>Search by city</option>
+						<option value={"state"}>Search by state</option>
 						</NativeSelect>
+
+						
 						<input className={"search-bar"}
 							type='text'
 							value={search}
@@ -155,43 +302,13 @@ const Dashboard = ({ user, manager, onHotelClick, props, filter }) => {
 					</div>
 
 			</div>
-			: <div className = 'dashboard'>{(manager._id != "") 
-				? <div> 
+			: <div> 
 					<div>							
 						{/* TODO, make manager dashboard*/}
 					</div> 
 				</div>
-				: <div className='dashboard'>
-					<header className={"hotel-search"}>
-						<NativeSelect
-							labelid="demo-customized-select-label"
-							id="demo-customized-select"
-							value={category}
-							onChange={changeCategory}
-							input={<BootstrapInput />}
-						>
-							<option value={"name"}>Search by name</option>
-							<option value={"city"}>Search by city</option>
-							<option value={"state"}>Search by state</option>
-						</NativeSelect>
-						<input className={"search-bar"}
-							type='text'
-							value={search}
-							placeholder={filter}
-							onChange={(e) => { setSearch(e.target.value); }
-							} />
-
-						<Button size="large" variant="contained" color="primary" onClick={(e) => { e.preventDefault(); setSearchOn(true);setUpdated(false); }}>Search </Button>
-
-					</header>
-					<div>
-						<ul style={{ listStyleType: "none" }}>
-							{filterOn ? filteredHotels.map((hotel, index) => <HotelListing hotel={hotel} key={index} onClick={onHotelClick} props={props} />) : hotels.map((hotel, index) => <HotelListing hotel={hotel} key={index} onClick={onHotelClick} props={props} />)}
-						</ul>
-					</div>
-
-				</div>}
-			</div>
+				
+			
 	
 	
 	
