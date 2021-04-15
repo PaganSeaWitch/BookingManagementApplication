@@ -31,7 +31,8 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
     "client-id": "Ab5MP34Strn8xQq7h-Fgt0mLAbacBJVtiYhIGtIEbf738lE2LnKvJ7QLKYnCaCSaDj1f_LsNpmyrcNw_",
     currency: "USD",
     intent: "capture",
-    
+
+
 		};
 		
 		

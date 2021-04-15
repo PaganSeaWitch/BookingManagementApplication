@@ -6,12 +6,10 @@ const HotelListing = ({ hotel, onClick, props }) => {
 			
             <header>
                 <h2 className={"hotel-header"}><FaHotel className={"icon"}style={{ color: 'black'}}/>{" "}{hotel.name}
-                {/* creates a x icon */}
-                    
-                        
+                        <label className={"hotel-right-label"}> Avg. Room Price : {hotel.avgRoomPrice}$      </label>
                         <div>
-                            <label className={"hotel-left-label"}> State : {hotel.location.stateOrProvince}      </label>
-                            <label className={"hotel-right-label"}>  City : {hotel.location.city} </label>
+                            <label className={"hotel-right-label"}> State : {hotel.location.stateOrProvince}      </label>
+                            <label className={"hotel-left-label"}>  City : {hotel.location.city} </label>
                         </div>
                 </h2>
                 
