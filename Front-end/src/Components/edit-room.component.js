@@ -50,15 +50,19 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
     const [smoking, setSmoking] = useState(false);
     const [handicap, setHandicap] = useState(false);
     const [suite, setSuite] = useState(false);
+
     const handleSmoker = (event) => {
         setSmoking(event.target.checked);
     };
+
     const handleSuite = (event) => {
         setSuite(event.target.checked)
     }
+
     const handleHandicap = (event) => {
         setHandicap(event.target.checked)
     }
+
     useEffect(() => {
 
         if (manager._id == "") {
@@ -115,7 +119,7 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
             const checksum = await checkRoomNumber(hotelID, roomNumber, props)
             if (checksum) {
                 const tags = ({ smoking, handicap, suite })
-                onRoomUpdate(hotelID, roomNumber, amountOfBeds, roomPrice, tags, props)
+                onRoomUpdate(hotelID, roomID, roomNumber, roomPrice, amountOfBeds, tags, props)
 
             }
             else {

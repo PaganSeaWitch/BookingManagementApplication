@@ -272,7 +272,33 @@ const App = () => {
             })
             .catch(err => { return 0 })
     }
-   
+
+    const updateAverage = async (hotel_id) => {
+        return axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
+            .then(async response => {
+                if (response != null) {
+                    const roomIDs = response.data.room_IDs;
+                    let num = 0;
+                    for (let roomID of roomIDs) {
+                        let number = await axios.get(uri + "/room/getRoomPriceByID/" + roomID)
+                            .then(response => {
+                                console.log(Number(response.data))
+                                return Number(response.data)
+
+                            })
+                            .catch(err => { return 0; })
+                        num = num + number;
+                    }
+                    
+                    num = Math.floor(num / (roomIDs.length));
+
+                    return num;
+
+                }
+                return 0;
+            })
+            .catch(err => { return 0 })
+    }
 
     const addRoom = async (hotel_id, roomNumber, roomPrice, roomBedAmount, roomTags, props) => {
         console.log(roomPrice)
@@ -282,7 +308,7 @@ const App = () => {
         axios.post(uri + "/room/addRoom", newRoom)
             .then(response => {
                 const hotelUpdate = ({ id: hotel_id, roomId: response.data._id, avgRoomPrice: avg })
-                 axios.post(uri + "/hotel/updateRoomsForHotel", hotelUpdate)
+                axios.post(uri + "/hotel/updateRoomsForHotel", hotelUpdate)
                         .then(() => { alert("Room has been created!"); props.history.push("/editRooms") })
                         .catch(err => { console.log(err); return })
             })
@@ -351,7 +377,6 @@ const App = () => {
             })
             .catch(err => { console.log(err); props.history.push("/") })
     }
-
 
     const getHotel =  (hotel_id, setHotelLocation, setHotelName, setHotelRooms, props) => {
         console.log("Getting hotel!")
@@ -670,10 +695,19 @@ const App = () => {
             .catch(err => { console.log(err); alert("password reset failed!");})
     }
 
-    const updateRoom = (roomID, roomNumber, roomPrice, roomAmountBeds, roomTags, props) => {
+    const updateRoom = async(hotelID, roomID, roomNumber, roomPrice, roomAmountBeds, roomTags, props) => {
         const updatedRoom = ({ roomID, roomNumber, roomPrice, roomAmountBeds, roomTags })
         axios.post(uri + "/room/updateRoom", updatedRoom)
-            .then(response => { alert("changes were saved!"); props.history.push("/editRooms")  })
+            .then(async response => {
+
+                const avg = await updateAverage(hotelID); 
+                console.log(avg);
+                const hotelUpdate = ({ id: hotelID, avgRoomPrice: avg })
+                axios.post(uri + "/hotel/updateAvgPriceForHotel", hotelUpdate)
+                    .then(() => { alert("changes were saved!"); props.history.push("/editRooms") })
+                    .catch(err => { console.log(err); return })
+                
+            })
             .catch(err => { console.log(err); alert("changes were not saved!") });
     }
 
