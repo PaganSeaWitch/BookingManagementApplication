@@ -10,7 +10,7 @@ let transporter = nodemailer.createTransport({
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-        user: process.env.USER, // generated ethereal user
+        user: process.env.EMAILUSER, // generated ethereal user
         pass: process.env.KEY, // generated ethereal password
     },
 });
@@ -53,6 +53,8 @@ router.route("/AccountRecovery/DeleteAllByEmail/:email").delete((req, res) => {
 });
 
 router.route("/AccountRecovery/SendEmailRecoveryRequest/:id").post((req, res) => {
+    console.log(process.env.USER)
+    console.log(process.env.KEY)
     AccountRecovery.findById(req.params.id)
         .then((accountRecovery) => {
             const string = "Please Click on the following link to recover email : " + "https://www.rendezview.site/resetPassword/" + accountRecovery._id
@@ -64,9 +66,9 @@ router.route("/AccountRecovery/SendEmailRecoveryRequest/:id").post((req, res) =>
                 html: `<p>${string}</p>`, // html body
             })
                 .then(() => res.json("message sent"))
-                .catch(err => { res.status(400).json("Error: " + err); console.log(err)});
+                .catch(err => { res.status(400).json("Error: " + process.env.EMAILUSER+ " " + process.env.KEY); console.log(err)});
         })
-        .catch(err => res.status(400).json("Error: " + err));
+        .catch(err => res.status(400).json("Err: "+ process.env.USER + " " + process.env.KEY));
 })
 
 module.exports = router;

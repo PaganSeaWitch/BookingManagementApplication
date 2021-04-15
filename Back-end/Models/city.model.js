@@ -18,11 +18,6 @@ const citySchema = new Schema
             type: Number,
             required:true
         },
-		numRooms:
-		{
-			type: Number,
-			required: true
-		},
 		totalPrice:
 		{
 			type: Number,
