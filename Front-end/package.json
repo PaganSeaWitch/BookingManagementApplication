@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^12.7.0",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
+    "concurrently": "^6.0.2",
     "google-map-react": "^2.1.9",
     "phaser": "^3.54.0",
     "random-username-generator": "^1.0.4",
@@ -49,6 +50,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {}
+  }
 }

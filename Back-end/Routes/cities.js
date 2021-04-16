@@ -4,7 +4,6 @@ let City = cityImport.model
 
 
 
-
 //Returns all cities
 router.route("/allCities").get((req, res) => {
     City.find()

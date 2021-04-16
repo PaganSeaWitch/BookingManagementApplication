@@ -92,7 +92,6 @@ code {
 }
 
 .login-background{
-
 	position: absolute;
 	background-size: cover;
 	background-image: url(images/pexels-quintin-gellar-313782.jpg);
@@ -100,6 +99,7 @@ code {
     background-repeat: no-repeat;
 	width: 100%;
 	height: 150%;
+	background-attachment: fixed;
 }
 .login-form{
 	margin : auto;
@@ -127,7 +127,7 @@ code {
 
 .create-links{
 	font-size: 0.975rem;
-	margin-left : 60px;
+	margin-left : 50px;
 	margin-bottom: 25px;
 	margin-top: 15px;
 	position: relative;
@@ -136,8 +136,10 @@ code {
 
 .remembered-links{
 	font-size: 0.975rem;
-	margin-left : 40px;
+	margin-left : 25px;
+	position: relative;
 	margin-bottom: 25px;
+	bottom: 12px;
 }
 
 .forgot-links{
@@ -310,17 +312,19 @@ code {
 .splash-page{ 
     	position: absolute;
 	background-size: cover;
-	background-image: url(images/pexels-eberhard-grossgasteiger-1287145.jpg);
+	background-image: url(images/pexels-quintin-gellar-313782.jpg);
+	background-attachment: fixed;
 	background-position: center;
-    	background-repeat: no-repeat;
+    background-repeat: no-repeat;
 	width: 100%;
-	height: 100%;
+	height: 150%;
 }
 .dashboard{
-	background-image: url(images/pexels-francesco-ungaro-998653.jpg);
+	background-image: url(images/pexels-quintin-gellar-313782.jpg);
 	background-position: center;
+	background-attachment: fixed;
 	width: 100%;
-	height: 100%;
+	height: 150%;
 
 	
 } 
@@ -344,21 +348,23 @@ code {
 }
 .manager{
 	background-size: cover;
-	background-image: url(images/dashboardStockPhoto.jpg);
+	background-image: url(images/pexels-quintin-gellar-313782.jpg);
 	background-position: center;
-    background-repeat: no-repeat;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 	position: absolute;
-	width:100%;
-	height:100%;
+	width: 100%;
+	height: 150%;
 }
 
 .user-background{
 	background-size: cover;
-	background-image: url(images/userStockPhoto.jfif);
+	background-image: url(images/pexels-quintin-gellar-313782.jpg);
 	background-position: center;
-    background-repeat: no-repeat;
-	width:100%;
-	height:100%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	width: 100%;
+	height: 150%;
 	position: absolute;
 	
 }
@@ -393,8 +399,8 @@ code {
 .user-information{
 	background-color: #f8f8ff;
 	margin: auto;
-	max-width: 750px;
-	max-height:400px;
+	max-width: 800px;
+	max-height:550px;
 	position: relative;
 	border:1px #000 solid;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
