@@ -24,25 +24,20 @@ router.route("/getCity").get((req, res) => {
 
 //Adds a city
 router.route("/addCity").post((req, res) => {
-	console.log("Add City req body: " + req.body);
-    console.log("Req.body.name : " + req.body.name);
-	 console.log("Req.body.numLocations : " + req.body.numLocations);
-	  console.log("Req.body.avg : " + req.body.totalPrice / req.body.numRooms);
-	   console.log("Req.body.numRooms : " + req.body.numRooms);
-	    console.log("Req.body.total : " + req.body.totalPrice);
+	
 	const cityName = req.body.name;
     const numLocs = req.body.numLocations;
-	const numRoo= req.body.numRooms;
+	//const numRoo= req.body.numRooms;
 	const total = req.body.totalPrice;
 	var avg;
-	if(req.body.totalPrice != 0 && req.body.numRooms != 0){
-		 avg = req.body.totalPrice / req.body.numRooms;
+	if(req.body.totalPrice > 0 && req.body.numLocs > 0){
+		 avg = req.body.totalPrice / req.body.numLocs;
 	}
 	else{
 		 avg = 0;
 	}
 	
-    const newCity = new City({ name: cityName, numLocations: numLocs, avgPrice: avg, numRooms: numRoo, totalPrice: total});
+    const newCity = new City({ name: cityName, numLocations: numLocs, avgPrice: avg, totalPrice: total});
     newCity.save()
         .then(() => res.json(newCity))
         .catch(err => res.status(400).json("Error at Add City Backend: " + err));
@@ -52,20 +47,15 @@ router.route("/addCity").post((req, res) => {
 
 //Update city info
 router.route("/updateCity").post((req, res) => {
-	console.log("Update City req body: " + req.body);
-	  console.log("Req.body.name : " + req.body.name);
-	 console.log("Req.body.numLocations : " + req.body.numLocations);
-	  console.log("Req.body.avg : " + req.body.totalPrice / req.body.numRooms);
-	   console.log("Req.body.numRooms : " + req.body.numRooms);
-	    console.log("Req.body.total : " + req.body.totalPrice);
+	
     City.findOneAndUpdate({ cityName: req.body.name })
         .then((city) => {
-          
+          console.log("City Being Updated: " + req.body.name);
+		  console.log("Information being updated: Total Price += " + req.body.totalPrice);
 			city.numLocations = city.numLocations + req.body.numLocations;
-			city.numRooms = city.numRooms + req.body.numRooms;
 			city.totalPrice = city.totalPrice + req.body.totalPrice;
-			if(city.totalPrice != 0 && city.numRooms != 0){
-				city.avgPrice = totalPrice / numRooms;
+			if(city.totalPrice > 0 && city.numLocations > 0){
+				city.avgPrice = city.totalPrice / city.numLocations;
 			}
 			
             

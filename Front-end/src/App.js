@@ -83,20 +83,15 @@ const App = () => {
 
 	
 	
-	const calculateCities = (hotelList) => {
+	const calculateCities = (hotelList, cityList) => {
 		var inArray = false;
-		var numLocations = 1;
-		var cityName = "";
-		var totalPrice = 0;
-		var numRooms = 0;
-		var tempCities = [];
-		var avgPrice = 0;
-			
+		var totalPrice = 0;	
+		console.log("Existing city list size: " +cityList.length);	
+		var numOperations = 0;
 			hotelList.forEach(hotel =>{
-				//console.log("Entered hotel loop");
-	
-                tempCities.forEach(city => {
-                    if (city === hotel.location.city) {
+				
+                cityList.forEach(city => {
+                    if (city == hotel.location.city) {
                         console.log("this city: " + city + " is same as that city: " + hotel.location.city)
 						inArray=true;
                     }
@@ -121,56 +116,58 @@ const App = () => {
 					})
 				}
 				*/
-				console.log("New Total Price: " + totalPrice + " New numRooms: " + numRooms);
+			
+				
+				//console.log("New Total Price: " + totalPrice + " New numRooms: " + numRooms);
+				if(hotel.avgRoomPrice > 0){
+				  totalPrice = hotel.avgRoomPrice;	
+				}
 				
 				if(inArray){
-						updateCity(hotel.location.city, numLocations, avgPrice, numRooms, totalPrice);
-						console.log("Updating: " + hotel.location.city + " 1 " + "0 " + numRooms + " " + totalPrice);
-						
+					console.log("Updating: " + hotel.location.city + "Total Price: " + totalPrice);	
+						updateCity(hotel.location.city, 1, 0, totalPrice);
+						numOperations++;
 				}
-				else{
-						addCity(hotel.location.city, numLocations, avgPrice, numRooms, totalPrice);
-						tempCities.push(hotel.location.city);
-						console.log("City added: " + hotel.location.city);
+				else if (!inArray){
+						addCity(hotel.location.city, 1, 0, totalPrice);
+						//tempCities.push(hotel.location.city);
+						cityList.push(hotel.location.city);
+						console.log("City added: " + totalPrice);
+						numOperations++;
 				}
 				
-				numLocations = 0;
-				totalPrice = 0; 
-				numRooms = 0;
 				inArray = false;
-				
+				totalPrice = 0;
 			})
-			
+		console.log("Operations completed: " + numOperations);
 		getCities();
 	}
 	
-	async function roomData(roomID){
-		var price = await getRoomsData(roomID)
+	const fillCities = (hotelList) => {
+			 axios.get(uri + "/city/allCities")
+            .then(response => {
+                calculateCities(hotelList, response.data);
+            })
+            .catch(err => console.log(err))
 	}
 	
-	const getRoomsData = (roomID) => {
-			return axios.get(uri + "/room/getRoomByID/" + roomID)
-					.then(response => {
-						return response;
-					})
-	}
-	
-	const addCity = (cityName, numLocations, avgPrice, numRooms, totalPrice) => {
-		 const city = ({ name: cityName, numLocations: numLocations, avgPrice:avgPrice, numRooms:numRooms, totalPrice:totalPrice})
+	const addCity = (cityName, numLocations, avgPrice, totalPrice) => {
+		 const city = ({ name: cityName, numLocations: numLocations, avgPrice:avgPrice, totalPrice:totalPrice})
                                 axios.post(uri + "/city/addCity", city)
                                     .then(response => {
                                         //setCities([...cities, cityResponse.data])
-                                        console.log("City Name: " + city.name + " " + city.avgPrice + " " + city.numRooms + " " + city.totalPrice);
-                                    
+                                        console.log("City Name: " + city.name + " " + city.avgPrice + " " + city.totalPrice);
+										setCities([...cities, response.data]);
                                     })
                                     .catch(err => console.log("Error adding city client: " + err));
     }
 
 
-	const updateCity = (cityName, numLocs, avgPrice, numRoom, totalPri) => {
-        const updatedCity = ({ name: cityName, numLocations: numLocs, avgPrice:(totalPri/numRoom), numRooms:numRoom, totalPrice:totalPri})
-        axios.post(uri + "/city/updateCity", updatedCity)
-            .then(response => { console.log("City updated"); })
+	const updateCity = (cityName, numLocations, avgPrice, totalPrice) => {
+         const city = ({ name: cityName, numLocations: numLocations, avgPrice:avgPrice, totalPrice:totalPrice})
+        axios.post(uri + "/city/updateCity", city)
+            .then(response => { 
+			 setCities([...cities, response.data]); console.log("City updated"); })
             .catch(err => { console.log("Error at update city client: " + err);  });
     }
 	
@@ -180,7 +177,13 @@ const App = () => {
         axios.get(uri + "/hotel/allHotels")
             .then(response => {
                 setHotels(response.data);
-				calculateCities(response.data);
+				if(cities.length == 0){
+					getCities();
+				}
+				else{
+					fillCities(response.data);
+				}
+				
 				
             })
             .catch(err => console.log(err))
@@ -272,7 +275,33 @@ const App = () => {
             })
             .catch(err => { return 0 })
     }
-   
+
+    const updateAverage = async (hotel_id) => {
+        return axios.get(uri + "/hotel/getHotelByID/" + hotel_id)
+            .then(async response => {
+                if (response != null) {
+                    const roomIDs = response.data.room_IDs;
+                    let num = 0;
+                    for (let roomID of roomIDs) {
+                        let number = await axios.get(uri + "/room/getRoomPriceByID/" + roomID)
+                            .then(response => {
+                                console.log(Number(response.data))
+                                return Number(response.data)
+
+                            })
+                            .catch(err => { return 0; })
+                        num = num + number;
+                    }
+                    
+                    num = Math.floor(num / (roomIDs.length));
+
+                    return num;
+
+                }
+                return 0;
+            })
+            .catch(err => { return 0 })
+    }
 
     const addRoom = async (hotel_id, roomNumber, roomPrice, roomBedAmount, roomTags, props) => {
         console.log(roomPrice)
@@ -283,7 +312,17 @@ const App = () => {
             .then(response => {
                 const hotelUpdate = ({ id: hotel_id, roomId: response.data._id, avgRoomPrice: avg })
                  axios.post(uri + "/hotel/updateRoomsForHotel", hotelUpdate)
-                        .then(() => { alert("Room has been created!"); props.history.push("/editRooms") })
+                        .then(response => { alert("Room has been created!"); 
+									  props.history.push("/editRooms");
+									
+										  if(avg > 0){
+											updateCity(response.data.location.city, 0, 0, avg);
+										  }
+										  else{
+											updateCity(response.data.location.city, 0, 0, 0);
+										  }
+										 
+									  })
                         .catch(err => { console.log(err); return })
             })
             .catch(err => { return "" })
@@ -317,9 +356,24 @@ const App = () => {
                     setRoomNumber(response.data.roomNumber);
                     setRoomPrice(response.data.price);
                     setRoomBedAmount(response.data.beds);
-                    setSuite(response.data.tags.suite);
-                    setHandicap(response.data.tags.handicap);
-                    setSmoking(response.data.tags.smoking);
+					if(response.data.tags.suite == undefined){
+						setSuite(false);
+					}
+					else{
+						setSuite(response.data.tags.suite);
+					}
+					if(response.data.tags.handicap == undefined){
+							setHandicap(false);
+					}
+					else{
+						setHandicap(response.data.tags.handicap);
+					}
+					if(response.data.tags.smoking == undefined){
+						setSmoking(false);
+					}
+					else{	
+						setSmoking(response.data.tags.smoking);
+					}
                     const tempDateList = []
                     response.data.booked_dates.forEach(booked => {
                         let tempDate = new Date(booked);
@@ -351,7 +405,6 @@ const App = () => {
             })
             .catch(err => { console.log(err); props.history.push("/") })
     }
-
 
     const getHotel =  (hotel_id, setHotelLocation, setHotelName, setHotelRooms, props) => {
         console.log("Getting hotel!")
@@ -616,7 +669,8 @@ const App = () => {
         console.log(updatedUser.username);
     };
 
-    const updateUserBookings = (user, newBooking, props) =>{
+    const updateUserBookings = (user, newBooking, props) => {
+        console.log(user)
         const updateBooking = ({ id: user._id, booking: newBooking })
         console.log(user.password)
         console.log("begining user update")
@@ -627,14 +681,13 @@ const App = () => {
 
     }
 
-    const updateRoomBookings = async (id, roomNumber, roomPrice, roomBedAmount ,roomTags, bookedDates, newDates) => {
+    const updateRoomBookings =  (id, roomNumber, roomPrice, roomBedAmount ,roomTags, bookedDates, newDates) => {
         
-        let response = false;
-        console.log(id);
-        const updatedRoom = ({ roomID: id, roomNumber, roomPrice, roomAmountBeds : roomBedAmount, roomTags, dates: newDates })
-        await axios.post(uri + "/room/updateRoom", updatedRoom)
+        console.log(newDates);
+        const updatedRoom = ({ roomID: id, roomNumber, roomPrice, roomAmountBeds : roomBedAmount, tags: roomTags, dates: newDates })
+        return axios.post(uri + "/room/updateRoomBookings", updatedRoom)
             .then(() => { return true; })
-            .catch(err => { console.log(err); alert("booking not done were not saved!"); response = false; });
+            .catch(err => { console.log(err); alert("booking not done were not saved!"); return false; });
        
     }
 
@@ -670,10 +723,20 @@ const App = () => {
             .catch(err => { console.log(err); alert("password reset failed!");})
     }
 
-    const updateRoom = (roomID, roomNumber, roomPrice, roomAmountBeds, roomTags, props) => {
+
+    const updateRoom = async (hotelID, roomID, roomNumber, roomPrice, roomAmountBeds, roomTags, props) => {
         const updatedRoom = ({ roomID, roomNumber, roomPrice, roomAmountBeds, roomTags })
         axios.post(uri + "/room/updateRoom", updatedRoom)
-            .then(response => { alert("changes were saved!"); props.history.push("/editRooms")  })
+            .then(async response => {
+
+                const avg = await updateAverage(hotelID);
+                console.log(avg);
+                const hotelUpdate = ({ id: hotelID, avgRoomPrice: avg })
+                axios.post(uri + "/hotel/updateAvgPriceForHotel", hotelUpdate)
+                    .then(() => { alert("changes were saved!"); props.history.push("/editRooms") })
+                    .catch(err => { console.log(err); return })
+
+            })
             .catch(err => { console.log(err); alert("changes were not saved!") });
     }
 
@@ -876,8 +939,32 @@ const App = () => {
                                         axios.post(uri + "/manager/add", newManager)
                                             .then(response => { setManagerState(response, password); alert("manager created!"); props.history.push("/manager"); })
                                             .catch(err => alert("Coudln't create account!"));
+										
+										//This needs to also update the city that the hotel is added to.
+										if(cities.includes(hotel.location.city)){
+												console.log("Hotel created: attempting to update city");
+												if(hotel.avgPrice > 0){
+													updateCity(hotel.location.city, 1, 0, hotel.avgPrice);
+												}
+												else{
+													updateCity(hotel.location.city, 1, 0, 0);
+												}
+												console.log("City Updated");
+										}
+										else{
+												console.log("Hotel Created: attempting to add city");
+												if(hotel.avgPrice > 0){
+														addCity(hotel.location.city, 1, 0, hotel.avgPrice);
+												}
+												else{
+													addCity(hotel.location.city, 1, 0, 0);
+												}
+													
+												console.log("City added");
+										}
+											
                                     })
-                                    .catch(err => alert("Coudln't create account!"));
+                                    .catch(err => console.log(err));
 
                             }
                         }) 
@@ -988,10 +1075,14 @@ const App = () => {
             .catch(err => {alert("getting user Acount error!"); console.log(err);});
 
     }
+	
+
+
 
     //where render happens
     return (
-
+		
+		
         <Router>  
            
             <NavBar user={user} manager={manager} />
