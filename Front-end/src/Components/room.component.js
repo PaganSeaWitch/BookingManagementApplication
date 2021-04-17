@@ -7,6 +7,8 @@ import { FaSmoking } from 'react-icons/fa'
 import { MdRoomService } from 'react-icons/md'
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import Tooltip from '@material-ui/core/Tooltip';
+import { FUNDING } from '@paypal/react-paypal-js'
+import { PayPalButton } from "react-paypal-button-v2";
 
 const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 	const [hotelID, setHotelID] = useState("")
@@ -31,7 +33,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
     "client-id": "Ab5MP34Strn8xQq7h-Fgt0mLAbacBJVtiYhIGtIEbf738lE2LnKvJ7QLKYnCaCSaDj1f_LsNpmyrcNw_",
     currency: "USD",
     intent: "capture",
-    
+    components: 'marks,messages,buttons'
 		};
 		
 		
@@ -67,8 +69,12 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
                 return;
             }
             setRoomBookedDates([...roomBookedDates, ...userBookDates])
-            const response = updateRoom(roomID, roomNumber, roomPrice, roomBedAmount, suite, handicap, smoking, roomBookedDates, userBookDates)
+			console.log("Tag.suite: " + suite + " Tag.handicap: " + handicap + " Tag.smoking: " + smoking);
+			var tags = [];
+			tags.push(suite); tags.push(handicap); tags.push(smoking);
+            const response = updateRoom(roomID, roomNumber, roomPrice, roomBedAmount, tags, roomBookedDates, userBookDates)
                 .then(() => {
+					console.log("Room Updated, now updating the users booking");
                     const newBooking = ({ room_ID: roomID, hotel_ID: hotelID, dates_booked: userBookDates })
                     console.log(newBooking)
                     updateUser(user, newBooking, props)
@@ -118,28 +124,49 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
         }
 
         setUserBookedDates([...datesList]);
-		setAmount(roomPrice * userBookDates.length);
-		setOrderID(false);
+		if(userBookDates.length > 0 && roomPrice > 0){ 
+			console.log("Price Set: " + roomPrice* userBookDates.length);
+			setAmount(roomPrice * userBookDates.length);
+			setOrderID(false);
+		}
 	};
 	
+
+	
 	const createOrder = function(data, actions) {
+		
         return actions.order
             .create({
+				intent: "CAPTURE",
                 purchase_units: [
                     {
+						description: "Room Booking Checkout",
                         amount: {
-                            value: amount,
+							currency_code: "USD",
+                            value: amount
                         },
                     },
                 ],
             })
             .then((orderID) => {
+				console.log("order created: Total:$" + amount);
                 setOrderID(orderID);
+				console.log("Order ID: " + orderID);
                 return orderID;
             });
     };
 	
+   const onApprove = async(data, actions) => {
+	   const order = await actions.order.capture();
+	   console.log("Successful order");
+	  // e.preventDefault(); 
+	   setBook(true); 
+	   //actions.order.capture();
 	
+  }
+	
+	
+   
 	
 	
 
@@ -189,8 +216,8 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
                         <br></br>
 
                         
-						<PayPalScriptProvider options={initialOptions} options={{ components: 'marks,messages,buttons'}}>
-							<PayPalButtons onClick= {()=>{alert("Please log in to make a booking");}} style={{ layout: "horizontal"}} createOrder ={createOrder} forceReRender={amount} onApprove={(e) => {e.preventDefault(); setBook(true); }} onError={() => {console.log("error");}}   />
+						<PayPalScriptProvider options={initialOptions}>
+							<PayPalButton   onError={err => {console.log(err)}} style={{ layout: "horizontal"}} createOrder ={createOrder} forceReRender={[amount]} onApprove={onApprove}  />
 						</PayPalScriptProvider>
 				    </div>
                 

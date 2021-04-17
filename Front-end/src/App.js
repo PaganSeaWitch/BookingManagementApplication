@@ -330,9 +330,24 @@ const App = () => {
                     setRoomNumber(response.data.roomNumber);
                     setRoomPrice(response.data.price);
                     setRoomBedAmount(response.data.beds);
-                    setSuite(response.data.tags.suite);
-                    setHandicap(response.data.tags.handicap);
-                    setSmoking(response.data.tags.smoking);
+					if(response.data.tags.suite == undefined){
+						setSuite(false);
+					}
+					else{
+						setSuite(response.data.tags.suite);
+					}
+					if(response.data.tags.handicap == undefined){
+							setHandicap(false);
+					}
+					else{
+						setHandicap(response.data.tags.handicap);
+					}
+					if(response.data.tags.smoking == undefined){
+						setSmoking(false);
+					}
+					else{	
+						setSmoking(response.data.tags.smoking);
+					}
                     const tempDateList = []
                     response.data.booked_dates.forEach(booked => {
                         let tempDate = new Date(booked);
@@ -642,9 +657,10 @@ const App = () => {
 
     const updateRoomBookings = async (id, roomNumber, roomPrice, roomBedAmount ,roomTags, bookedDates, newDates) => {
         
+	
         let response = false;
         console.log(id);
-        const updatedRoom = ({ roomID: id, roomNumber, roomPrice, roomAmountBeds : roomBedAmount, roomTags, dates: newDates })
+        const updatedRoom = ({ roomID: id, roomNumber, roomPrice, roomAmountBeds : roomBedAmount, tags: roomTags, dates: newDates })
         await axios.post(uri + "/room/updateRoom", updatedRoom)
             .then(() => { return true; })
             .catch(err => { console.log(err); alert("booking not done were not saved!"); response = false; });
@@ -684,6 +700,7 @@ const App = () => {
     }
 
     const updateRoom = (roomID, roomNumber, roomPrice, roomAmountBeds, roomTags, props) => {
+		console.log("Room Tags value: " + roomTags);
         const updatedRoom = ({ roomID, roomNumber, roomPrice, roomAmountBeds, roomTags })
         axios.post(uri + "/room/updateRoom", updatedRoom)
             .then(response => { alert("changes were saved!"); props.history.push("/editRooms")  })
@@ -1025,10 +1042,14 @@ const App = () => {
             .catch(err => {alert("getting user Acount error!"); console.log(err);});
 
     }
+	
+
+
 
     //where render happens
     return (
-
+		
+		
         <Router>  
            
             <NavBar user={user} manager={manager} />

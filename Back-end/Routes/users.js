@@ -133,8 +133,8 @@ router.route("/updateBookings/").post((req, res) => {
         .then((user) => {
             if (user.bookings == null) {
                 const bookings = [];
-                bookings.push(req.body.booking);
-                user.bookings = bookings
+                user.bookings.push(req.body.booking);
+                //user.bookings = bookings
             }
             else {
                 user.bookings.push(req.body.booking);
