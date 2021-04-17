@@ -105,7 +105,7 @@ router.route("/getByEmail/:email").get((req, res) => {
 
 
 router.route("/getById/:id").get((req, res) => {
-    User.findById(req.params.id)
+    User.findOne({ _id: req.params.id })
         .then(user => {
             res.json(user);
         })
@@ -129,12 +129,15 @@ router.route("/deleteById/:id").delete((req, res) => {
 
 router.route("/updateBookings/").post((req, res) => {
     console.log("UPDATING BOOKINGS")
-    User.findByIdAndUpdate( req.body.id )
+
+    User.findOneAndUpdate({ id: req.body.id } )
         .then((user) => {
+            console.log(user);
             if (user.bookings == null) {
-                const bookings = [];
-                user.bookings.push(req.body.booking);
-                //user.bookings = bookings
+                console.log("null is you!");
+                const tempArray = [];
+                tempArray.push(req.body.booking)
+                user.bookings = tempArray;
             }
             else {
                 user.bookings.push(req.body.booking);

@@ -669,7 +669,8 @@ const App = () => {
         console.log(updatedUser.username);
     };
 
-    const updateUserBookings = (user, newBooking, props) =>{
+    const updateUserBookings = (user, newBooking, props) => {
+        console.log(user)
         const updateBooking = ({ id: user._id, booking: newBooking })
         console.log(user.password)
         console.log("begining user update")
@@ -680,15 +681,13 @@ const App = () => {
 
     }
 
-    const updateRoomBookings = async (id, roomNumber, roomPrice, roomBedAmount ,roomTags, bookedDates, newDates) => {
+    const updateRoomBookings =  (id, roomNumber, roomPrice, roomBedAmount ,roomTags, bookedDates, newDates) => {
         
-	
-        let response = false;
-        console.log(id);
+        console.log(newDates);
         const updatedRoom = ({ roomID: id, roomNumber, roomPrice, roomAmountBeds : roomBedAmount, tags: roomTags, dates: newDates })
-        await axios.post(uri + "/room/updateRoom", updatedRoom)
+        return axios.post(uri + "/room/updateRoomBookings", updatedRoom)
             .then(() => { return true; })
-            .catch(err => { console.log(err); alert("booking not done were not saved!"); response = false; });
+            .catch(err => { console.log(err); alert("booking not done were not saved!"); return false; });
        
     }
 
@@ -725,18 +724,18 @@ const App = () => {
     }
 
 
-    const updateRoom = async(hotelID, roomID, roomNumber, roomPrice, roomAmountBeds, roomTags, props) => {
+    const updateRoom = async (hotelID, roomID, roomNumber, roomPrice, roomAmountBeds, roomTags, props) => {
         const updatedRoom = ({ roomID, roomNumber, roomPrice, roomAmountBeds, roomTags })
         axios.post(uri + "/room/updateRoom", updatedRoom)
             .then(async response => {
 
-                const avg = await updateAverage(hotelID); 
+                const avg = await updateAverage(hotelID);
                 console.log(avg);
                 const hotelUpdate = ({ id: hotelID, avgRoomPrice: avg })
                 axios.post(uri + "/hotel/updateAvgPriceForHotel", hotelUpdate)
                     .then(() => { alert("changes were saved!"); props.history.push("/editRooms") })
                     .catch(err => { console.log(err); return })
-                
+
             })
             .catch(err => { console.log(err); alert("changes were not saved!") });
     }

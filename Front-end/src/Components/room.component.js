@@ -60,7 +60,7 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 
 
     }, []);
-	useEffect(() => {
+	useEffect(async () => {
 		console.log("This is being used");
         if (book == true) {
             
@@ -70,17 +70,20 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
                 props.history.push("/login")
                 return;
             }
+            if (userBookDates.length == 0) {
+                alert("Please select a date!")
+            }
             setRoomBookedDates([...roomBookedDates, ...userBookDates])
-			console.log("Tag.suite: " + suite + " Tag.handicap: " + handicap + " Tag.smoking: " + smoking);
-			var tags = [];
-			tags.push(suite); tags.push(handicap); tags.push(smoking);
-            const response = updateRoom(roomID, roomNumber, roomPrice, roomBedAmount, tags, roomBookedDates, userBookDates)
-                .then(() => {
-					console.log("Room Updated, now updating the users booking");
-                    const newBooking = ({ room_ID: roomID, hotel_ID: hotelID, dates_booked: userBookDates })
-                    console.log(newBooking)
-                    updateUser(user, newBooking, props)
-                })
+            const tags = ({ smoking, handicap, suite })
+            const response =await updateRoom(roomID, roomNumber, roomPrice, roomBedAmount, tags, roomBookedDates, userBookDates)
+
+            if (response == true) {
+                const newBooking = ({ room_ID: roomID, hotel_ID: hotelID, dates_booked: userBookDates })
+                console.log(newBooking)
+                updateUser(user, newBooking, props)
+            }
+            
+            
                 
                 
             
