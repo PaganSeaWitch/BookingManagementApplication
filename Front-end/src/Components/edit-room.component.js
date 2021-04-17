@@ -9,7 +9,6 @@ const frontURI = process.env.REACT_APP_FRONT_END_SERVER_URI
 
 
 const checkRoomNumber = async (hotelID, roomNumber, props) => {
-    console.log("checking number")
     return axios.get(uri + "/hotel/getHotelByID/" + hotelID)
         .then(response => {
             if (response != null) {
@@ -18,12 +17,14 @@ const checkRoomNumber = async (hotelID, roomNumber, props) => {
                     roomIDs.forEach(roomID => {
                         axios.get(uri + "/room/getRoomByID/" + roomID)
                             .then(roomResponse => {
+
                                 if (roomResponse.data.roomNumber == roomNumber) {
                                     return false
                                 }
                             })
                             .catch(err => { return false })
                     })
+                    return true;
                 }
                 else {
                     return true;
@@ -33,8 +34,9 @@ const checkRoomNumber = async (hotelID, roomNumber, props) => {
                 return true;
             }
         })
-        .catch(err => { return false })
+        .catch(err => { return true })
 }
+
 
 const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
     const [hotelID, setHotelID] = useState("")
@@ -48,15 +50,19 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
     const [smoking, setSmoking] = useState(false);
     const [handicap, setHandicap] = useState(false);
     const [suite, setSuite] = useState(false);
+
     const handleSmoker = (event) => {
         setSmoking(event.target.checked);
     };
+
     const handleSuite = (event) => {
         setSuite(event.target.checked)
     }
+
     const handleHandicap = (event) => {
         setHandicap(event.target.checked)
     }
+
     useEffect(() => {
 
         if (manager._id == "") {
@@ -113,7 +119,7 @@ const EditRoom = ({ manager, onRoomUpdate, getRoom, props }) => {
             const checksum = await checkRoomNumber(hotelID, roomNumber, props)
             if (checksum) {
                 const tags = ({ smoking, handicap, suite })
-                onRoomUpdate(hotelID, roomNumber, amountOfBeds, roomPrice, tags, props)
+                onRoomUpdate(hotelID, roomID, roomNumber, roomPrice, amountOfBeds, tags, props)
 
             }
             else {
