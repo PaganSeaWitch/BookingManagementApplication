@@ -67,11 +67,11 @@ const ManagerStats = ({ manager }) => {
                 }
             })
             if (found != -1) {
-                tempDatesData[found].amount = tempDatesData[found].amount + 1;
+                tempDatesData[found]["times booked"] = tempDatesData[found]["times booked"]+ 1;
 
             }
             else {
-                tempDatesData.push({ date: tempDateString, amount: 1 })
+                tempDatesData.push({ date: tempDateString, "times booked": 1 })
             }
         })
         tempDatesData.sort((dateObj1, dateObj2) => {
@@ -119,7 +119,7 @@ const ManagerStats = ({ manager }) => {
                 <XAxis dataKey="name" type='category' >
                     <Label value="Rooms" offset={-7} position="bottom" />
                 </XAxis>
-                <YAxis scale='linear' >
+                <YAxis scale='linear' domain={[0, 'dataMax + 50']} >
                     <Label value="$" offset={-18} position="left" interval="preserveEnd" minTickGap={50} />
                 </YAxis>
                 <Bar dataKey="Total earnings from room" fill="#8884d8" />
@@ -131,11 +131,9 @@ const ManagerStats = ({ manager }) => {
                 <XAxis dataKey="date" type='category' >
                     <Label value="Dates" offset={-7} position="bottom" />
                 </XAxis>
-                <YAxis scale='linear'>
-                    <Label value="Booked Rooms" offset={-18} position="left" interval="preserveEnd" minTickGap={50} />
-                </YAxis>
+                <YAxis scale='linear' domain={[0, 'dataMax + 2']}/>
                 <Legend verticalAlign='top' height={100} align ='right'/>
-                <Bar dataKey="amount" fill="#8884d8" />
+                <Bar dataKey="times booked" fill="#8884d8" />
             </BarChart>
 
         </div>
