@@ -515,5 +515,14 @@ code {
 
 .manager-stats{
 	margin:auto;
-	max-width:600px;
+	max-width:1470px;
+}
+.chart{
+	display: inline-block;
+}
+.manager-graph-right{
+	margin-left:550px;
+}
+.manager-graph-left{
+	margin-left:325px;
 }
