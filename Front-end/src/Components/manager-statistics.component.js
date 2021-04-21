@@ -1,4 +1,4 @@
-import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Label, LineChart, Line } from 'recharts';
+import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Label, LineChart, Line, Pie, PieChart, Cell } from 'recharts';
 import { useEffect, useMemo, useState } from 'react'
 import axios from "axios";
 import { setDate } from 'date-fns';
@@ -19,13 +19,62 @@ const ManagerStats = ({ manager }) => {
 
     const [datesData, setDatesData] = useState([])
 
+    const [tagsData, setTagsData] = useState([
+        { name: "no tags", value: 1, color: '#91501d' },
+        { name: "smoking only", value: 1, color: '#c4926b' },
+        { name: "suite only", value: 1, color: '#5c367c' },
+        { name: "handicap accessible only", value: 1, color: '#0A75AD' },
+        { name: "smoking & suite only", value: 1, color: '#869112' },
+        { name: "smoking & handicap accessible only", value: 1, color: '#0A75AD' },
+        { name: "suite & handicap accessible only", value: 1, color: '#8c349c' },
+        { name: "suite, handicap accessible & smoking", value: 1, color: '#2ab94c' }])
     const fetchRooms = async (roomIDs) => {
         const roomsTemp = [];
         let datesTemp = [];
+        let noTags = 0;
+        let smokingOnly = 0;
+        let suiteOnly = 0;
+        let handicapOnly = 0;
+        let smokingNSuite = 0;
+        let smokingNHand = 0;
+        let suiteNhand = 0;
+        let all = 0;
         for await (let id of roomIDs) {
-            axios.get(backURI + "/room/getRoomByID/" + id)
+            await axios.get(backURI + "/room/getRoomByID/" + id)
                 .then(response => {
                     if (response != null) {
+                        const tags = response.data.tags;
+                        if (tags.smoking) {
+                            if (tags.handicap) {
+                                if (tags.suite) {
+                                    all = all + 1;
+                                }
+                                else {
+                                    smokingNHand = smokingNHand + 1;
+                                }
+                            }
+                            else if (tags.suite) {
+                                smokingNSuite = smokingNSuite + 1;
+                            }
+                            else {
+                                smokingOnly = smokingOnly + 1;
+                            }
+                        }
+                        else if (tags.suite) {
+                            if (tags.handicap) {
+                                suiteNhand = suiteNhand + 1;
+                            }
+                            else {
+                                suiteOnly = suiteOnly + 1;
+                            }
+                        }
+                        else if (tags.handicap) {
+                            handicapOnly = handicapOnly + 1;
+                        }
+                        else {
+                            noTags = noTags + 1;
+                        }
+
                         roomsTemp.push(response.data);
                         if (response.data.booked_dates.length != 0) {
                             datesTemp = datesTemp.concat(response.data.booked_dates)
@@ -48,16 +97,29 @@ const ManagerStats = ({ manager }) => {
                 })
 
         }
+        const tagOptions = { noTags, smokingOnly, suiteOnly, handicapOnly, smokingNSuite, smokingNHand, suiteNhand, all}
+        addTags(tagOptions);
         computeDates(roomsTemp);
 
     }
+
+    const addTags = (tagAmounts) => {
+        setTagsData([
+            { name: "no tags", value: tagAmounts.noTags, color: '#91501d' },
+            { name: "smoking only", value: tagAmounts.smokingOnly, color: '#c4926b' },
+            { name: "suite only", value: tagAmounts.suiteOnly, color: '#5c367c' },
+            { name: "handicap accessible only", value: tagAmounts.handicapOnly, color: '#0A75AD' },
+            { name: "smoking & suite only", value: tagAmounts.smokingNSuite, color: '#869112' },
+            { name: "smoking & handicap accessible only", value: tagAmounts.smokingNHand, color: '#0A75AD' },
+            { name: "suite & handicap accessible only", value: tagAmounts.suiteNhand, color: '#8c349c' },
+            { name: "suite, handicap accessible & smoking", value: tagAmounts.all, color: '#2ab94c' }
+            ])
+    }
     const computeDates = () => {
         const tempDatesData = []
-
         dates.forEach(date => {
             let tempDate = new Date(date)
             let tempDateString = tempDate.getDate() + "/" + tempDate.getMonth()
-            console.log(tempDateString)
             let found = tempDatesData.findIndex(function (dateObject, index) {
                 if (dateObject.date === tempDateString) {
                     return true
@@ -108,8 +170,6 @@ const ManagerStats = ({ manager }) => {
 
                 }
                 day = day + 1;
-                console.log(day)
-                console.log(month)
                 return day + "/"+month
 
             }
@@ -140,8 +200,6 @@ const ManagerStats = ({ manager }) => {
                 return 0;
             })
             setDatesData([...tempDatesData])
-            console.log(datesData)
-            console.log(earningsData)
         }
         
     }
@@ -168,13 +226,13 @@ const ManagerStats = ({ manager }) => {
     return (
 
         <div className='manager-stats'>
-            <p>This is the manager dashboard</p>
+            <header>Statistics for the {hotel.name}</header>
             <div>
                 <label className='manager-graph-left'>Total Earnings Per Room</label>
                 <label className='manager-graph-right'>Total Bookings Per Date</label>
             </div>
             <div>
-                <BarChart className='chart' width={730} height={350} data={earningsData}>
+                <BarChart className='chart' width={730} height={350} data={earningsData} margin={{ top: 5, right: 30, left: 20, bottom: 10 }}>
                     <Legend verticalAlign='top' height={34} align='right' />                
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" type='category' interval={0} >
@@ -186,7 +244,7 @@ const ManagerStats = ({ manager }) => {
                     <Bar dataKey="Total earnings from room" fill="#8884d8" />
                     <Tooltip />
                 </BarChart>
-                <LineChart className='chart' width={730} height={350} data={datesData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <LineChart className='chart' width={730} height={350} data={datesData} margin={{ top: 5, right: 30, left: 20, bottom: 10 }}>
                     <Tooltip />
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" type='category' >
@@ -197,8 +255,25 @@ const ManagerStats = ({ manager }) => {
                     <Line type="monotone" dataKey="times booked" fill="#8884d8" />
                 </LineChart>
             </div>
-           
-
+            <div>
+                <label className='manager-graph-left'>Tags per Room</label>
+                <label className='manager-graph-right'>Total Bookings Per Date</label>
+            </div>
+            <div>
+                <PieChart width={730} height={500} margin={{ top: 50, right: 30, left: 20, bottom: 5 }}>
+                    <Pie data={tagsData} cx="50%" cy="50%" outerRadius={200} legendType="circle" label>
+                    {
+                        tagsData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))
+                    }
+                    </Pie>
+                    <Tooltip />
+                    <Legend verticalAlign='bottom' height={20} align='center' />
+                </PieChart>
+                
+            </div>
+            
         </div>
 
     );
