@@ -260,7 +260,7 @@ const ManagerStats = ({ manager }) => {
                 <label className='manager-graph-right'>Total Bookings Per Date</label>
             </div>
             <div>
-                <PieChart width={730} height={500} margin={{ top: 50, right: 30, left: 20, bottom: 5 }}>
+                <PieChart width={730} height={500} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                     <Pie data={tagsData} cx="50%" cy="50%" outerRadius={200} legendType="circle" label>
                     {
                         tagsData.map((entry, index) => (
@@ -271,7 +271,6 @@ const ManagerStats = ({ manager }) => {
                     <Tooltip />
                     <Legend verticalAlign='bottom' height={20} align='center' />
                 </PieChart>
-                
             </div>
             
         </div>
