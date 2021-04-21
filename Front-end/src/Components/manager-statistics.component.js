@@ -288,7 +288,7 @@ const ManagerStats = ({ manager }) => {
                     <label className='manager-graph-right-two'>Beds per Room</label>
                 </div>
                 <div>
-                    <PieChart className='chart' width={730} height={500} margin={{ top: -50, right: 0, left: -700, bottom: 5 }}>
+                    <PieChart className='chart' width={730} height={500} margin={{ top: -50, right: 0, left: 0, bottom: 5 }}>
                         <Pie data={tagsData} cx="50%" cy="50%" outerRadius={200} legendType="circle" label>
                         {
                             tagsData.map((entry, index) => (
@@ -299,7 +299,7 @@ const ManagerStats = ({ manager }) => {
                         <Tooltip />
                         <Legend verticalAlign='bottom' align='left' layout='vertical' wrapperStyle={{ top: 300, left: 10, right: 0, bottom: 100 }} />
                     </PieChart>
-                    <PieChart className='chart' width={730} height={500} margin={{ top: -50, right: 0, left: 150, bottom: 5 }}>
+                    <PieChart className='chart' width={730} height={500} margin={{ top: -50, right: 0, left: -10, bottom: 5 }}>
                         <Pie data={bedsData} cx="50%" cy="50%" outerRadius={200} legendType="circle" label>
                             {
                                 tagsData.map((entry, index) => (
