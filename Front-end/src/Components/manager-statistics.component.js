@@ -21,12 +21,12 @@ const ManagerStats = ({ manager }) => {
 
     const [tagsData, setTagsData] = useState([
         { name: "no tags", value: 1, color: '#91501d' },
-        { name: "smoking only", value: 1, color: '#c4926b' },
         { name: "suite only", value: 1, color: '#5c367c' },
-        { name: "handicap accessible only", value: 1, color: '#0A75AD' },
+        { name: "smoking only", value: 1, color: '#c4926b' },
         { name: "smoking & suite only", value: 1, color: '#869112' },
-        { name: "smoking & handicap accessible only", value: 1, color: '#0A75AD' },
+        { name: "handicap accessible only", value: 1, color: '#0A75AD' },
         { name: "suite & handicap accessible only", value: 1, color: '#8c349c' },
+        { name: "smoking & handicap accessible only", value: 1, color: '#0A75AD' },
         { name: "suite, handicap accessible & smoking", value: 1, color: '#2ab94c' }])
     const fetchRooms = async (roomIDs) => {
         const roomsTemp = [];
@@ -106,12 +106,12 @@ const ManagerStats = ({ manager }) => {
     const addTags = (tagAmounts) => {
         setTagsData([
             { name: "no tags", value: tagAmounts.noTags, color: '#91501d' },
-            { name: "smoking only", value: tagAmounts.smokingOnly, color: '#c4926b' },
             { name: "suite only", value: tagAmounts.suiteOnly, color: '#5c367c' },
-            { name: "handicap accessible only", value: tagAmounts.handicapOnly, color: '#0A75AD' },
+            { name: "smoking only", value: tagAmounts.smokingOnly, color: '#c4926b' },
             { name: "smoking & suite only", value: tagAmounts.smokingNSuite, color: '#869112' },
-            { name: "smoking & handicap accessible only", value: tagAmounts.smokingNHand, color: '#0A75AD' },
+            { name: "handicap accessible only", value: tagAmounts.handicapOnly, color: '#0A75AD' },
             { name: "suite & handicap accessible only", value: tagAmounts.suiteNhand, color: '#8c349c' },
+            { name: "smoking & handicap accessible only", value: tagAmounts.smokingNHand, color: '#0A75AD' },
             { name: "suite, handicap accessible & smoking", value: tagAmounts.all, color: '#2ab94c' }
             ])
     }
@@ -226,13 +226,13 @@ const ManagerStats = ({ manager }) => {
     return (
 
         <div className='manager-stats'>
-            <header>Statistics for the {hotel.name}</header>
+            <header className={"bold-center"}>Statistics for the {hotel.name}</header>
             <div>
                 <label className='manager-graph-left'>Total Earnings Per Room</label>
                 <label className='manager-graph-right'>Total Bookings Per Date</label>
             </div>
             <div>
-                <BarChart className='chart' width={730} height={350} data={earningsData} margin={{ top: 5, right: 30, left: 20, bottom: 10 }}>
+                <BarChart className='chart' width={730} height={350} data={earningsData} margin={{ top: 5, right: 30, left: 20, bottom: 30 }}>
                     <Legend verticalAlign='top' height={34} align='right' />                
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" type='category' interval={0} >
@@ -244,7 +244,7 @@ const ManagerStats = ({ manager }) => {
                     <Bar dataKey="Total earnings from room" fill="#8884d8" />
                     <Tooltip />
                 </BarChart>
-                <LineChart className='chart' width={730} height={350} data={datesData} margin={{ top: 5, right: 30, left: 20, bottom: 10 }}>
+                <LineChart className='chart' width={730} height={350} data={datesData} margin={{ top: 5, right: 30, left: 20, bottom: 30 }}>
                     <Tooltip />
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" type='category' >
@@ -260,7 +260,7 @@ const ManagerStats = ({ manager }) => {
                 <label className='manager-graph-right'>Total Bookings Per Date</label>
             </div>
             <div>
-                <PieChart width={730} height={500} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <PieChart width={730} height={500} margin={{ top: -50, right: 0, left: -700, bottom: 5 }}>
                     <Pie data={tagsData} cx="50%" cy="50%" outerRadius={200} legendType="circle" label>
                     {
                         tagsData.map((entry, index) => (
@@ -269,7 +269,8 @@ const ManagerStats = ({ manager }) => {
                     }
                     </Pie>
                     <Tooltip />
-                    <Legend verticalAlign='bottom' height={20} align='center' />
+                    <Legend verticalAlign='bottom' align='left' layout='vertical' wrapperStyle={{ top: 300, left: 10, right: 0, bottom: 100 }} />
+                    
                 </PieChart>
             </div>
             
