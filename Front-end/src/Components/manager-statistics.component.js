@@ -133,7 +133,7 @@ const ManagerStats = ({ manager }) => {
             { name: "suite & handicap accessible only", value: tagAmounts.suiteNhand, color: '#8c349c' },
             { name: "smoking & handicap accessible only", value: tagAmounts.smokingNHand, color: '#0A75AD' },
             { name: "suite, handicap accessible & smoking", value: tagAmounts.all, color: '#2ab94c' }
-            ])
+        ])
     }
 
     const addBeds = (bedAmounts) => {
@@ -289,17 +289,21 @@ const ManagerStats = ({ manager }) => {
                 </div>
                 <div>
                     <PieChart className='chart' width={730} height={500} margin={{ top: -50, right: 0, left: 0, bottom: 5 }}>
+                        
                         <Pie data={tagsData} cx="50%" cy="50%" outerRadius={200} legendType="circle" label>
                         {
                             tagsData.map((entry, index) => (
                                 <Cell key={`cell-${index}`} fill={entry.color} />
                             ))
                         }
-                        </Pie>
+                            </Pie>
+                            
                         <Tooltip />
-                        <Legend verticalAlign='bottom' align='left' layout='vertical' wrapperStyle={{ top: 300, left: 10, right: 0, bottom: 100 }} />
+                        <Legend className="prevent-useage" verticalAlign='bottom' align='left' layout='vertical' wrapperStyle={{ top: 300, left: 10, right: 0, bottom: 100, height:0, width:295 }} chartHeight={'10px'} chartWidth={'10px'} />
                     </PieChart>
                     <PieChart className='chart' width={730} height={500} margin={{ top: -50, right: 0, left: -10, bottom: 5 }}>
+                        <Legend verticalAlign='middle' align='right' layout='vertical' />
+
                         <Pie data={bedsData} cx="50%" cy="50%" outerRadius={200} legendType="circle" label>
                             {
                                 tagsData.map((entry, index) => (
@@ -308,7 +312,6 @@ const ManagerStats = ({ manager }) => {
                             }
                         </Pie>
                         <Tooltip />
-                        <Legend verticalAlign='middle' align='right' layout='vertical'  />
                     </PieChart>
                 
                 </div>

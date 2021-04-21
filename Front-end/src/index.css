@@ -541,3 +541,7 @@ code {
 	margin-left:605px;
 	text-align:center;
 }
+.prevent-useage{
+	max-width :300px;
+	max-height:0px;
+}
