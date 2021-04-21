@@ -515,7 +515,7 @@ code {
 
 .manager-stats{
 	margin:auto;
-	max-width:1470px;
+	max-width:1500px;
 	border:1px #000 solid;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	-moz-border-radius: 10px;
@@ -527,8 +527,17 @@ code {
 	display: inline-block;
 }
 .manager-graph-right{
+	display: inline;
 	margin-left:550px;
+	text-align:center;
 }
 .manager-graph-left{
+	display: inline;
 	margin-left:325px;
+	text-align:center;
+}
+.manager-graph-right-two{
+	display: inline;
+	margin-left:605px;
+	text-align:center;
 }

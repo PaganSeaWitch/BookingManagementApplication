@@ -19,6 +19,12 @@ const ManagerStats = ({ manager }) => {
 
     const [datesData, setDatesData] = useState([])
 
+    const [bedsData, setBedsData] = useState([
+        { name: "one bed", value: 1, color: '#91501d' },
+        { name: "two beds", value: 1, color: '#5c367c' },
+        { name: "more than two beds", value: 1, color: '#c4926b' }
+    ])
+
     const [tagsData, setTagsData] = useState([
         { name: "no tags", value: 1, color: '#91501d' },
         { name: "suite only", value: 1, color: '#5c367c' },
@@ -39,6 +45,9 @@ const ManagerStats = ({ manager }) => {
         let smokingNHand = 0;
         let suiteNhand = 0;
         let all = 0;
+        let oneBed = 0;
+        let twoBed = 0;
+        let moreThanTwoBed = 0;
         for await (let id of roomIDs) {
             await axios.get(backURI + "/room/getRoomByID/" + id)
                 .then(response => {
@@ -75,6 +84,15 @@ const ManagerStats = ({ manager }) => {
                             noTags = noTags + 1;
                         }
 
+                        if (response.data.beds > 2) {
+                            moreThanTwoBed = moreThanTwoBed + 1;
+                        }
+                        else if (response.data.beds > 1) {
+                            twoBed = twoBed + 1;
+                        }
+                        else {
+                            oneBed = oneBed + 1;
+                        }
                         roomsTemp.push(response.data);
                         if (response.data.booked_dates.length != 0) {
                             datesTemp = datesTemp.concat(response.data.booked_dates)
@@ -97,8 +115,10 @@ const ManagerStats = ({ manager }) => {
                 })
 
         }
-        const tagOptions = { noTags, smokingOnly, suiteOnly, handicapOnly, smokingNSuite, smokingNHand, suiteNhand, all}
+        const tagOptions = { noTags, smokingOnly, suiteOnly, handicapOnly, smokingNSuite, smokingNHand, suiteNhand, all }
+        const bedOptions = { oneBed, twoBed, moreThanTwoBed}
         addTags(tagOptions);
+        addBeds(bedOptions);
         computeDates(roomsTemp);
 
     }
@@ -114,6 +134,14 @@ const ManagerStats = ({ manager }) => {
             { name: "smoking & handicap accessible only", value: tagAmounts.smokingNHand, color: '#0A75AD' },
             { name: "suite, handicap accessible & smoking", value: tagAmounts.all, color: '#2ab94c' }
             ])
+    }
+
+    const addBeds = (bedAmounts) => {
+        setBedsData([
+            { name: "one bed", value: bedAmounts.oneBed, color: '#91501d' },
+            { name: "two beds", value: bedAmounts.twoBed, color: '#5c367c' },
+            { name: "more than two beds", value: bedAmounts.moreThanTwoBed, color: '#c4926b' }
+        ])
     }
     const computeDates = () => {
         const tempDatesData = []
@@ -224,58 +252,69 @@ const ManagerStats = ({ manager }) => {
     }, [manager])
 
     return (
-
-        <div className='manager-stats'>
+        <div className="login-background">
             <header className={"bold-center"}>Statistics for the {hotel.name}</header>
-            <div>
-                <label className='manager-graph-left'>Total Earnings Per Room</label>
-                <label className='manager-graph-right'>Total Bookings Per Date</label>
-            </div>
-            <div>
-                <BarChart className='chart' width={730} height={350} data={earningsData} margin={{ top: 5, right: 30, left: 20, bottom: 30 }}>
-                    <Legend verticalAlign='top' height={34} align='right' />                
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" type='category' interval={0} >
-                        <Label value="Rooms" offset={-7} position="bottom" />
-                    </XAxis>
-                    <YAxis scale='linear' domain={[0, 'dataMax + 40']} >
-                        <Label value="$" offset={-18} position="left" interval="preserveEnd" minTickGap={50} />
-                    </YAxis>
-                    <Bar dataKey="Total earnings from room" fill="#8884d8" />
-                    <Tooltip />
-                </BarChart>
-                <LineChart className='chart' width={730} height={350} data={datesData} margin={{ top: 5, right: 30, left: 20, bottom: 30 }}>
-                    <Tooltip />
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" type='category' >
-                        <Label value="Dates" offset={-7} position="bottom" />
-                    </XAxis>
-                    <YAxis scale='linear' domain={[0, 'dataMax + 2']}/>
-                    <Legend verticalAlign='top' height={35} align ='right'/>
-                    <Line type="monotone" dataKey="times booked" fill="#8884d8" />
-                </LineChart>
-            </div>
-            <div>
-                <label className='manager-graph-left'>Tags per Room</label>
-                <label className='manager-graph-right'>Total Bookings Per Date</label>
-            </div>
-            <div>
-                <PieChart width={730} height={500} margin={{ top: -50, right: 0, left: -700, bottom: 5 }}>
-                    <Pie data={tagsData} cx="50%" cy="50%" outerRadius={200} legendType="circle" label>
-                    {
-                        tagsData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))
-                    }
-                    </Pie>
-                    <Tooltip />
-                    <Legend verticalAlign='bottom' align='left' layout='vertical' wrapperStyle={{ top: 300, left: 10, right: 0, bottom: 100 }} />
-                    
-                </PieChart>
-            </div>
+            <div className='manager-stats'>
+                <div>
+                    <label className='manager-graph-left'>Total Earnings Per Room</label>
+                    <label className='manager-graph-right'>Total Bookings Per Date</label>
+                </div>
+                <div>
+                    <BarChart className='chart' width={730} height={500} data={earningsData} margin={{ top: 5, right: 30, left: 20, bottom: 30 }}>
+                        <Legend verticalAlign='top' height={34} align='right' />                
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" type='category' interval={0} >
+                            <Label value="Rooms" offset={-7} position="bottom" />
+                        </XAxis>
+                        <YAxis scale='linear' domain={[0, 'dataMax + 40']} >
+                            <Label value="$" offset={-18} position="left" interval="preserveEnd" minTickGap={50} />
+                        </YAxis>
+                        <Bar dataKey="Total earnings from room" fill="#8884d8" />
+                        <Tooltip />
+                    </BarChart>
+                    <LineChart className='chart' width={730} height={500} data={datesData} margin={{ top: 5, right: 30, left: 20, bottom: 30 }}>
+                        <Tooltip />
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="date" type='category' >
+                            <Label value="Dates" offset={-7} position="bottom" />
+                        </XAxis>
+                        <YAxis scale='linear' domain={[0, 'dataMax + 2']}/>
+                        <Legend verticalAlign='top' height={35} align ='right'/>
+                        <Line type="monotone" dataKey="times booked" fill="#8884d8" />
+                    </LineChart>
+                </div>
+                <div>
+                    <label className='manager-graph-left'>Tags per Room</label>
+                    <label className='manager-graph-right-two'>Beds per Room</label>
+                </div>
+                <div>
+                    <PieChart className='chart' width={730} height={500} margin={{ top: -50, right: 0, left: -700, bottom: 5 }}>
+                        <Pie data={tagsData} cx="50%" cy="50%" outerRadius={200} legendType="circle" label>
+                        {
+                            tagsData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))
+                        }
+                        </Pie>
+                        <Tooltip />
+                        <Legend verticalAlign='bottom' align='left' layout='vertical' wrapperStyle={{ top: 300, left: 10, right: 0, bottom: 100 }} />
+                    </PieChart>
+                    <PieChart className='chart' width={730} height={500} margin={{ top: -50, right: 0, left: 150, bottom: 5 }}>
+                        <Pie data={bedsData} cx="50%" cy="50%" outerRadius={200} legendType="circle" label>
+                            {
+                                tagsData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                ))
+                            }
+                        </Pie>
+                        <Tooltip />
+                        <Legend verticalAlign='middle' align='right' layout='vertical'  />
+                    </PieChart>
+                
+                </div>
             
+            </div>
         </div>
-
     );
 }
 
