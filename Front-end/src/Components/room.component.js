@@ -81,18 +81,8 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
                 const newBooking = ({ room_ID: roomID, hotel_ID: hotelID, dates_booked: userBookDates })
                 console.log(newBooking)
                 updateUser(user, newBooking, props)
-            }
-            
-            
-                
-                
-            
-                
-           
+            }             
         }
-
-		
-
 
     }, [book]);
 

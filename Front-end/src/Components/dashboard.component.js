@@ -6,6 +6,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { useState, useEffect } from "react";
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
+import ManagerStats from "./manager-statistics.component"
 import axios from "axios";
 require('dotenv').config()
 const backURI = process.env.REACT_APP_BACK_END_SERVER_URI
@@ -96,8 +97,6 @@ const Dashboard = ({ user, manager, onHotelClick, props, filter }) => {
 		}
 		return tempHotels;
 	}
-
-
 
 
 	const sortList = (tempHotels) => {
@@ -302,11 +301,8 @@ const Dashboard = ({ user, manager, onHotelClick, props, filter }) => {
 					</div>
 
 			</div>
-			: <div> 
-					<div>							
-						{/* TODO, make manager dashboard*/}
-					</div> 
-				</div>
+			: <ManagerStats manager={manager}/>
+			
 				
 			
 	
