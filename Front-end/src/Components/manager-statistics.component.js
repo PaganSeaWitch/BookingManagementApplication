@@ -290,7 +290,7 @@ const ManagerStats = ({ manager }) => {
                 <div>
                     <PieChart className='chart' width={730} height={500} margin={{ top: -50, right: 0, left: 0, bottom: 5 }}>
                         
-                        <Pie data={tagsData} cx="50%" cy="50%" outerRadius={200} legendType="circle" label>
+                        <Pie data={tagsData} cx="50%" cy="50%" outerRadius={200} legendType="circle" >
                         {
                             tagsData.map((entry, index) => (
                                 <Cell key={`cell-${index}`} fill={entry.color} />
@@ -304,7 +304,7 @@ const ManagerStats = ({ manager }) => {
                     <PieChart className='chart' width={730} height={500} margin={{ top: -50, right: 0, left: -10, bottom: 5 }}>
                         <Legend verticalAlign='middle' align='right' layout='vertical' />
 
-                        <Pie data={bedsData} cx="50%" cy="50%" outerRadius={200} legendType="circle" label>
+                        <Pie data={bedsData} cx="50%" cy="50%" outerRadius={200} legendType="circle" >
                             {
                                 tagsData.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={entry.color} />
