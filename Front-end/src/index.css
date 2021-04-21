@@ -541,6 +541,14 @@ code {
 	margin-left:605px;
 	text-align:center;
 }
+
+.manager-graph-header-left{
+	margin-left:310px;
+}
+
+.manager-graph-header-right{
+	margin-left: 528px;
+}
 .prevent-useage{
 	max-width :300px;
 	max-height:0px;
