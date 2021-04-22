@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const City = ({city, onClick, props}) => {
 	
 	return(
-			 <div className={'room-listing'} onClick={() => onClick(city, props)} >
+			 <div className={'city'} onClick={() => onClick(city, props)} >
 			
             <header>
                 
