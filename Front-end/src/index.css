@@ -22,6 +22,21 @@ code {
 	
 	
 }
+.city{
+	display: inline-block;
+	margin-bottom:50px;
+	margin-top :auto;
+	margin-right : 25px;
+	margin-left: 25px;
+	max-width : 300px;
+	cursor:pointer;
+	text-align : center;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 5px;
+	background-color: #f8f8ff;
+	border:3px solid #000000;
+}
 .main-header{
 	text-decoration: underline;
 	text-align: center;
