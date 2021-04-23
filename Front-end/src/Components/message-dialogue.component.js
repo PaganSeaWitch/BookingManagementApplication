@@ -19,6 +19,7 @@ const MessageDialogue = ({ subject, body, sender, open, setOpen, onReply }) => {
             open={open}
             onClose={() => setOpen(false)}
             aria-labelledby="confirm-dialog"
+			
         >
             <DialogTitle id="confirm-dialog">{subject} From : {sender}</DialogTitle>
             <DialogContent>
