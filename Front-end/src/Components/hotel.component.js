@@ -435,7 +435,9 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
                 
                 
             </header>
+			<center>
             {filterOn ? <ListRooms rooms={filteredRooms} onRoomClick={onRoomClick} props={props} /> : <ListRooms rooms={rooms} onRoomClick={onRoomClick} props={props} />}
+			</center>
             <SendMessageDialogue
                 open={sendMessage}
                 setOpen={setSendMessage}

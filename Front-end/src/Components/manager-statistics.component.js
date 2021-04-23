@@ -264,7 +264,7 @@ const ManagerStats = ({ manager }) => {
             <header className={"bold-center"}>Statistics for the {hotel.name}</header>
             <div className='manager-stats'>
                 <h4>
-                    <label className='manager-graph-header-left'>Total Earnings: {totalEarnings} </label>
+                    <label className='manager-graph-header-left'>Total Earnings: ${totalEarnings} </label>
                     <label className='manager-graph-header-right'>Total Bookings: {totalBookings} </label>
                 </h4>
                 <div>
