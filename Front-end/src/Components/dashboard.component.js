@@ -247,7 +247,7 @@ const Dashboard = ({ user, manager, onHotelClick, props, filter }) => {
 
 	return(
 			(manager._id == "") //if not logged in, adjust display
-			? <div className='dashboard'>
+			? <div className='splash-page'>
 				<header className={"hotel-search"}>
 						<NativeSelect
 						labelid="demo-customized-select-label"

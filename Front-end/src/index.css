@@ -124,7 +124,9 @@ code {
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
-	background-color: #f5f5f5;
+	
+	background-color: #E5D3B3;
+	border:3px solid #C4A484;
 }
 
 
@@ -219,19 +221,21 @@ code {
 	cursor:pointer;
 	position:relative;
 	width: 30%;
-	display: block;
+	display: inline-block;
 	padding: 5px;
-	border: 3px solid #000;
-	margin-bottom: 5px;
-	margin-left :auto;
+	
+	margin-bottom: 10px;
+	margin-left :35px;
 	margin-right: auto;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
 	outline: 0;
-	background-color: #f8f8ff;
+
 	font-family: "Georgia", "Times New Roman", sans-serif;
 	opacity: 0.99;
+	background-color: #E5D3B3;
+	border:3px solid #C4A484;
 
 }
 
@@ -251,8 +255,8 @@ code {
 	margin-right : auto;
 	max-width: 500px;
 	text-align: center;
-	border: 3px solid #000;
-	background-color: #f8f8ff;
+background-color: #E5D3B3;
+	border:3px solid #C4A484;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
@@ -263,8 +267,8 @@ code {
 	margin-left :auto;
 	margin-right : auto;
 	max-width: 350px;
-	border: 3px solid #000;
-	background-color: #f8f8ff;
+	background-color: #E5D3B3;
+	border:3px solid #C4A484;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
@@ -286,6 +290,7 @@ code {
 	position: relative;
 }
 .room-search{
+
 	text-align: center;
 	margin-top:5px;
 	margin-bottom:10px;
@@ -476,7 +481,8 @@ code {
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
-	background-color: #f8f8ff;
+	background-color: #E5D3B3;
+	border:3px solid #C4A484;
 }
 .booking-listing{
 	display: inline-block;
