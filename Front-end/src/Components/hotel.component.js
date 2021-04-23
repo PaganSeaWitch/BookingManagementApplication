@@ -389,9 +389,9 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
                     onChange={onNameSort}
                     input={<BootstrapInput />}
                 >
-                    <option value={""}>Stort by Room Floor</option>
+                    <option value={""}>Sort by Room Floor</option>
                     <option value={"RMA"}>Room Floor Ascending</option>
-                    <option value={"RMD"}>Room Floor Decending</option>
+                    <option value={"RMD"}>Room Floor Descending</option>
                 </NativeSelect>
                 <NativeSelect
                     labelId="demo-customized-select-label"
@@ -400,9 +400,9 @@ const Hotel = ({ user, manager, getHotel, onRoomClick, props}) => {
                     onChange={onPriceSort}
                     input={<BootstrapInput />}
                 >
-                    <option value={""}>Stort by Price</option>
+                    <option value={""}>Sort by Price</option>
                     <option value={"PA"}>Price Ascending</option>
-                    <option value={"PD"}>Price Decending</option>
+                    <option value={"PD"}>Price Descending</option>
                 </NativeSelect>
                 
                 <NativeSelect

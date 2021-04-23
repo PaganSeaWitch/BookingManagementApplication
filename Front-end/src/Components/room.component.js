@@ -9,6 +9,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import Tooltip from '@material-ui/core/Tooltip';
 import { FUNDING } from '@paypal/react-paypal-js'
 import { PayPalButton } from "react-paypal-button-v2";
+import { Link } from "react-router-dom";
 
 const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
 	const [hotelID, setHotelID] = useState("")
@@ -33,7 +34,6 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
     "client-id": "Ab5MP34Strn8xQq7h-Fgt0mLAbacBJVtiYhIGtIEbf738lE2LnKvJ7QLKYnCaCSaDj1f_LsNpmyrcNw_",
     currency: "USD",
     intent: "capture",
-
     components: 'marks,messages,buttons'
 
 };
@@ -170,7 +170,8 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
    
 
     return (
-        <div className='login-background'>
+	  (user._id == "") //if not logged in, adjust display
+        ?<div className='login-background'>
         <div className={"margin-50"}>
                 <header className={"bold-center"}>{hotelName} {"Room: "}{roomNumber} </header>
         </div>
@@ -210,10 +211,65 @@ const Room = ({user, getRoom, updateRoom, updateUser, props}) => {
                         <label className={"price"}> Total Price : {userBookDates.length == 0 ? roomPrice : roomPrice * userBookDates.length} </label>
                         <br></br>
 
-                        
+                        <Link to={"/Login"} >Please Log In to Checkout!</Link>
+						
+				    </div>
+                
+                    <br></br>
+
+
+
+            </form>
+           
+			
+        </div>
+		
+		</div>
+		
+		:<div className='login-background'>
+        <div className={"margin-50"}>
+                <header className={"bold-center"}>{hotelName} {"Room: "}{roomNumber} </header>
+        </div>
+        <div className = 'room-page'>
+
+                
+           
+
+            <form>
+
+                
+                    <div className={"label-center"}>
+                        <label className={"important-label"}>Price : {roomPrice}$ </label>{"   "}
+                        <label className={"important-label"}>Beds : {roomBedAmount} </label>
+                    </div>
+                    
+                    <div className={"label-center"}>
+                        <label className={"underlined"}>Book Range</label>
+                    <DatePicker  onChange={onChange} startDate={startDate} endDate={endDate} minDate={new Date()} excludeDates={[...roomBookedDates]} selectsRange inline />
+                   
+
+                    </div>
+                    <Tooltip title={suite ? "is a suite" : "is not a suite"} placement="right" arrow>
+                        <label className={"room-page-icon"}>suite : {suite ? <MdRoomService style={{ color: 'green' }} /> : <MdRoomService style={{ color: 'red' }} />} </label>
+                    </Tooltip>
+                    <br></br>
+                    <Tooltip title={suite ? "smoking is permitted" : "smoking is not permitted"} placement="right" arrow>
+                        <label className={"room-page-icon"}>smoking permitted : {smoking ? <FaSmoking className={"icon"} style={{ color: 'green', hover: "no" }} /> : <FaSmoking className={"icon"} style={{ color: 'red' }} />} </label>
+                    </Tooltip>
+  
+                    <br></br>
+                    <Tooltip title={handicap ? "is handicap accessible" : "is not handicap accessible"} placement="right" arrow>
+                        <label className={"room-page-icon"}>handicap accessible : {handicap ? <FaWheelchair className={"icon"} style={{ color: 'green' }} /> :  <FaWheelchair className={"icon"} style={{ color: 'red' }} />} </label>
+                    </Tooltip>
+                    <br></br>
+                    <div className={"label-center"}>
+                        <label className={"price"}> Total Price : {userBookDates.length == 0 ? roomPrice : roomPrice * userBookDates.length} </label>
+                        <br></br>
+
+                   
 						<PayPalScriptProvider options={initialOptions}>
-							<PayPalButton   onError={err => {console.log(err)}} style={{ layout: "horizontal"}} createOrder ={createOrder} forceReRender={[amount]} onApprove={onApprove}  />
-						</PayPalScriptProvider>
+							<PayPalButton fundingSource={FUNDING.PAYPAL}  onError={err => {console.log(err)}} style={{ layout: "horizontal"}} createOrder ={createOrder} forceReRender={[amount]} onApprove={onApprove}  />
+					 </PayPalScriptProvider>
 				    </div>
                 
                     <br></br>

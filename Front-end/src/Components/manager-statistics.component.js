@@ -10,6 +10,8 @@ const ManagerStats = ({ manager }) => {
     const [hotel, setHotel] = useState({})
     const [hotelRooms, setHotelRooms] = useState([])
     const [dates, setDates] = useState([])
+    const [totalEarnings, setTotalEarnings] = useState(0)
+    const [totalBookings, setTotalBookings] = useState(0)
 
     const earningsData = useMemo(
         () => hotelRooms.map(room => ({ name: room.roomNumber, "Total earnings from room": room.price * room.booked_dates.length }))
@@ -48,11 +50,15 @@ const ManagerStats = ({ manager }) => {
         let oneBed = 0;
         let twoBed = 0;
         let moreThanTwoBed = 0;
+        let totalB = 0;
+        let totalM = 0;
         for await (let id of roomIDs) {
             await axios.get(backURI + "/room/getRoomByID/" + id)
                 .then(response => {
                     if (response != null) {
                         const tags = response.data.tags;
+                        totalB = totalB + response.data.booked_dates.length;
+                        totalM = totalM + (response.data.booked_dates.length * response.data.price);
                         if (tags.smoking) {
                             if (tags.handicap) {
                                 if (tags.suite) {
@@ -120,6 +126,8 @@ const ManagerStats = ({ manager }) => {
         addTags(tagOptions);
         addBeds(bedOptions);
         computeDates(roomsTemp);
+        setTotalEarnings(totalM);
+        setTotalBookings(totalB);
 
     }
 
@@ -255,6 +263,10 @@ const ManagerStats = ({ manager }) => {
         <div className="login-background">
             <header className={"bold-center"}>Statistics for the {hotel.name}</header>
             <div className='manager-stats'>
+                <h4>
+                    <label className='manager-graph-header-left'>Total Earnings: {totalEarnings} </label>
+                    <label className='manager-graph-header-right'>Total Bookings: {totalBookings} </label>
+                </h4>
                 <div>
                     <label className='manager-graph-left'>Total Earnings Per Room</label>
                     <label className='manager-graph-right'>Total Bookings Per Date</label>
