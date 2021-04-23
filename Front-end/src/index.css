@@ -490,18 +490,24 @@ background-color: #E5D3B3;
 	border:3px solid #C4A484;
 }
 .booking-listing{
-	display: inline-block;
-	margin-bottom:50px;
-	margin-top :auto;
-	margin-right : 25px;
-	margin-left: 25px;
-	max-width : 100%;
 	cursor:pointer;
-	text-align : center;
+	position:relative;
+	width: 40%;
+	display: inline-block;
+	padding: 5px;
+	
+	margin-bottom: 10px;
+	margin-left :35px;
+	margin-right: auto;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
-	background-color: #f8f8ff;
+	outline: 0;
+
+	font-family: "Georgia", "Times New Roman", sans-serif;
+	opacity: 0.99;
+	background-color: #E5D3B3;
+	border:3px solid #C4A484;
 }
 .booking-listing label{
 	cursor:pointer;

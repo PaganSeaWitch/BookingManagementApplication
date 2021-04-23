@@ -35,7 +35,7 @@ const BookingListing = ({ bookingID, hotel, room, onClick, props }) => {
 	return (
 		<form className={"booking-listing"} onClick={() => onClick(bookingID, props)} >
 			<h1><FaHotel className={"icon"} style={{ color: 'black', }} /> {" "}
-				hotel:{hotelName}
+				Hotel:{hotelName}
 				<br></br>
 				Room: {hotelNumber}
 
