@@ -129,7 +129,7 @@ router.route("/deleteById/:id").delete((req, res) => {
 
 router.route("/updateBookings/").post((req, res) => {
     console.log("UPDATING BOOKINGS")
-
+    console.log(req.body);
     User.findOneAndUpdate({ id: req.body.id } )
         .then((user) => {
             console.log(user);
