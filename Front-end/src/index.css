@@ -22,6 +22,21 @@ code {
 	
 	
 }
+.city{
+	display: inline-block;
+	margin-bottom:50px;
+	margin-top :50px;
+	margin-right : 25px;
+	margin-left: 25px;
+	max-width : 300px;
+	cursor:pointer;
+	text-align : center;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 5px;
+	background-color: #E5D3B3;
+	border:3px solid #C4A484;
+}
 .main-header{
 	text-decoration: underline;
 	text-align: center;
@@ -100,6 +115,7 @@ code {
 	width: 100%;
 	height: 150%;
 	background-attachment: fixed;
+	
 }
 .login-form{
 	margin : auto;
@@ -109,7 +125,9 @@ code {
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
-	background-color: #f5f5f5;
+	
+	background-color: #E5D3B3;
+	border:3px solid #C4A484;
 }
 
 
@@ -204,19 +222,21 @@ code {
 	cursor:pointer;
 	position:relative;
 	width: 30%;
-	display: inline;
+	display: inline-block;
 	padding: 5px;
-	border: 3px solid #000;
-	margin-bottom: 5px;
-	margin-left :auto;
+	
+	margin-bottom: 10px;
+	margin-left :35px;
 	margin-right: auto;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
 	outline: 0;
-	background-color: #f8f8ff;
+
 	font-family: "Georgia", "Times New Roman", sans-serif;
 	opacity: 0.99;
+	background-color: #E5D3B3;
+	border:3px solid #C4A484;
 
 }
 
@@ -236,8 +256,8 @@ code {
 	margin-right : auto;
 	max-width: 500px;
 	text-align: center;
-	border: 3px solid #000;
-	background-color: #f8f8ff;
+background-color: #E5D3B3;
+	border:3px solid #C4A484;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
@@ -248,8 +268,8 @@ code {
 	margin-left :auto;
 	margin-right : auto;
 	max-width: 350px;
-	border: 3px solid #000;
-	background-color: #f8f8ff;
+	background-color: #E5D3B3;
+	border:3px solid #C4A484;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
@@ -271,6 +291,7 @@ code {
 	position: relative;
 }
 .room-search{
+
 	text-align: center;
 	margin-top:5px;
 	margin-bottom:10px;
@@ -355,6 +376,7 @@ code {
 	position: absolute;
 	width: 100%;
 	height: 150%;
+	
 }
 
 .user-background{
@@ -373,6 +395,8 @@ code {
 	margin-bottom : 20px;
 	text-decoration: underline;
 	text-align: center;
+	
+	
 }
 
 .user-information header button{
@@ -406,7 +430,8 @@ code {
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
-	border-radius: 5px;
+background-color: #E5D3B3;
+	border:3px solid #C4A484;
 }
 .user-information label{
 	margin-left : 3px;
@@ -461,21 +486,28 @@ code {
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
-	background-color: #f8f8ff;
+	background-color: #E5D3B3;
+	border:3px solid #C4A484;
 }
 .booking-listing{
-	display: inline-block;
-	margin-bottom:50px;
-	margin-top :auto;
-	margin-right : 25px;
-	margin-left: 25px;
-	max-width : 100%;
 	cursor:pointer;
-	text-align : center;
+	position:relative;
+	width: 40%;
+	display: inline-block;
+	padding: 5px;
+	
+	margin-bottom: 10px;
+	margin-left :35px;
+	margin-right: auto;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
-	background-color: #f8f8ff;
+	outline: 0;
+
+	font-family: "Georgia", "Times New Roman", sans-serif;
+	opacity: 0.99;
+	background-color: #E5D3B3;
+	border:3px solid #C4A484;
 }
 .booking-listing label{
 	cursor:pointer;
@@ -503,8 +535,8 @@ code {
 	text-align : center;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
-	border-radius: 5px;
-	background-color: #f8f8ff;
+	background-color: #E5D3B3;
+	border:3px solid #C4A484;
 }
 .viewed-email{
 	color: grey;
@@ -516,12 +548,13 @@ code {
 .manager-stats{
 	margin:auto;
 	max-width:1500px;
-	border:1px #000 solid;
+
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
-	background-color: #f5f5f5;
+	background-color: #E5D3B3;
+	border:3px solid #C4A484;
 }
 .chart{
 	display: inline-block;
