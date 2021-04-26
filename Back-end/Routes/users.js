@@ -255,18 +255,36 @@ router.route("/checkIfIdExists/:id").get((req, res) => {
 router.route("/update/").post((req, res) => {
     console.log(req.body)
     console.log(req.body.password)
-    User.findOneAndUpdate({ id: req.body.id })
-        .then((user) => {
-            user.username = req.body.username;
-            user.password = req.body.password;
-			user.firstName = req.body.firstName;
-			user.lastName = req.body.lastName;
-			user.email = req.body.email;
-            user.save()
-                .then((newUser) => { res.json(newUser); console.log(newUser.bookings); console.log(user.bookings)})
-                .catch(err => res.status(400).json("Error: " + err));
-        })
-        .catch(err => res.status(400).json("Error: " + err))
+    try {
+        let id = new mongoose.Types.ObjectId(req.body.account_id);
+        User.findOne({ _id: id })
+            .then((user) => {
+                user.username = req.body.username;
+                user.password = req.body.password;
+                user.firstName = req.body.firstName;
+                user.lastName = req.body.lastName;
+                user.email = req.body.email;
+                user.save()
+                    .then((newUser) => { res.json(newUser); console.log(newUser.bookings); console.log(user.bookings) })
+                    .catch(err => res.status(400).json("Error: " + err));
+            })
+            .catch(err => res.status(400).json("Error: " + err))
+    }
+    catch{
+        User.findOne({ _id: req.body.id })
+            .then((user) => {
+                user.username = req.body.username;
+                user.password = req.body.password;
+                user.firstName = req.body.firstName;
+                user.lastName = req.body.lastName;
+                user.email = req.body.email;
+                user.save()
+                    .then((newUser) => { res.json(newUser); console.log(newUser.bookings); console.log(user.bookings) })
+                    .catch(err => res.status(400).json("Error: " + err));
+            })
+            .catch(err => res.status(400).json("Error: " + err))
+    }
+    
 })  
 
 router.route("/checkIfUsernameExists/:username").get((req, res) => {
