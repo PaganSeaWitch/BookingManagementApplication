@@ -105,11 +105,22 @@ router.route("/getByEmail/:email").get((req, res) => {
 
 
 router.route("/getById/:id").get((req, res) => {
-    User.findOne({ _id: req.params.id })
-        .then(user => {
-            res.json(user);
-        })
-        .catch(err => res.status(400).json("Error: " + err));
+    try {
+        let id = new mongoose.Types.ObjectId(req.params.id);
+        User.findOne({ _id: id })
+            .then(user => {
+                res.json(user);
+            })
+            .catch(err => res.status(400).json("Error: " + err));
+    }
+    catch {
+        User.findOne({ _id: req.params.id })
+            .then(user => {
+                res.json(user);
+            })
+            .catch(err => res.status(400).json("Error: " + err));
+    }
+    
 
 });
 
@@ -122,44 +133,94 @@ router.route("/deleteByUsername/:username").delete((req, res) => {
 
 //detele user by ID
 router.route("/deleteById/:id").delete((req, res) => {
-    User.findOneAndDelete({ _id: req.params.id })
-        .then(() => res.json("User deleted."))
-        .catch(err => res.status(400).json("Error: " + err));
+    try {
+        let id = new mongoose.Types.ObjectId(req.params.id);
+        User.findOneAndDelete({ _id: id })
+            .then(() => res.json("User deleted."))
+            .catch(err => res.status(400).json("Error: " + err));
+
+    }
+    catch {
+        User.findOneAndDelete({ _id: req.params.id })
+            .then(() => res.json("User deleted."))
+            .catch(err => res.status(400).json("Error: " + err));
+    }
+    
 });
 
 router.route("/updateBookings/").post((req, res) => {
     console.log("UPDATING BOOKINGS")
-    console.log(req.body);
-    User.findOneAndUpdate({ id: req.body.id } )
-        .then((user) => {
-            console.log(user);
-            if (user.bookings == null) {
-                console.log("null is you!");
-                const tempArray = [];
-                tempArray.push(req.body.booking)
-                user.bookings = tempArray;
-            }
-            else {
-                user.bookings.push(req.body.booking);
-            }
-            user.save()
-                .then((newUser) => { res.json(newUser); console.log(newUser.bookings); console.log(user.bookings) })
-                .catch(err => res.status(400).json("Error: " + err));
-        })
-        .catch(err => res.status(400).json("Error: " + err));
+    console.log(req.body.id)
+    try {
+        let id = new mongoose.Types.ObjectId(req.body.id);
+        console.log(id)
+        User.findOne({ _id: id })
+            .then((user) => {
+                if (user)
+                    console.log(user);
+                if (user.bookings == null) {
+                    console.log("null is you!");
+                    const tempArray = [];
+                    tempArray.push(req.body.booking)
+                    user.bookings = tempArray;
+                }
+                else {
+                    user.bookings.push(req.body.booking);
+                }
+                user.save()
+                    .then((newUser) => { res.json(newUser); console.log(newUser.bookings); console.log(user.bookings) })
+                    .catch(err => res.status(400).json("Error: " + err));
+            })
+            .catch(err => res.status(400).json("Error: " + err));
+    }
+    catch{
+        User.findOne({ _id: req.body.id })
+            .then((user) => {
+                if (user)
+                    console.log(user);
+                if (user.bookings == null) {
+                    console.log("null is you!");
+                    const tempArray = [];
+                    tempArray.push(req.body.booking)
+                    user.bookings = tempArray;
+                }
+                else {
+                    user.bookings.push(req.body.booking);
+                }
+                user.save()
+                    .then((newUser) => { res.json(newUser); console.log(newUser.bookings); console.log(user.bookings) })
+                    .catch(err => res.status(400).json("Error: " + err));
+            })
+            .catch(err => res.status(400).json("Error: " + err));
+    }
+    
 })
 
 router.route("/updatePassword/").post((req, res) => {
     console.log("updating password")
     console.log(req.body.password)
-    User.findOneAndUpdate({ id: req.body.account_id })
-        .then((user) => {
-            user.password = req.body.password;
-            user.save()
-                .then(() => res.json("password updated"))
-                .catch(err => res.status(400).json("Error: " + err));
-        })
-        .catch(err => res.status(400).json("Error: " + err));
+    try {
+        let id = new mongoose.Types.ObjectId(req.body.account_id);
+        console.log(id)
+        User.findOne({ _id: id })
+            .then((user) => {
+                user.password = req.body.password;
+                user.save()
+                    .then(() => res.json("password updated"))
+                    .catch(err => res.status(400).json("Error: " + err));
+            })
+            .catch(err => res.status(400).json("Error: " + err));
+    }
+    catch {
+        User.findOne({ _id: req.params.account_id })
+            .then((user) => {
+                user.password = req.body.password;
+                user.save()
+                    .then(() => res.json("password updated"))
+                    .catch(err => res.status(400).json("Error: " + err));
+            })
+            .catch(err => res.status(400).json("Error: " + err));
+    }
 })
 
 

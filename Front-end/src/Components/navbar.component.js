@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
 import SplashPage from "./splashPage.component";
+import { useState, useEffect } from "react";
+import axios from 'axios'
+require('dotenv').config()
+const uri = process.env.REACT_APP_BACK_END_SERVER_URI
+
+const NavBar = ({  user, manager, amount }) => {
 
 
-const NavBar = ({  user, manager }) => {
+
    
+
     return (
 	
     <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
@@ -79,7 +86,7 @@ const NavBar = ({  user, manager }) => {
                         : <div>
 
                             <label> Hello {manager.username}{user.username}!</label>
-                            <label> You have 0 messages </label>
+                            <label> You have {amount} messages </label>
                         </div>}
                 </form>
            

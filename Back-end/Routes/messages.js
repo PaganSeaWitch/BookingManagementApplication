@@ -11,8 +11,9 @@ router.route("/all/").get((req, res) => {
 
 //Returns all nonviewed messages
 router.route("/allNonViewed/").get((req, res) => {
+    console.log(req.body)
     Message.find({ viewed: false, recipient_id : req.body.recipient_id})
-        .then(messages => res.json(messages))
+        .then(messages => { console.log(messages); res.json(messages) })
         .catch(err => res.status(400).json("Error: " + err))
 })
 

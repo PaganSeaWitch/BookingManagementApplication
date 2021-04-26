@@ -43,7 +43,23 @@ const App = () => {
         hotel_ID: ""
 
     })
-	
+    const [amount, setAmount] = useState(0)
+
+    useEffect(() => {
+        if (user._id + manager._id === '') {
+            return;
+        }
+        const recipient = ({ recipient_id: user._id + manager._id })
+        axios.get(uri + "/message/allNonViewed/", recipient)
+            .then(response => {
+                if (response != null) {
+                    console.log(response.data)
+                    setAmount(response.data.length)
+
+                }
+            })
+            .catch(err => console.log(err))
+    }, [user, manager])
 	
     const [hotels, setHotels] = useState([])
 	const [cities, setCities] = useState([])
@@ -1085,7 +1101,7 @@ const App = () => {
 		
         <Router>  
            
-            <NavBar user={user} manager={manager} />
+            <NavBar user={user} manager={manager} amount={amount} />
 			
             {/* Here instead of using the component, we use the render and then the component
                 * we do this because the component cannot take in anything without using render
